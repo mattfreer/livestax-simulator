@@ -5,8 +5,11 @@
     "start": "node server.js"
   },
   "devDependencies": {
+    "css-loader": "^0.9.1",
     "jsx-loader": "^0.12.2",
+    "less-loader": "^2.0.0",
     "react-hot-loader": "^1.1.1",
+    "style-loader": "^0.8.3",
     "webpack": "1.4.15",
     "webpack-dev-server": "1.6.4"
   },
