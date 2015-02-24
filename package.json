@@ -1,0 +1,16 @@
+{
+  "name": "livestax-simulator",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "react-hot-loader": "^1.1.1",
+    "webpack": "1.4.15",
+    "webpack-dev-server": "1.6.4"
+  },
+  "dependencies": {
+    "react": "^0.12.0"
+  }
+}
