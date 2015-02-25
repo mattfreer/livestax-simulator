@@ -2,13 +2,19 @@
   "name": "livestax-simulator",
   "version": "0.1.0",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha --recursive --compilers jsx:test/compiler.js"
   },
   "devDependencies": {
+    "chai": "^2.1.0",
     "css-loader": "^0.9.1",
+    "jsdom": "^3.1.1",
     "jsx-loader": "^0.12.2",
+    "jsx-require-extension": "^0.2.0",
     "less-loader": "^2.0.0",
+    "mocha": "^2.1.0",
     "react-hot-loader": "^1.1.1",
+    "react-tools": "^0.12.2",
     "style-loader": "^0.8.3",
     "webpack": "1.4.15",
     "webpack-dev-server": "1.6.4"
