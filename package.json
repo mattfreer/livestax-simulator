@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha --recursive --compilers jsx:test/compiler.js"
+    "test": "mocha --recursive --compilers js:babel/register"
   },
   "devDependencies": {
+    "babel": "^4.5.5",
     "chai": "^2.1.0",
     "css-loader": "^0.9.1",
     "jsdom": "^3.1.1",
