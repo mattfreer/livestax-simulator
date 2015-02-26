@@ -2,7 +2,12 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <script src="//dz44vc6ose3il.cloudfront.net/livestax-0.2.0.min.js"></script>
+    <script id="myscript"></script>
+    <script>
+      setTimeout(function() {
+        document.getElementById("myscript").setAttribute("src", "//dz44vc6ose3il.cloudfront.net/livestax-0.2.0.min.js");
+      }, 1000);
+    </script>
     <link href="//dz44vc6ose3il.cloudfront.net/theme.css" media="screen" rel="stylesheet" />
   </head>
   <style>
