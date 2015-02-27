@@ -68,6 +68,8 @@
     "wsh"           : false,
     "yui"           : false,
     "globals"       : {
-      "expect": true
+      "expect": true,
+      "sinon": true
+
     }
 }

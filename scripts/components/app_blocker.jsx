@@ -4,7 +4,7 @@ var React = require("react");
 
 var AppBlocker = React.createClass({
   propTypes: {
-    status: React.PropTypes.oneOf(["loading", "ready"])
+    status: React.PropTypes.oneOf(["loading", "ready", "timeout"])
   },
   render() {
     if (this.props.status === "ready") {
@@ -12,7 +12,7 @@ var AppBlocker = React.createClass({
     }
     return (
       <div className="app-blocker">
-        <h2>Loading</h2>
+        <h2>{this.props.status}</h2>
       </div>
     );
   }

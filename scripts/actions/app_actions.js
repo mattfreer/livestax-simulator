@@ -9,6 +9,12 @@ var AppActions = {
       type: ActionTypes.RECEIVE_POST_MESSAGE,
       payload: data
     });
+  },
+  startAppTimeout(data) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.START_APP_TIMEOUT,
+      payload: data
+    });
   }
 };
 

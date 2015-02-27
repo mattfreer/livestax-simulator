@@ -2,6 +2,7 @@
 
 global.chai = require("chai");
 global.expect = global.chai.expect;
+global.sinon = require("sinon");
 
 if (typeof document === "undefined") {
   var jsdom = require("jsdom").jsdom;
