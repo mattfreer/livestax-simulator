@@ -9,11 +9,11 @@ describe("AppBlocker", () => {
   var blocker;
   describe("when loading", () => {
     beforeEach(() => {
-      blocker = TestUtils.renderIntoDocument(React.createElement(AppBlocker));
+      blocker = TestUtils.renderIntoDocument(React.createElement(AppBlocker, { status: "loading" }));
     });
 
     it("renders loading text", () => {
-      expect(blocker.getDOMNode().textContent).to.include("Loading");
+      expect(blocker.getDOMNode().textContent).to.include("loading");
     });
   });
 
@@ -23,6 +23,16 @@ describe("AppBlocker", () => {
     });
     it("doesn't render anything", () => {
       expect(blocker.getDOMNode()).to.eql(null);
+    });
+  });
+
+  describe("when timeout", () => {
+   beforeEach(() => {
+      blocker = TestUtils.renderIntoDocument(React.createElement(AppBlocker, { status: "timeout" }));
+    });
+
+    it("renders timeout text", () => {
+      expect(blocker.getDOMNode().textContent).to.include("timeout");
     });
   });
 });

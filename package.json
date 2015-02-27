@@ -18,7 +18,8 @@
     "react-tools": "^0.12.2",
     "style-loader": "^0.8.3",
     "webpack": "1.4.15",
-    "webpack-dev-server": "1.6.4"
+    "webpack-dev-server": "1.6.4",
+    "sinon": "^1.12.2"
   },
   "dependencies": {
     "flux": "^2.0.1",
