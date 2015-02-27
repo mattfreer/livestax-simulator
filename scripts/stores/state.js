@@ -1,10 +1,12 @@
 "use strict";
 
+var Immutable = require("immutable");
+
 module.exports = {
   initial() {
-    return {
+    return Immutable.fromJS({
       status: "loading"
-    };
+    });
   }
 };
 

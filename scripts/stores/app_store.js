@@ -8,6 +8,7 @@ var AppActions = require("../actions/app_actions");
 var CHANGE_EVENT = Constants.ChangeTypes.APP_CHANGE;
 var State = require("./state");
 var Timer = require("./timer");
+var Immutable = require("immutable");
 
 class AppStore extends EventEmitter {
   constructor() {
@@ -34,7 +35,15 @@ class AppStore extends EventEmitter {
     AppActions.startAppTimeout({ duration: Constants.Timer.DURATION });
   }
 
+  setState(path, value) {
+    this._state = this._state.setIn(path, value);
+    this.emitChange();
+  }
+
   replaceState(state) {
+    if(!Immutable.is(state, Immutable.fromJS(state))) {
+      console.warn("replaceState expects an Immutable data structure");
+    }
     this._state = state;
     this.emitChange();
   }
@@ -49,14 +58,14 @@ class AppStore extends EventEmitter {
 
   _subscribeToTimer() {
     this._timer.on("complete", () => {
-      this.replaceState({ status: "timeout" });
+      this.setState(["status"], "timeout");
     });
   }
 
   _receivePostMessage(data) {
     if(data.type === "ready") {
       this._timer.cancel();
-      this.replaceState({ status: "ready" });
+      this.setState(["status"], "ready");
     }
   }
 

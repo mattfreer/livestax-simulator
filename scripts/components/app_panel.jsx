@@ -21,7 +21,7 @@ var AppPanel = React.createClass({
     return (
       <div className="app-panel-container panel panel-default">
         <div className="panel-heading">App</div>
-        <AppBlocker status={this.state.status} />
+        <AppBlocker status={this.state.get("status")} />
         <iframe className="app-iframe" src="examples/app.html"></iframe>
       </div>
     );
