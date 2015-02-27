@@ -29,7 +29,7 @@ describe("AppPanel", () => {
 
   describe("when timed out", () => {
     beforeEach(() => {
-        AppStore.replaceState({ status: "timeout" });
+        AppStore.setState(["status"], "timeout");
     });
 
     it("renders an iframe with the correct src", () => {
@@ -43,7 +43,7 @@ describe("AppPanel", () => {
 
   describe("when ready", () => {
     beforeEach(() => {
-      AppStore.replaceState({ status: "ready" });
+      AppStore.setState(["status"], "ready");
     });
 
     it("renders an app blocker", () => {
