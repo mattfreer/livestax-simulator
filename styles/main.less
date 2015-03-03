@@ -1,3 +1,5 @@
+@app-width: 317px;
+
 html, body, .main-container {
   height: 100%;
 }
@@ -19,6 +21,18 @@ html, body, .main-container {
   flex-direction: column;
 }
 
+.panel-collapsible {
+  .panel-body {
+    border-top: 0;
+  }
+}
+
+.panel-collapse {
+  overflow: auto;
+  flex: 1;
+  border-top: 1px solid #ddd;
+}
+
 .panel {
   display: flex;
   flex-direction: column;
@@ -30,7 +44,7 @@ html, body, .main-container {
 }
 
 .app-iframe {
-  width: 317px;
+  width: @app-width;
   border: 0;
   max-height: 100%;
   flex: 1;
@@ -41,9 +55,8 @@ html, body, .main-container {
 }
 
 .app-blocker {
-  position: absolute;
   height: 100%;
-  width: 100%;
+  width: @app-width;
   background: white;
 
   .notice {
@@ -54,4 +67,8 @@ html, body, .main-container {
       text-transform: capitalize;
     }
   }
+}
+
+.panel {
+  margin: 3px 3px 0 0;
 }

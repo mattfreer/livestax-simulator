@@ -2,6 +2,7 @@
 
 var React = require("react");
 var AppBlocker = require("./app_blocker");
+var AppIframe = require("./app_iframe");
 var AppStore = require("../stores/app_store");
 
 var AppPanel = React.createClass({
@@ -22,7 +23,7 @@ var AppPanel = React.createClass({
       <div className="app-panel-container panel panel-default">
         <div className="panel-heading">App</div>
         <AppBlocker status={this.state.get("status")} />
-        <iframe className="app-iframe" src="examples/app.html"></iframe>
+        <AppIframe status={this.state.get("status")} src={this.state.getIn(["app", "url"])} />
       </div>
     );
   }

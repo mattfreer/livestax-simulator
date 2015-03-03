@@ -69,11 +69,21 @@ class AppStore extends EventEmitter {
     }
   }
 
+  _receiveAppConfiguration(data) {
+    this.setState(["app"], data);
+    this.setState(["status"], "loading");
+    this._startTimer({ duration: Constants.Timer.DURATION });
+  }
+
   _registerInterests() {
     AppDispatcher.register((action) => {
       switch(action.type) {
         case ActionTypes.RECEIVE_POST_MESSAGE:
           this._receivePostMessage(action.payload);
+        break;
+
+        case ActionTypes.RECEIVE_APP_CONFIGURATION:
+          this._receiveAppConfiguration(action.payload);
         break;
 
         case ActionTypes.START_APP_TIMEOUT:

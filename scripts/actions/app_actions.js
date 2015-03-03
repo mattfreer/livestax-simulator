@@ -10,6 +10,12 @@ var AppActions = {
       payload: data
     });
   },
+  receiveAppConfiguration(data) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.RECEIVE_APP_CONFIGURATION,
+      payload: data
+    });
+  },
   startAppTimeout(data) {
     AppDispatcher.dispatch({
       type: ActionTypes.START_APP_TIMEOUT,

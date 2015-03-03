@@ -6,6 +6,7 @@ var TestUtils = React.addons.TestUtils;
 var AppStore = require("../../scripts/stores/app_store");
 var AppPanel = require("../../scripts/components/app_panel");
 var AppBlocker = require("../../scripts/components/app_blocker");
+var AppIframe = require("../../scripts/components/app_iframe");
 
 describe("AppPanel", () => {
   var appPanel, blocker, iframe;
@@ -13,7 +14,7 @@ describe("AppPanel", () => {
   beforeEach(() => {
     AppStore.reset();
     appPanel = TestUtils.renderIntoDocument(React.createElement(AppPanel));
-    iframe = TestUtils.findRenderedDOMComponentWithTag(appPanel, "iframe");
+    iframe = TestUtils.findRenderedComponentWithType(appPanel, AppIframe);
     blocker = TestUtils.findRenderedComponentWithType(appPanel, AppBlocker);
   });
 
@@ -29,12 +30,13 @@ describe("AppPanel", () => {
 
   describe("when timed out", () => {
     beforeEach(() => {
-        AppStore.setState(["status"], "timeout");
+      AppStore.setState(["status"], "timeout");
     });
 
-    it("renders an iframe with the correct src", () => {
-      expect(iframe.getDOMNode().src).to.eql("examples/app.html");
+    it("doesn't render an iframe", () => {
+      expect(iframe.getDOMNode()).to.eql(null);
     });
+
 
     it("renders an app blocker", () => {
       expect(blocker.props.status).to.eql("timeout");
@@ -44,6 +46,10 @@ describe("AppPanel", () => {
   describe("when ready", () => {
     beforeEach(() => {
       AppStore.setState(["status"], "ready");
+    });
+
+    it("renders an iframe with the correct src", () => {
+      expect(iframe.getDOMNode().src).to.eql("examples/app.html");
     });
 
     it("renders an app blocker", () => {
