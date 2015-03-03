@@ -8,13 +8,16 @@ class Timer extends EventEmitter{
   }
 
   start(duration) {
+    this.cancel();
     this.timer = setTimeout(() => {
       this.emit(this._completeEvent);
     }, duration);
   }
 
   cancel() {
-    clearInterval(this.timer);
+    if(this.timer) {
+      clearInterval(this.timer);
+    }
   }
 }
 
