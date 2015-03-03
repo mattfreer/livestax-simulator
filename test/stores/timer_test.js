@@ -6,6 +6,15 @@ var Timer = require("../../scripts/stores/timer");
 describe("timer", () => {
   var timer, clock;
 
+  describe("when timer is started", () => {
+    it("emits complete event", () => {
+      timer = new Timer();
+      sinon.spy(timer, "cancel");
+      timer.start(3000);
+      expect(timer.cancel).to.have.been.called;
+    });
+  });
+
   describe("when timer completes", () => {
     beforeEach(() => {
       clock = sinon.useFakeTimers();

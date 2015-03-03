@@ -32,7 +32,7 @@
     "esnext"        : true,
     "moz"           : false,
     "evil"          : false,
-    "expr"          : false,
+    "expr"          : true,
     "funcscope"     : false,
     "globalstrict"  : true,
     "iterator"      : false,
