@@ -24,7 +24,27 @@ describe("AppIframe", () => {
     }
   });
 
-  describe("when a message is received", () => {
+  describe("when a message is received with a JSON value", () => {
+    beforeEach(() => {
+      MessageActions.receiveGeneratedMessage(Immutable.Map({
+        namespace: "another-app",
+        key: "some-data",
+        value: "{\"foo\": [1, 2, \"bar\"]}"
+      }));
+    });
+
+    it("sends a trigger postMessage", () => {
+      expect(contentWindow.postMessage).to.have.been.calledWith({
+        type: "trigger",
+        payload: {
+          type: "another-app.some-data",
+          data: { foo: [1, 2, "bar"] }
+        }
+      });
+    });
+  });
+
+  describe("when a message is received with a non-JSON value", () => {
     beforeEach(() => {
       MessageActions.receiveGeneratedMessage(Immutable.Map({
         namespace: "another-app",

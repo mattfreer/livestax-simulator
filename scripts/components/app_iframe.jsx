@@ -2,6 +2,7 @@
 
 var React = require("react");
 var MessageStore = require("../stores/message_store");
+var safeJSONParse = require("../lib/safe_json_parse");
 
 var AppIframe = React.createClass({
   componentDidMount() {
@@ -28,7 +29,7 @@ var AppIframe = React.createClass({
   _onMessageChange(event) {
     var payload = {
       type:(event.get("namespace") + "." + event.get("key")),
-      data: event.get("value")
+      data: safeJSONParse(event.get("value"))
     };
 
     var contentWindow = this.getDOMNode().contentWindow;
