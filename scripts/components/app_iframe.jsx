@@ -33,7 +33,7 @@ var AppIframe = React.createClass({
 
     var contentWindow = this.getDOMNode().contentWindow;
 
-    if(contentWindow.hasOwnProperty("postMessage")) {
+    if(contentWindow.postMessage) {
       contentWindow.postMessage({
         type: "trigger",
         payload: payload
