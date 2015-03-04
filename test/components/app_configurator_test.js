@@ -23,7 +23,7 @@ describe("AppConfigurator", () => {
     expect(inputs[2].getDOMNode().value).to.eql(app.getIn(["app", "url"]));
   });
 
-  describe("when the form is changed", () => {
+  describe("when the form is changed with valid data", () => {
     beforeEach(() => {
       TestUtils.Simulate.change(inputs[0].getDOMNode(), {
         target: {
@@ -37,12 +37,43 @@ describe("AppConfigurator", () => {
       expect(inputs[0].getDOMNode().value).to.eql("New Value");
     });
 
+    it("doesn't show any errors", function() {
+      TestUtils.Simulate.submit(form.getDOMNode());
+      expect(appConfigurator.getDOMNode().textContent).to.not.include("Can't be blank");
+    });
+
     it("Updates the store with the new state on submit", () => {
       var oldName = AppStore.getApp().getIn(["app", "name"]);
       TestUtils.Simulate.submit(form.getDOMNode());
       var newName = AppStore.getApp().getIn(["app", "name"]);
       expect(oldName).to.not.equal(newName);
       expect(newName).to.eql("New Value");
+    });
+  });
+
+  describe("when the form is changed with invalid data", () => {
+    beforeEach(() => {
+      TestUtils.Simulate.change(inputs[0].getDOMNode(), {
+        target: {
+          name: "name",
+          value: ""
+        }
+      });
+
+      TestUtils.Simulate.change(inputs[1].getDOMNode(), {
+        target: {
+          name: "namespace",
+          value: "invalid namespace"
+        }
+      });
+    });
+
+    it("highlights the errors to the fields", () => {
+      expect(appConfigurator.getDOMNode().textContent).to.not.include("Can't be blank");
+      expect(appConfigurator.getDOMNode().textContent).to.not.include("Must only contain lowercase letters, numbers and dashes");
+      TestUtils.Simulate.submit(form.getDOMNode());
+      expect(appConfigurator.getDOMNode().textContent).to.include("Can't be blank");
+      expect(appConfigurator.getDOMNode().textContent).to.include("Must only contain lowercase letters, numbers and dashes");
     });
   });
 });

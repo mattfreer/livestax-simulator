@@ -48,5 +48,29 @@ describe("Input", () => {
       expect(callback).to.have.been.called;
     });
   });
+
+  describe("props.error", () => {
+    it("does not render a help block when there is not an error", () => {
+      var instance = TestUtils.renderIntoDocument(<Input error={null} />);
+      var errors = TestUtils.scryRenderedDOMComponentsWithClass(instance, "help-block");
+      expect(errors.length).to.eql(0);
+    });
+
+    describe("when there is an error", () => {
+      var instance;
+      beforeEach(() => {
+        instance = TestUtils.renderIntoDocument(<Input error="Some Error" />);
+      });
+
+      it("renders an error when there is an error", () => {
+        var error = TestUtils.findRenderedDOMComponentWithClass(instance, "help-block");
+        expect(error.getDOMNode().textContent).to.eql("Some Error");
+      });
+
+      it("renders an error when there is an error", () => {
+        expect(instance.getDOMNode().className).to.include("has-error");
+      });
+    });
+  });
 });
 
