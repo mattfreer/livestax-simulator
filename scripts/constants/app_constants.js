@@ -5,6 +5,7 @@ module.exports = {
   ActionTypes: keyMirror({
     RECEIVE_POST_MESSAGE: null,
     RECEIVE_APP_CONFIGURATION: null,
+    RECEIVE_GENERATED_MESSAGE: null,
     START_APP_TIMEOUT: null
   }),
   ChangeTypes: keyMirror({

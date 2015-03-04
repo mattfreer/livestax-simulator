@@ -1,8 +1,17 @@
 "use strict";
 
 var React = require("react");
+var MessageStore = require("../stores/message_store");
 
 var AppIframe = React.createClass({
+  componentDidMount() {
+    MessageStore.addChangeListener(this._onMessageChange);
+  },
+
+  componentWillUnmount() {
+    MessageStore.removeChangeListener(this._onMessageChange);
+  },
+
   componentWillUpdate() {
     var iframe = this.getDOMNode();
     if (iframe) {
@@ -11,9 +20,27 @@ var AppIframe = React.createClass({
       iframe.src = this.props.src;
     }
   },
+
   shouldComponentUpdate(nextProps) {
     return nextProps.status !== "ready";
   },
+
+  _onMessageChange(event) {
+    var payload = {
+      type:(event.get("namespace") + "." + event.get("key")),
+      data: event.get("value")
+    };
+
+    var contentWindow = this.getDOMNode().contentWindow;
+
+    if(contentWindow.hasOwnProperty("postMessage")) {
+      contentWindow.postMessage({
+        type: "trigger",
+        payload: payload
+      }, "*");
+    }
+  },
+
   render() {
     if (this.props.status === "timeout") {
       return null;
