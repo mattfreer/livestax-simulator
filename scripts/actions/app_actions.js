@@ -21,7 +21,13 @@ var AppActions = {
       type: ActionTypes.START_APP_TIMEOUT,
       payload: data
     });
-  }
+  },
+  receiveGeneratedMessage(data) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.RECEIVE_GENERATED_MESSAGE,
+      payload: data
+    });
+  },
 };
 
 module.exports = AppActions;
