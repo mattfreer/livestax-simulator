@@ -6,11 +6,17 @@ module.exports = {
     RECEIVE_POST_MESSAGE: null,
     RECEIVE_APP_CONFIGURATION: null,
     RECEIVE_GENERATED_MESSAGE: null,
-    START_APP_TIMEOUT: null
+    START_APP_TIMEOUT: null,
+    DELETE_HISTORY_ITEM: null
   }),
   ChangeTypes: keyMirror({
-    APP_CHANGE: null
+    APP_CHANGE: null,
+    HISTORY_CHANGE: null
   }),
+  History: {
+    APPS: "apps",
+    MESSAGES: "messages"
+  },
   Timer: {
     DURATION: 2000,
   }
