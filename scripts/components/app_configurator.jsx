@@ -29,7 +29,7 @@ var AppConfigurator = React.createClass({
   submitForm(event) {
     event.preventDefault();
     var errors = Validator.validate(this.state.get("app"), validations);
-    if (errors.every(x => x.count() === 0)) {
+    if (!Validator.hasErrors(errors)) {
       AppActions.receiveAppConfiguration(this.state.get("app"));
     }
     this.replaceState(this.state.set("errors", errors));
