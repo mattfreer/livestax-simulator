@@ -28,7 +28,7 @@ var App = React.createClass({
           <AppPanel />
           <VerticalPanelBlock>
             <History heading="App Configuration History" historyKey={HistoryTypes.APPS} onClick={this.triggerAppHistory} />
-            <History heading="Message History History" historyKey={HistoryTypes.MESSAGES} onClick={this.triggerMessageGeneratorHistory} />
+            <History heading="Message Generator History" historyKey={HistoryTypes.MESSAGES} onClick={this.triggerMessageGeneratorHistory} />
           </VerticalPanelBlock>
         </div>
       </div>
