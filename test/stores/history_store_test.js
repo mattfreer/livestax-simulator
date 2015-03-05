@@ -6,9 +6,14 @@ var Immutable = require("immutable");
 var AppActions = require("../../scripts/actions/app_actions");
 var HistoryStore = require("../../scripts/stores/history_store");
 var HistoryActions = require("../../scripts/actions/history_actions");
+var Moment = require("moment");
 
 describe("HistoryStore", () => {
+  var clock;
+
   beforeEach(() => {
+    clock = sinon.useFakeTimers();
+
     window.localStorage.history = JSON.stringify({
       apps: [
         {
@@ -25,6 +30,10 @@ describe("HistoryStore", () => {
       messages: []
     });
     HistoryStore.reset();
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   describe("getHistory()", () => {
@@ -52,7 +61,11 @@ describe("HistoryStore", () => {
     });
 
     it("creates a name field", () => {
-      expect(HistoryStore.getHistory("messages").getIn([0, "name"])).to.eql("different-app.selected");
+      expect(HistoryStore.getHistory("messages").getIn([0, "name"])).to.eql("different-app.selected = 5");
+    });
+
+    it("creates a createdAt field", () => {
+      expect(HistoryStore.getHistory("messages").getIn([0, "createdAt"])).to.eql(Moment().unix());
     });
   });
 

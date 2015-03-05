@@ -12,10 +12,13 @@ var History = require("./history");
 
 var App = React.createClass({
   triggerAppHistory(historyItem) {
+    historyItem = historyItem.delete("createdAt");
     AppActions.receiveAppConfiguration(historyItem);
   },
   triggerMessageGeneratorHistory(historyItem) {
-    AppActions.receiveGeneratedMessage(historyItem.delete("name"));
+    historyItem = historyItem.delete("name");
+    historyItem = historyItem.delete("createdAt");
+    AppActions.receiveGeneratedMessage(historyItem);
   },
   render() {
     return (
