@@ -15,12 +15,23 @@ var validations = {
   url: [Validator.required]
 };
 
+var getState = () => {
+  return Immutable.Map({
+    app: AppStore.getApp().get("app"),
+    errors: Immutable.Map()
+  });
+};
+
 var AppConfigurator = React.createClass({
-  getInitialState() {
-    return Immutable.Map({
-      app: AppStore.getApp().get("app"),
-      errors: Immutable.Map()
-    });
+  getInitialState: getState,
+  componentDidMount() {
+    AppStore.addChangeListener(this._onChange);
+  },
+  componentWillUnmount() {
+    AppStore.removeChangeListener(this._onChange);
+  },
+  _onChange() {
+    this.replaceState(getState());
   },
   changeField(event) {
     var nextState = this.state.setIn(["app", event.target.name], event.target.value);
