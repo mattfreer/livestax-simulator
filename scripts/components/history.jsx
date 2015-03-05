@@ -4,6 +4,11 @@ var React = require("react");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var HistoryStore = require("../stores/history_store");
 var HistoryActions = require("../actions/history_actions");
+var Moment = require("moment");
+
+var timestampToDateString = (timestamp) => {
+  return Moment.unix(timestamp).format("DD/MM/YYYY, HH:mm");
+};
 
 var History = React.createClass({
   propTypes: {
@@ -30,17 +35,28 @@ var History = React.createClass({
   },
   render() {
     var history = this.state.map((historyItem, i) => {
+
       return (
-        <li key={historyItem} className="list-group-item">
-          <a onClick={this.triggerHistoryClick.bind(this, historyItem)}>{historyItem.get("name")}</a>
-          <a className="pull-right" onClick={this.deleteHistoryItem.bind(this, this.props.historyKey, i)}>x</a>
-        </li>);
+        <tr key={historyItem}>
+          <td className="item-content" onClick={this.triggerHistoryClick.bind(this, historyItem)}>
+            <span className="timestamp text-muted">{timestampToDateString(historyItem.get("createdAt"))}</span>
+            {historyItem.get("name")}
+          </td>
+
+          <td className="delete-item" onClick={this.deleteHistoryItem.bind(this, this.props.historyKey, i)}>
+            <i className="fa fa-times text-muted"></i>
+          </td>
+        </tr>
+      );
     }).toJS();
+
     return (
       <CollapsiblePanel heading={this.props.heading}>
-        <ul className="list-group">
-          {history}
-        </ul>
+        <table className="table table-bordered table-hover history-table">
+          <tbody>
+            {history}
+          </tbody>
+        </table>
       </CollapsiblePanel>
     );
   }

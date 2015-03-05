@@ -7,6 +7,7 @@ var ActionTypes = Constants.ActionTypes;
 var HistoryTypes = Constants.History;
 var CHANGE_EVENT = Constants.ChangeTypes.HISTORY_CHANGE;
 var Immutable = require("immutable");
+var Moment = require("moment");
 
 var getFromStorage = () => {
   if (window.localStorage.history) {
@@ -42,10 +43,17 @@ class HistoryStore extends EventEmitter {
   }
 
   _addHistoryItem(key, data) {
-    if (this._state.get(key) && !this._state.get(key).contains(data)) {
+    if (this._state.get(key) && !this._doesItemExistInState(key, data)) {
+      var timestamp = Moment().unix();
+      data = data.set("createdAt", timestamp);
+
       this._state = this._state.update(key, (history) => history.push(data));
       saveToStorage(this._state.toJS());
     }
+  }
+
+  _doesItemExistInState(key, data) {
+    return this._state.get(key).map(item => item.delete("createdAt")).contains(data);
   }
 
   _removeHistoryItem(payload) {
@@ -82,7 +90,7 @@ class HistoryStore extends EventEmitter {
         break;
 
         case ActionTypes.RECEIVE_GENERATED_MESSAGE:
-          payload = payload.set("name", `${payload.get("namespace")}.${payload.get("key")}`);
+          payload = payload.set("name", `${payload.get("namespace")}.${payload.get("key")} = ${payload.get("value")}`);
           this._addHistoryItem(HistoryTypes.MESSAGES, payload);
         break;
 
