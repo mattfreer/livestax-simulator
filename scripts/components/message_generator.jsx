@@ -14,12 +14,23 @@ var validations = {
   key: [Validator.required]
 };
 
+var getState = () => {
+  return Immutable.Map({
+    message: MessageStore.getMessage(),
+    errors: Immutable.Map()
+  });
+};
+
 var MessageGenerator = React.createClass({
-  getInitialState() {
-    return Immutable.Map({
-      message: MessageStore.getMessage(),
-      errors: Immutable.Map()
-    });
+  getInitialState: getState,
+  componentDidMount() {
+    MessageStore.addChangeListener(this._onChange);
+  },
+  componentWillUnmount() {
+    MessageStore.removeChangeListener(this._onChange);
+  },
+  _onChange() {
+    this.replaceState(getState());
   },
 
   changeField(event) {
