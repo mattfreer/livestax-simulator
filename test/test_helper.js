@@ -12,3 +12,7 @@ if (typeof document === "undefined") {
   global.window = global.document.parentWindow;
   global.navigator = global.window.navigator;
 }
+
+if (!global.window.localStorage) {
+  global.window.localStorage = {};
+}
