@@ -3,6 +3,7 @@
 require("../test_helper");
 var Validator = require("../../scripts/lib/validator");
 var validate = Validator.validate;
+var hasErrors = Validator.hasErrors;
 var Immutable = require("immutable");
 
 describe("validate", () => {
@@ -117,4 +118,25 @@ describe("validate", () => {
     expect(Immutable.is(validate(state, validations), expected)).eql(true);
   });
 });
+
+describe("hasErrors", () => {
+   it("should return true when errors exist", () => {
+    var errors = Immutable.fromJS({
+      name: ["Can't be blank"],
+      age: ["Can't be blank"]
+    });
+
+    expect(hasErrors(errors)).to.eql(true);
+   });
+
+   it("should return false when errors don't exist", () => {
+    var errors = Immutable.fromJS({
+      name: [],
+      age: []
+    });
+
+    expect(hasErrors(errors)).to.eql(false);
+   });
+});
+
 

@@ -15,6 +15,10 @@ var Validator = {
     }
   },
 
+  hasErrors(errors) {
+    return errors.some(x => x.count() > 0);
+  },
+
   validate(state, validations) {
     return Immutable.fromJS(validations).map((rules, field) => {
       return rules
