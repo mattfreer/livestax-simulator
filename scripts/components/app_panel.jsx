@@ -23,7 +23,7 @@ var AppPanel = React.createClass({
       <div className="app-panel-container panel panel-default">
         <div className="panel-heading">App</div>
         <AppBlocker status={this.state.get("status")} />
-        <AppIframe status={this.state.get("status")} src={this.state.getIn(["app", "url"])} />
+        <AppIframe status={this.state.get("status")} postData={this.state.get("post_data")} src={this.state.getIn(["app", "url"])} />
       </div>
     );
   }

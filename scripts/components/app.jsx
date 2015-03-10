@@ -4,6 +4,7 @@ var React = require("react");
 var AppPanel = require("./app_panel");
 var VerticalPanelBlock = require("./vertical_panel_block");
 var AppConfigurator = require("./app_configurator");
+var SignedRequest = require("./signed_request");
 var AppActions = require("../actions/app_actions");
 var MessageGenerator = require("./message_generator");
 var Constants = require("../constants/app_constants");
@@ -26,6 +27,7 @@ var App = React.createClass({
         <div className="panel-container">
           <VerticalPanelBlock>
             <AppConfigurator />
+            <SignedRequest />
             <MessageGenerator />
           </VerticalPanelBlock>
           <AppPanel />

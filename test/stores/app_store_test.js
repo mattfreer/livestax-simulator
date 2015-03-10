@@ -58,4 +58,30 @@ describe("AppStore", () => {
       expect(AppStore.getApp().getIn(["status"])).to.equal("loading");
     });
   });
+
+  describe("when signed request is recieved", () => {
+    beforeEach(() => {
+      AppActions.receiveSignedRequest(Immutable.fromJS({
+        use_post: true,
+        secret_key: "new_secret",
+        payload: {
+          instance_id: "abcdef",
+          timestamp: "1234",
+          is_admin: false,
+          is_guest: true,
+          user_id: "aaaaaaaa-aaaa-5aaa-9aaa-aaaaaaaaaaaa"
+        }
+      }));
+    });
+
+    it("updates the post_data state", () => {
+      expect(AppStore.getApp().getIn(["post_data", "use_post"])).to.equal(true);
+      expect(AppStore.getApp().getIn(["post_data", "secret_key"])).to.equal("new_secret");
+      expect(AppStore.getApp().getIn(["post_data", "payload", "timestamp"])).to.equal("1234");
+    });
+
+    it("updates the status to loading", () => {
+      expect(AppStore.getApp().getIn(["status"])).to.equal("loading");
+    });
+  });
 });
