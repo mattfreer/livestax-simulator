@@ -75,6 +75,12 @@ class AppStore extends EventEmitter {
     this._startTimer({ duration: Constants.Timer.DURATION });
   }
 
+  _receiveSignedRequest(data) {
+    this.setState(["post_data"], data);
+    this.setState(["status"], "loading");
+    this._startTimer({ duration: Constants.Timer.DURATION });
+  }
+
   _registerInterests() {
     AppDispatcher.register((action) => {
       switch(action.type) {
@@ -84,6 +90,10 @@ class AppStore extends EventEmitter {
 
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
           this._receiveAppConfiguration(action.payload);
+        break;
+
+        case ActionTypes.RECEIVE_SIGNED_REQUEST:
+          this._receiveSignedRequest(action.payload);
         break;
 
         case ActionTypes.START_APP_TIMEOUT:

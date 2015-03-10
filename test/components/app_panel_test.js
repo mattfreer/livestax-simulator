@@ -20,7 +20,7 @@ describe("AppPanel", () => {
 
   describe("when loading", () => {
     it("renders an iframe with the correct src", () => {
-      expect(iframe.getDOMNode().src).to.eql("examples/app.html");
+      expect(iframe.getDOMNode().querySelector("iframe").src).to.eql("examples/app.html");
     });
 
     it("renders an app blocker", () => {
@@ -49,7 +49,7 @@ describe("AppPanel", () => {
     });
 
     it("renders an iframe with the correct src", () => {
-      expect(iframe.getDOMNode().src).to.eql("examples/app.html");
+      expect(iframe.getDOMNode().querySelector("iframe").src).to.eql("examples/app.html");
     });
 
     it("renders an app blocker", () => {

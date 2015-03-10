@@ -72,5 +72,14 @@ describe("Input", () => {
       });
     });
   });
+
+  describe("other props", () => {
+    it("puts all other props on the input", () => {
+      var instance = TestUtils.renderIntoDocument(<Input disabled="true" title="bar" />);
+      var element = TestUtils.findRenderedDOMComponentWithTag(instance, "input");
+      expect(element.getDOMNode().disabled).to.eql(true);
+      expect(element.getDOMNode().title).to.eql("bar");
+    });
+  });
 });
 

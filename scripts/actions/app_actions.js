@@ -10,6 +10,12 @@ var AppActions = {
       payload: data
     });
   },
+  receiveSignedRequest(data) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.RECEIVE_SIGNED_REQUEST,
+      payload: data
+    });
+  },
   receiveAppConfiguration(data) {
     AppDispatcher.dispatch({
       type: ActionTypes.RECEIVE_APP_CONFIGURATION,

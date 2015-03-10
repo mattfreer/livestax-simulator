@@ -16,17 +16,18 @@ var InputHorizontal = React.createClass({
   },
   render() {
     var formClass = "form-group";
-    var error = null;
-    if (this.props.error) {
+    var {error, name, label, value, onChange, ...rest} = this.props;
+    var errorMessage = null;
+    if (error) {
       formClass += " has-error";
-      error = (<span className="help-block">{this.props.error}</span>);
+      errorMessage = (<span className="help-block">{error}</span>);
     }
     return (
       <div className={formClass}>
-        <label htmlFor={this.props.name} className="col-lg-2 control-label">{this.props.label}</label>
+        <label htmlFor={name} className="col-lg-2 control-label">{label}</label>
         <div className="col-lg-10">
-          <input type="text" name={this.props.name} className="form-control" placeholder={this.props.label} value={this.props.value} onChange={this.props.onChange} />
-          {error}
+          <input type="text" name={name} className="form-control" placeholder={label} value={value} onChange={onChange} {...rest} />
+          {errorMessage}
         </div>
       </div>
     );

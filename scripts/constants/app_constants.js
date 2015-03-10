@@ -4,6 +4,7 @@ var keyMirror = require("react/lib/keyMirror");
 module.exports = {
   ActionTypes: keyMirror({
     RECEIVE_POST_MESSAGE: null,
+    RECEIVE_SIGNED_REQUEST: null,
     RECEIVE_APP_CONFIGURATION: null,
     RECEIVE_GENERATED_MESSAGE: null,
     START_APP_TIMEOUT: null,
@@ -18,6 +19,6 @@ module.exports = {
     MESSAGES: "messages"
   },
   Timer: {
-    DURATION: 2000,
+    DURATION: 10000,
   }
 };
