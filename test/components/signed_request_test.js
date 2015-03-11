@@ -106,5 +106,35 @@ describe("SignedRequest", () => {
       expect(newPostData.get("secret_key")).to.eql("bbbbb");
       expect(newPostData.getIn(["payload", "instance_id"])).to.eql("instance");
     });
+
+    it("doesn't show any errors", function() {
+      TestUtils.Simulate.submit(form.getDOMNode());
+      expect(form.getDOMNode().textContent).to.not.include("Can't be blank");
+    });
+  });
+
+  describe("when the form is changed with invalid data", () => {
+    beforeEach(() => {
+      Immutable.Map({
+        secret_key: "",
+        instance_id: ""
+      })
+      .map((value, key) => {
+        TestUtils.Simulate.change(inputs.get(key), {
+          target: {
+            name: key,
+            value: value
+          }
+        });
+      });
+    });
+
+    it("highlights the errors to the fields", () => {
+      TestUtils.Simulate.submit(form.getDOMNode());
+      var errors = Immutable.List(signedRequest.getDOMNode().querySelectorAll(".help-block"))
+        .map((item) => { return item.textContent; })
+        .filter((item) => { return item === "Can't be blank"; });
+      expect(errors.length).to.eql(2);
+    });
   });
 });
