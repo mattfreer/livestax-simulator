@@ -9,6 +9,8 @@ var Input = require("./lib/input_horizontal");
 var Checkbox = require("./lib/checkbox_horizontal");
 var InputGroup = require("./lib/input_group_horizontal");
 var Radio = require("./lib/radio_horizontal");
+var ValidationForm = require("./validation_form");
+var Validator = require("../lib/validator");
 
 var disableFields = (state) => {
   var disabled = Immutable.List();
@@ -21,10 +23,16 @@ var disableFields = (state) => {
 var getState = () => {
   var state = Immutable.Map({
     post_data: AppStore.getApp().get("post_data"),
-    disabled_fields: Immutable.List()
+    disabled_fields: Immutable.List(),
+    errors: Immutable.Map()
   });
 
   return state.set("disabled_fields", disableFields(state));
+};
+
+var validations = {
+  secret_key: [Validator.required],
+  instance_id: [Validator.required]
 };
 
 var SignedRequest = React.createClass({
@@ -66,16 +74,25 @@ var SignedRequest = React.createClass({
   },
 
   submitForm(event) {
-    event.preventDefault();
     AppActions.receiveSignedRequest(this.state.get("post_data"));
+  },
+
+  formError(errors) {
+    this.replaceState(this.state.set("errors", errors));
   },
 
   render() {
     var payload = this.state.getIn(["post_data", "payload"]);
     var disabled = this.state.get("disabled_fields");
+    var errors = this.state.get("errors");
+
     return (
       <CollapsiblePanel heading="Signed Request">
-        <form className="form-horizontal" onSubmit={this.submitForm}>
+        <ValidationForm fields={this.state.get("post_data").flatten()}
+          validations={validations}
+          onSubmit={this.submitForm}
+          onError={this.formError}>
+
           <Checkbox name="use_post"
             checked={this.state.getIn(["post_data", "use_post"])}
             onChange={this.toggleSignedRequest}
@@ -86,12 +103,14 @@ var SignedRequest = React.createClass({
           <Input label="Secret Key"
             name="secret_key"
             value={this.state.getIn(["post_data", "secret_key"])}
+            error={errors.getIn(["secret_key", 0])}
             onChange={this.changeSecret}
           />
 
           <Input label="Instance ID"
             name="instance_id"
             value={payload.get("instance_id")}
+            error={errors.getIn(["instance_id", 0])}
             onChange={this.changeField}
           />
 
@@ -125,7 +144,7 @@ var SignedRequest = React.createClass({
           />
 
           <button type="submit" className="btn btn-primary pull-right">Submit</button>
-        </form>
+        </ValidationForm>
       </CollapsiblePanel>
     );
   }
