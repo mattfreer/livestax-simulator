@@ -6,6 +6,7 @@ var CollapsiblePanel = require("./lib/collapsible_panel");
 var AppActions = require("../actions/app_actions");
 var AppStore = require("../stores/app_store");
 var Input = require("./lib/input_horizontal");
+var Checkbox = require("./lib/checkbox_horizontal");
 
 var disableFields = (state) => {
   var disabled = Immutable.List();
@@ -73,22 +74,30 @@ var SignedRequest = React.createClass({
     return (
       <CollapsiblePanel heading="Signed Request">
         <form className="form-horizontal" onSubmit={this.submitForm}>
-          <div className="form-group">
-            <label className="col-lg-2 control-label">
-              App Type
-            </label>
-            <div className="col-lg-10">
-              <div className="checkbox">
-                <label>
-                  <input type="checkbox" name="use_post" checked={this.state.getIn(["post_data", "use_post"])} onChange={this.toggleSignedRequest} />
-                  Signed Request
-                </label>
-              </div>
-            </div>
-          </div>
-          <Input label="Secret Key" name="secret_key" value={this.state.getIn(["post_data", "secret_key"])} onChange={this.changeSecret} />
-          <Input label="Instance ID" name="instance_id" value={payload.get("instance_id")} onChange={this.changeField} />
-          <Input label="Timestamp" name="timestamp" value={payload.get("timestamp")} onChange={this.changeField} />
+          <Checkbox name="use_post"
+            checked={this.state.getIn(["post_data", "use_post"])}
+            onChange={this.toggleSignedRequest}
+            label="App Type"
+            text="Signed Request"
+          />
+
+          <Input label="Secret Key"
+            name="secret_key"
+            value={this.state.getIn(["post_data", "secret_key"])}
+            onChange={this.changeSecret}
+          />
+
+          <Input label="Instance ID"
+            name="instance_id"
+            value={payload.get("instance_id")}
+            onChange={this.changeField}
+          />
+
+          <Input label="Timestamp"
+            name="timestamp"
+            value={payload.get("timestamp")}
+            onChange={this.changeField}
+          />
 
           <div className="form-group">
             <label className="col-lg-2 control-label">User Type</label>
@@ -108,7 +117,13 @@ var SignedRequest = React.createClass({
             </div>
           </div>
 
-          <Input label="User ID" name="user_id" value={payload.get("user_id")} onChange={this.changeField} disabled={disabled.contains("user_id")} />
+          <Input label="User ID"
+            name="user_id"
+            value={payload.get("user_id")}
+            onChange={this.changeField}
+            disabled={disabled.contains("user_id")}
+          />
+
           <button type="submit" className="btn btn-primary pull-right">Submit</button>
         </form>
       </CollapsiblePanel>
