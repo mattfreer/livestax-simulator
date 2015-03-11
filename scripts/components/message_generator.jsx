@@ -8,6 +8,7 @@ var MessageActions = require("../actions/message_actions");
 var MessageStore = require("../stores/message_store");
 var Validator = require("../lib/validator");
 var CustomValidators = require("../lib/custom_validators");
+var ValidationForm = require("./validation_form");
 
 var validations = {
   namespace: [Validator.required, CustomValidators.namespace],
@@ -23,12 +24,15 @@ var getState = () => {
 
 var MessageGenerator = React.createClass({
   getInitialState: getState,
+
   componentDidMount() {
     MessageStore.addChangeListener(this._onChange);
   },
+
   componentWillUnmount() {
     MessageStore.removeChangeListener(this._onChange);
   },
+
   _onChange() {
     this.replaceState(getState());
   },
@@ -39,11 +43,10 @@ var MessageGenerator = React.createClass({
   },
 
   submitForm(event) {
-    event.preventDefault();
-    var errors = Validator.validate(this.state.get("message"), validations);
-    if (!Validator.hasErrors(errors)) {
-      MessageActions.receiveGeneratedMessage(this.state.get("message"));
-    }
+    MessageActions.receiveGeneratedMessage(this.state.get("message"));
+  },
+
+  formError(errors) {
     this.replaceState(this.state.set("errors", errors));
   },
 
@@ -52,7 +55,11 @@ var MessageGenerator = React.createClass({
     var errors = this.state.get("errors");
     return (
       <CollapsiblePanel heading="Message Generator">
-        <form className="form-horizontal" onSubmit={this.submitForm}>
+        <ValidationForm fields={message}
+          validations={validations}
+          onSubmit={this.submitForm}
+          onError={this.formError}>
+
           <Input label="Namespace"
             name="namespace"
             value={message.get("namespace")}
@@ -75,7 +82,7 @@ var MessageGenerator = React.createClass({
           />
 
           <button type="submit" className="btn btn-primary pull-right">Submit</button>
-        </form>
+        </ValidationForm>
       </CollapsiblePanel>
     );
   }
