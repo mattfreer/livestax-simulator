@@ -7,6 +7,8 @@ var AppActions = require("../actions/app_actions");
 var AppStore = require("../stores/app_store");
 var Input = require("./lib/input_horizontal");
 var Checkbox = require("./lib/checkbox_horizontal");
+var InputGroup = require("./lib/input_group_horizontal");
+var Radio = require("./lib/radio_horizontal");
 
 var disableFields = (state) => {
   var disabled = Immutable.List();
@@ -99,23 +101,21 @@ var SignedRequest = React.createClass({
             onChange={this.changeField}
           />
 
-          <div className="form-group">
-            <label className="col-lg-2 control-label">User Type</label>
-            <div className="col-lg-10">
-              <div className="radio">
-                <label>
-                  <input type="radio" name="user_type" value="is_guest" checked={payload.get("is_guest")} onChange={this.toggleUserType} />
-                  Guest
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" name="user_type" value="is_admin" checked={payload.get("is_admin")} onChange={this.toggleUserType} />
-                  Admin
-                </label>
-              </div>
-            </div>
-          </div>
+          <InputGroup label="User Type">
+            <Radio name="user_type"
+              value="is_guest"
+              text="Guest"
+              checked={payload.get("is_guest")}
+              onChange={this.toggleUserType}
+            />
+
+            <Radio name="user_type"
+              value="is_admin"
+              text="Admin"
+              checked={payload.get("is_admin")}
+              onChange={this.toggleUserType}
+            />
+          </InputGroup>
 
           <Input label="User ID"
             name="user_id"
