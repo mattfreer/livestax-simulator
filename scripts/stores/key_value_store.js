@@ -8,6 +8,7 @@ var CHANGE_EVENT = Constants.ChangeTypes.KEYVAL_CHANGE;
 var AppStore = require("./app_store");
 var ListenerStore = require("../lib/listener_store");
 var Store = require("../lib/store");
+var safeJSONParse = require("../lib/safe_json_parse");
 
 class KeyValueStore extends EventEmitter {
   constructor() {
@@ -34,6 +35,16 @@ class KeyValueStore extends EventEmitter {
 
   _receiveAppConfiguration() {
     this._store.clear();
+  }
+
+  _receiveStoreConfiguration(payload) {
+    var key = payload.get("key").split(".");
+    var options = {
+      namespace: key[0],
+      key: key[1],
+      value: safeJSONParse(payload.get("value"))
+    };
+    this._store.set(options);
   }
 
   _receivePostMessage(event) {
@@ -72,6 +83,9 @@ class KeyValueStore extends EventEmitter {
         break;
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
           this._receiveAppConfiguration(action.payload);
+        break;
+        case ActionTypes.RECEIVE_STORE_CONFIGURATION:
+          this._receiveStoreConfiguration(action.payload);
         break;
       }
       return true;

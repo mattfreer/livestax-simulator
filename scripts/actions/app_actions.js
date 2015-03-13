@@ -22,6 +22,12 @@ var AppActions = {
       payload: data
     });
   },
+  receiveStoreConfiguration(data) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.RECEIVE_STORE_CONFIGURATION,
+      payload: data
+    });
+  },
   startAppTimeout(data) {
     AppDispatcher.dispatch({
       type: ActionTypes.START_APP_TIMEOUT,
