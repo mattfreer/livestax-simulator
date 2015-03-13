@@ -3,15 +3,18 @@
 var React = require("react");
 var SignedRequestApp = require("./signed_request_app");
 var MessageStore = require("../stores/message_store");
+var KeyValueStore = require("../stores/key_value_store");
 var safeJSONParse = require("../lib/safe_json_parse");
 
 var AppIframe = React.createClass({
   componentDidMount() {
     MessageStore.addChangeListener(this._onMessageChange);
+    KeyValueStore.addChangeListener(this._onKeyValueChange);
   },
 
   componentWillUnmount() {
     MessageStore.removeChangeListener(this._onMessageChange);
+    KeyValueStore.removeChangeListener(this._onKeyValueChange);
   },
 
   componentWillUpdate() {
@@ -30,24 +33,31 @@ var AppIframe = React.createClass({
     return nextProps.status !== "ready";
   },
 
-  _onMessageChange(event) {
+  _postMessage(type, payload) {
     if (!this.getDOMNode()) {
       return;
     }
-
-    var payload = {
-      type:(event.get("namespace") + "." + event.get("key")),
-      data: safeJSONParse(event.get("value"))
-    };
 
     var contentWindow = this.getDOMNode().querySelector("iframe").contentWindow;
 
     if(contentWindow.postMessage) {
       contentWindow.postMessage({
-        type: "trigger",
+        type: type,
         payload: payload
       }, "*");
     }
+  },
+
+  _onKeyValueChange(event) {
+    this._postMessage("store", event);
+  },
+
+  _onMessageChange(event) {
+    var payload = {
+      type:(event.get("namespace") + "." + event.get("key")),
+      data: safeJSONParse(event.get("value"))
+    };
+    this._postMessage("trigger", payload);
   },
 
   render() {

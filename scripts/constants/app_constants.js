@@ -12,7 +12,8 @@ module.exports = {
   }),
   ChangeTypes: keyMirror({
     APP_CHANGE: null,
-    HISTORY_CHANGE: null
+    HISTORY_CHANGE: null,
+    KEYVAL_CHANGE: null
   }),
   History: {
     APPS: "apps",
