@@ -30,7 +30,7 @@ describe("History", () => {
         }
       ]
     }));
-    history = TestUtils.renderIntoDocument(<History historyKey="apps" onClick={callback} heading="History" />);
+    history = TestUtils.renderIntoDocument(<History onClick={callback} heading="History" />);
     listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
   });
 
@@ -52,13 +52,9 @@ describe("History", () => {
   it("triggers the callback when the text item is clicked", function() {
     var links = TestUtils.scryRenderedDOMComponentsWithClass(listItems[0], "item-content");
     var link = links.find((el) => el.props.children.indexOf("Some App"));
+    var expected = HistoryStore.getHistory().get(0);
     TestUtils.Simulate.click(link.getDOMNode());
-    expect(callback).to.have.been.calledWith(Immutable.fromJS({
-      name: "Some App",
-      namespace: "some-app",
-      url: "examples/app.html",
-      createdAt: Moment().unix()
-    }));
+    expect(callback).to.have.been.calledWith(expected);
   });
 
   it("deletes a history item when the x is clicked", function() {

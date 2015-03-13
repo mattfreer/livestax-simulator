@@ -24,4 +24,4 @@ global.sinon.deepEqual = function(a, b) {
     return Immutable.is(a, b);
   }
   return deepEqual(a, b);
-}
+};
