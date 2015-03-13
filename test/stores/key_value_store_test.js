@@ -8,16 +8,16 @@ var AppStore = require("../../scripts/stores/app_store");
 var AppActions = require("../../scripts/actions/app_actions");
 
 var triggerStorePostMessage = (type, key, value) => {
-    AppActions.receivePostMessage({
-      type: "store",
-      payload: {
-        type: type,
-        data: {
-          key: key,
-          value: value
-        }
+  AppActions.receivePostMessage({
+    type: "store",
+    payload: {
+      type: type,
+      data: {
+        key: key,
+        value: value
       }
-    });
+    }
+  });
 };
 
 describe("KeyValueStore", () => {
@@ -34,7 +34,7 @@ describe("KeyValueStore", () => {
       KeyValueStore.addChangeListener(callback);
     });
 
-    it("triggers a listener on a change event", function() {
+    it("triggers a listener on a change event", () => {
       triggerStorePostMessage("set", "customer_id", 5);
 
       expect(callback).to.have.been.calledWith({
@@ -56,7 +56,41 @@ describe("KeyValueStore", () => {
       });
     });
 
-    it("resets the watchers when the app configuration changes", function() {
+    it("triggers a listener when changed from the store configuration event", () => {
+      AppActions.receiveStoreConfiguration(Immutable.Map({
+        key: "my-test-app.customer_id",
+        value: 125
+      }));
+
+      expect(callback).to.have.been.calledWith({
+        type: "watch",
+        data: {
+          key: "my-test-app.customer_id",
+          value: 125
+        }
+      });
+
+    });
+
+    it("triggers a listener when changed with JSON from the store configuration event", () => {
+      AppActions.receiveStoreConfiguration(Immutable.Map({
+        key: "my-test-app.customer_id",
+        value: "{\"id\": 125, \"name\": \"test customer\"}"
+      }));
+
+      expect(callback).to.have.been.calledWith({
+        type: "watch",
+        data: {
+          key: "my-test-app.customer_id",
+          value: {
+            id: 125,
+            name: "test customer"
+          }
+        }
+      });
+    });
+
+    it("resets the watchers when the app configuration changes", () => {
       AppActions.receiveAppConfiguration(Immutable.fromJS({
         namespace: "my-test-app"
       }));

@@ -5,6 +5,7 @@ var AppPanel = require("./app_panel");
 var VerticalPanelBlock = require("./vertical_panel_block");
 var AppConfigurator = require("./app_configurator");
 var SignedRequest = require("./signed_request");
+var StorePanel = require("./store_panel");
 var AppActions = require("../actions/app_actions");
 var MessageGenerator = require("./message_generator");
 var Constants = require("../constants/app_constants");
@@ -34,6 +35,7 @@ var App = React.createClass({
           <VerticalPanelBlock>
             <History heading="App Configuration History" historyKey={HistoryTypes.APPS} onClick={this.triggerAppHistory} />
             <History heading="Message Generator History" historyKey={HistoryTypes.MESSAGES} onClick={this.triggerMessageGeneratorHistory} />
+            <StorePanel />
           </VerticalPanelBlock>
         </div>
       </div>
