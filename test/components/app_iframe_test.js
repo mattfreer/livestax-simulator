@@ -4,6 +4,7 @@ require("../test_helper");
 var React = require("react/addons");
 var TestUtils = React.addons.TestUtils;
 var MessageStore = require("../../scripts/stores/message_store");
+var KeyValueStore = require("../../scripts/stores/key_value_store");
 var AppIframe = require("../../scripts/components/app_iframe");
 var MessageActions = require("../../scripts/actions/message_actions");
 var Immutable = require("immutable");
@@ -27,6 +28,31 @@ describe("AppIframe", () => {
       } else {
         contentWindow.postMessage = sinon.stub();
       }
+    });
+
+    describe("when a store event is received", () => {
+      beforeEach(() => {
+        KeyValueStore.emitChange({
+          type: "get",
+          data: {
+            key: "users.user_id",
+            value: 53
+          }
+        });
+      });
+
+      it("sends a store postMessage", () => {
+        expect(contentWindow.postMessage).to.have.been.calledWith({
+          type: "store",
+          payload: {
+            type: "get",
+            data: {
+              key: "users.user_id",
+              value: 53
+            }
+          }
+        });
+      });
     });
 
     describe("when a message is received with a JSON value", () => {

@@ -82,7 +82,7 @@ class AppStore extends EventEmitter {
   }
 
   _registerInterests() {
-    AppDispatcher.register((action) => {
+    this.dispatchIndex = AppDispatcher.register((action) => {
       switch(action.type) {
         case ActionTypes.RECEIVE_POST_MESSAGE:
           this._receivePostMessage(action.payload);
