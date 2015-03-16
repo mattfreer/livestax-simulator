@@ -28,6 +28,12 @@ var AppActions = {
       payload: data
     });
   },
+  deleteStoreItem(key) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.DELETE_STORE_ITEM,
+      payload: key
+    });
+  },
   startAppTimeout(data) {
     AppDispatcher.dispatch({
       type: ActionTypes.START_APP_TIMEOUT,

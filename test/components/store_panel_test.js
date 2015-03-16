@@ -12,13 +12,11 @@ describe("StorePanel", () => {
 
   beforeEach(() => {
     KeyValueStore.reset();
-    sinon.stub(KeyValueStore, "getValues").returns({
-      "our-customers.selected_customer": {
+    KeyValueStore.setValue("our-customers.selected_customer", {
         id: 15,
         name: "Some Customer"
-      },
-      "some-other-app.simple_value": 22
     });
+    KeyValueStore.setValue("some-other-app.simple_value", 22);
     sinon.spy(AppActions, "receiveStoreConfiguration");
     storePanel = TestUtils.renderIntoDocument(React.createElement(StorePanel));
     inputs = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "input");
@@ -27,7 +25,6 @@ describe("StorePanel", () => {
 
   afterEach(() => {
     AppActions.receiveStoreConfiguration.restore();
-    KeyValueStore.getValues.restore();
   });
 
   describe("when the form is changed with valid data", () => {
@@ -73,6 +70,23 @@ describe("StorePanel", () => {
       TestUtils.Simulate.click(rows[1].getDOMNode());
       expect(inputs[0].getDOMNode().value).to.eql("some-other-app.simple_value");
       expect(inputs[1].getDOMNode().value).to.eql("22");
+    });
+  });
+
+  describe("clicking on delete in the store table", () => {
+    var rows;
+    beforeEach(() => {
+      rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
+    });
+
+    it("deletes the row", function() {
+      expect(rows.length).to.eql(2);
+      TestUtils.Simulate.click(rows[1].getDOMNode().querySelector("td:last-child"));
+      rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
+      expect(rows.length).to.eql(1);
+      TestUtils.Simulate.click(rows[0].getDOMNode().querySelector("td:last-child"));
+      rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
+      expect(rows.length).to.eql(0);
     });
   });
 });

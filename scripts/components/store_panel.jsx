@@ -54,6 +54,10 @@ var AppConfigurator = React.createClass({
     this.replaceState(nextState);
   },
 
+  deleteItem(key) {
+    AppActions.deleteStoreItem(key);
+  },
+
   render() {
     return (
       <CollapsiblePanel heading="Key Value Store">
@@ -73,7 +77,7 @@ var AppConfigurator = React.createClass({
 
           <button type="submit" className="btn btn-primary pull-right">Submit</button>
         </form>
-        <StoreTable onClick={this.populateForm} values={this.state.get("values")} />
+        <StoreTable onClick={this.populateForm} onDelete={this.deleteItem} values={this.state.get("values")} />
       </CollapsiblePanel>
     );
   }

@@ -32,6 +32,16 @@ class KeyValueStore extends EventEmitter {
     return this._store.getAll();
   }
 
+  setValue(key, value) {
+    var keyParts = key.split(".");
+    var options = {
+      namespace: keyParts[0],
+      key: keyParts[1],
+      value: safeJSONParse(value)
+    };
+    this._store.set(options);
+  }
+
   reset() {
     this._store.clear();
     this._store.unset();
@@ -42,13 +52,17 @@ class KeyValueStore extends EventEmitter {
   }
 
   _receiveStoreConfiguration(payload) {
-    var key = payload.get("key").split(".");
+    this.setValue(payload.get("key"), payload.get("value"));
+    this.emitChange();
+  }
+
+  _deleteStoreItem(payload) {
+    var key = payload.split(".");
     var options = {
       namespace: key[0],
-      key: key[1],
-      value: safeJSONParse(payload.get("value"))
+      key: key[1]
     };
-    this._store.set(options);
+    this._store.unset(options);
     this.emitChange();
   }
 
@@ -92,6 +106,9 @@ class KeyValueStore extends EventEmitter {
         break;
         case ActionTypes.RECEIVE_STORE_CONFIGURATION:
           this._receiveStoreConfiguration(action.payload);
+        break;
+        case ActionTypes.DELETE_STORE_ITEM:
+          this._deleteStoreItem(action.payload);
         break;
       }
       return true;
