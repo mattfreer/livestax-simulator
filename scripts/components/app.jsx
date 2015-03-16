@@ -11,17 +11,23 @@ var MessageGenerator = require("./message_generator");
 var Constants = require("../constants/app_constants");
 var HistoryTypes = Constants.History;
 var History = require("./history");
+var Immutable = require("immutable");
+
+var cleanHistoryItem = (item) => {
+  item = item.delete("createdAt");
+  return item.delete("historyType");
+};
+
+var historyActions = Immutable.Map()
+  .set(HistoryTypes.APPS, AppActions.receiveAppConfiguration)
+  .set(HistoryTypes.MESSAGES, AppActions.receiveGeneratedMessage);
 
 var App = React.createClass({
-  triggerAppHistory(historyItem) {
-    historyItem = historyItem.delete("createdAt");
-    AppActions.receiveAppConfiguration(historyItem);
+  triggerHistory(historyItem) {
+    var action = historyActions.get(historyItem.get("historyType"));
+    action(cleanHistoryItem(historyItem));
   },
-  triggerMessageGeneratorHistory(historyItem) {
-    historyItem = historyItem.delete("name");
-    historyItem = historyItem.delete("createdAt");
-    AppActions.receiveGeneratedMessage(historyItem);
-  },
+
   render() {
     return (
       <div className="main-container">
@@ -33,9 +39,10 @@ var App = React.createClass({
           </VerticalPanelBlock>
           <AppPanel />
           <VerticalPanelBlock>
-            <History heading="App Configuration History" historyKey={HistoryTypes.APPS} onClick={this.triggerAppHistory} />
-            <History heading="Message Generator History" historyKey={HistoryTypes.MESSAGES} onClick={this.triggerMessageGeneratorHistory} />
             <StorePanel />
+            <History heading="History"
+              onClick={this.triggerHistory}
+            />
           </VerticalPanelBlock>
         </div>
       </div>

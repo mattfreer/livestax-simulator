@@ -56,10 +56,17 @@ class HistoryStore extends EventEmitter {
     return this._state.get(key).map(item => item.delete("createdAt")).contains(data);
   }
 
+  _historyItemIndex(key, item) {
+    return this._state.get(key).findIndex((val) => {
+      return Immutable.is(val, item);
+    });
+  }
+
   _removeHistoryItem(payload) {
     var key = payload.key;
-    var index = payload.index;
-    if (this._state.get(key).has(index)) {
+    var index = this._historyItemIndex(key, payload.item.delete("historyType"));
+
+    if (index > -1) {
       this._state = this._state.deleteIn([key, index]);
       saveToStorage(this._state.toJS());
     }
@@ -77,7 +84,20 @@ class HistoryStore extends EventEmitter {
     this._state = Immutable.fromJS(getFromStorage());
   }
 
+  allHistory() {
+    return this._state.reduce((acc, value, key) => {
+      value = value.map((item) => {
+        return item.set("historyType", key);
+      });
+
+      return acc.concat(value);
+    }, Immutable.List());
+  }
+
   getHistory(key) {
+    if(key === undefined) {
+      return this.allHistory();
+    }
     return this._state.get(key);
   }
 
