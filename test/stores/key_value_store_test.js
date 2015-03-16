@@ -96,7 +96,13 @@ describe("KeyValueStore", () => {
       }));
 
       triggerStorePostMessage("set", "customer_id", 153);
-      expect(callback).to.not.have.been.called;
+      expect(callback).to.not.have.been.calledWith({
+        type: "watch",
+        data: {
+          key: "my-test-app.customer_id",
+          value: 153
+        }
+      });
 
       triggerStorePostMessage("watch", "my-test-app.customer_id");
 
@@ -108,6 +114,28 @@ describe("KeyValueStore", () => {
         }
       });
 
+    });
+  });
+
+  describe("#getAll()", () => {
+    it("gets all the set values in the store", () => {
+      expect(KeyValueStore.getValues()).to.eql({});
+      AppActions.receiveStoreConfiguration(Immutable.Map({
+        key: "our-customers.customer",
+        value: "{ \"id\": 1 }"
+      }));
+
+      AppActions.receiveStoreConfiguration(Immutable.Map({
+        key: "test-app.simple_value",
+        value: "foobar"
+      }));
+
+      expect(KeyValueStore.getValues()).to.eql({
+        "our-customers.customer": {
+          id: 1
+        },
+        "test-app.simple_value": "foobar"
+      });
     });
   });
 });

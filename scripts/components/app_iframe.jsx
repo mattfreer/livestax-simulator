@@ -49,6 +49,9 @@ var AppIframe = React.createClass({
   },
 
   _onKeyValueChange(event) {
+    if (!event) {
+      return;
+    }
     this._postMessage("store", event);
   },
 
