@@ -3,6 +3,20 @@
 var React = require("react");
 
 var StoreTable = React.createClass({
+  propTypes: {
+    onClick: React.PropTypes.func,
+    onDelete: React.PropTypes.func
+  },
+
+  itemClicked(key, val) {
+    this.props.onClick(key, val);
+  },
+
+  itemDeleted(key, event) {
+    event.stopPropagation();
+    this.props.onDelete(key);
+  },
+
   render() {
     if (this.props.values && this.props.values.size === 0) {
       return null;
@@ -16,9 +30,12 @@ var StoreTable = React.createClass({
         output = JSON.stringify(val);
       }
       return (
-        <tr>
+        <tr onClick={this.itemClicked.bind(this, key, val)}>
           <td>{key}</td>
           <td>{output}</td>
+          <td className="delete-item" onClick={this.itemDeleted.bind(this, key)}>
+            <i className="fa fa-times text-muted"></i>
+          </td>
         </tr>
       );
     }).toJS();

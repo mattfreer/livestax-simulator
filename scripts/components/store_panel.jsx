@@ -44,6 +44,20 @@ var AppConfigurator = React.createClass({
     AppActions.receiveStoreConfiguration(this.state.get("form"));
   },
 
+  populateForm(key, val) {
+    if (typeof val === "object") {
+      val = JSON.stringify(val);
+    }
+    var nextState = this.state
+      .setIn(["form", "key"], key)
+      .setIn(["form", "value"], val.toString());
+    this.replaceState(nextState);
+  },
+
+  deleteItem(key) {
+    AppActions.deleteStoreItem(key);
+  },
+
   render() {
     return (
       <CollapsiblePanel heading="Key Value Store">
@@ -63,7 +77,7 @@ var AppConfigurator = React.createClass({
 
           <button type="submit" className="btn btn-primary pull-right">Submit</button>
         </form>
-        <StoreTable values={this.state.get("values")} />
+        <StoreTable onClick={this.populateForm} onDelete={this.deleteItem} values={this.state.get("values")} />
       </CollapsiblePanel>
     );
   }

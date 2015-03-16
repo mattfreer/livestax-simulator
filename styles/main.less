@@ -128,11 +128,23 @@ html, body, .main-container {
   border: 1px solid @background-color;
   font-size: 12px;
 
+  tr {
+    td {
+      cursor: pointer;
+    }
+  }
+
   td:first-child {
     font-weight: bold;
 
     &:after {
       content: ":";
     }
+  }
+
+  td:last-child {
+    width: 30px;
+    padding-top: 8px;
+    text-align: center;
   }
 }
