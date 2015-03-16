@@ -28,6 +28,10 @@ class KeyValueStore extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
+  getValues() {
+    return this._store.getAll();
+  }
+
   reset() {
     this._store.clear();
     this._store.unset();
@@ -45,6 +49,7 @@ class KeyValueStore extends EventEmitter {
       value: safeJSONParse(payload.get("value"))
     };
     this._store.set(options);
+    this.emitChange();
   }
 
   _receivePostMessage(event) {
@@ -71,6 +76,7 @@ class KeyValueStore extends EventEmitter {
       if (typeof options.key === "string") {
         this._store[event.payload.type](options);
       }
+    this.emitChange();
     }
   }
 

@@ -21,6 +21,10 @@ class Store {
     return null;
   }
 
+  getAll() {
+    return this._data;
+  }
+
   unset(arg) {
     if (typeof arg === "function") {
       this._unsetTest(arg);

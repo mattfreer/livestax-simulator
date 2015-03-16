@@ -9,6 +9,7 @@ describe("ListenerStore", () => {
   beforeEach(() => {
     mockStore = {
       get: sinon.stub().returns(1337),
+      getAll: sinon.stub(),
       set: sinon.stub(),
       unset: sinon.stub(),
       watch: sinon.stub(),
@@ -65,6 +66,14 @@ describe("ListenerStore", () => {
       });
 
       expect(callback).to.have.been.calledWith(1337);
+    });
+  });
+
+  describe("#getAll", () => {
+    it("calls getAll on the store object", () => {
+      store.getAll();
+
+      expect(mockStore.getAll).to.have.been.called;
     });
   });
 

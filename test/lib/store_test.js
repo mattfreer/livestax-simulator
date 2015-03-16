@@ -86,6 +86,25 @@ describe("Key value store", () => {
   describe("#get()", () => {
     it("gets the value on the data object", () => {
       store.set("name", "Olivander");
+      store.set("age", 50);
+      store.set("additional", {
+        comments: 25,
+        tagline: "The Swift"
+      });
+      expect(store.getAll()).to.eql({
+        name: "Olivander",
+        age: 50,
+        additional: {
+          comments: 25,
+          tagline: "The Swift"
+        }
+      });
+    });
+  });
+
+  describe("#getAll()", () => {
+    it("returns all of the keys and values in the store", () => {
+      store.set("name", "Olivander");
       expect(store.get("name")).to.equal("Olivander");
     });
 
