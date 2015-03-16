@@ -3,6 +3,14 @@
 var React = require("react");
 
 var StoreTable = React.createClass({
+  propTypes: {
+    onClick: React.PropTypes.func
+  },
+
+  itemClicked(key, val) {
+    this.props.onClick(key, val);
+  },
+
   render() {
     if (this.props.values && this.props.values.size === 0) {
       return null;
@@ -16,7 +24,7 @@ var StoreTable = React.createClass({
         output = JSON.stringify(val);
       }
       return (
-        <tr>
+        <tr onClick={this.itemClicked.bind(this, key, val)}>
           <td>{key}</td>
           <td>{output}</td>
         </tr>

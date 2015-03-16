@@ -12,6 +12,13 @@ describe("StorePanel", () => {
 
   beforeEach(() => {
     KeyValueStore.reset();
+    sinon.stub(KeyValueStore, "getValues").returns({
+      "our-customers.selected_customer": {
+        id: 15,
+        name: "Some Customer"
+      },
+      "some-other-app.simple_value": 22
+    });
     sinon.spy(AppActions, "receiveStoreConfiguration");
     storePanel = TestUtils.renderIntoDocument(React.createElement(StorePanel));
     inputs = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "input");
@@ -20,6 +27,7 @@ describe("StorePanel", () => {
 
   afterEach(() => {
     AppActions.receiveStoreConfiguration.restore();
+    KeyValueStore.getValues.restore();
   });
 
   describe("when the form is changed with valid data", () => {
@@ -47,6 +55,24 @@ describe("StorePanel", () => {
     it("triggers a storeConfiguration event on submit", () => {
       TestUtils.Simulate.submit(form.getDOMNode());
       expect(AppActions.receiveStoreConfiguration).to.have.been.called;
+    });
+  });
+
+  describe("clicking on the store table", () => {
+    var rows;
+    beforeEach(() => {
+      rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
+    });
+
+    it("populates the form from the row", function() {
+      expect(inputs[0].getDOMNode().value).to.eql("");
+      expect(inputs[1].getDOMNode().value).to.eql("");
+      TestUtils.Simulate.click(rows[0].getDOMNode());
+      expect(inputs[0].getDOMNode().value).to.eql("our-customers.selected_customer");
+      expect(inputs[1].getDOMNode().value).to.eql("{\"id\":15,\"name\":\"Some Customer\"}");
+      TestUtils.Simulate.click(rows[1].getDOMNode());
+      expect(inputs[0].getDOMNode().value).to.eql("some-other-app.simple_value");
+      expect(inputs[1].getDOMNode().value).to.eql("22");
     });
   });
 });
