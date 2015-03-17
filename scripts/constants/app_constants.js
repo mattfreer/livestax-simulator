@@ -4,7 +4,6 @@ var keyMirror = require("react/lib/keyMirror");
 module.exports = {
   ActionTypes: keyMirror({
     RECEIVE_POST_MESSAGE: null,
-    RECEIVE_SIGNED_REQUEST: null,
     RECEIVE_APP_CONFIGURATION: null,
     RECEIVE_STORE_CONFIGURATION: null,
     DELETE_STORE_ITEM: null,

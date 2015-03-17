@@ -7,6 +7,12 @@ var KeyValueStore = require("../stores/key_value_store");
 var safeJSONParse = require("../lib/safe_json_parse");
 
 var AppIframe = React.createClass({
+  propTypes:{
+    src: React.PropTypes.string.isRequired,
+    usePost: React.PropTypes.bool.isRequired,
+    postData: React.PropTypes.object
+  },
+
   componentDidMount() {
     MessageStore.addChangeListener(this._onMessageChange);
     KeyValueStore.addChangeListener(this._onKeyValueChange);
@@ -67,7 +73,7 @@ var AppIframe = React.createClass({
     if (this.props.status === "timeout") {
       return null;
     }
-    if (this.props.postData.get("use_post")) {
+    if (this.props.usePost) {
       return (
         <SignedRequestApp {...this.props} />
       );

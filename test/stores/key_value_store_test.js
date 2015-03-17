@@ -23,6 +23,7 @@ var triggerStorePostMessage = (type, key, value) => {
 describe("KeyValueStore", () => {
   var callback;
   beforeEach(() => {
+    AppStore.reset();
     AppStore.setState(["app", "namespace"], "my-test-app");
     KeyValueStore.reset();
   });
@@ -92,7 +93,9 @@ describe("KeyValueStore", () => {
 
     it("resets the watchers when the app configuration changes", () => {
       AppActions.receiveAppConfiguration(Immutable.fromJS({
-        namespace: "my-test-app"
+        app: {
+          namespace: "my-test-app"
+        }
       }));
 
       triggerStorePostMessage("set", "customer_id", 153);

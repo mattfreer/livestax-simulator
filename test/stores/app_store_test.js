@@ -4,6 +4,7 @@ require("../test_helper");
 
 var Immutable = require("immutable");
 var AppStore = require("../../scripts/stores/app_store");
+var State = require("../../scripts/stores/state");
 var AppActions = require("../../scripts/actions/app_actions");
 var Constants = require("../../scripts/constants/app_constants");
 
@@ -40,48 +41,67 @@ describe("AppStore", () => {
   });
 
   describe("when app configuration is recieved", () => {
-    beforeEach(() => {
-      AppActions.receiveAppConfiguration(Immutable.fromJS({
-        name: "App name",
-        namespace: "app-name",
-        url: "http://appname.com"
-      }));
+    describe("when use_post is false", () => {
+      beforeEach(() => {
+        AppActions.receiveAppConfiguration(Immutable.fromJS({
+          app: {
+            name: "App name",
+            namespace: "app-name",
+            url: "http://appname.com",
+            use_post: false
+          }
+        }));
+      });
+
+      it("updates the app state", () => {
+        expect(AppStore.getApp().getIn(["app", "name"])).to.equal("App name");
+        expect(AppStore.getApp().getIn(["app", "namespace"])).to.equal("app-name");
+        expect(AppStore.getApp().getIn(["app", "url"])).to.equal("http://appname.com");
+      });
+
+      it("updates the status to loading", () => {
+        expect(AppStore.getApp().getIn(["status"])).to.equal("loading");
+      });
+
+      it("populates post_data with default values", () => {
+        expect(AppStore.getApp().get("post_data")).to.eql(State.initial().get("post_data"));
+      });
     });
 
-    it("updates the app state", () => {
-      expect(AppStore.getApp().getIn(["app", "name"])).to.equal("App name");
-      expect(AppStore.getApp().getIn(["app", "namespace"])).to.equal("app-name");
-      expect(AppStore.getApp().getIn(["app", "url"])).to.equal("http://appname.com");
-    });
+    describe("when use_post is true", () => {
+      beforeEach(() => {
+        AppActions.receiveAppConfiguration(Immutable.fromJS({
+          app: {
+            name: "App name",
+            namespace: "app-name",
+            url: "http://appname.com",
+            use_post: true
+          },
+          post_data: {
+            secret_key: "a_secret_key",
+            payload: {
+              instance_id: "an_instance_id",
+              timestamp: 0,
+              user_id: "a_user_id",
+              is_admin: false,
+              is_guest: true,
+            }
+          }
+        }));
+      });
 
-    it("updates the status to loading", () => {
-      expect(AppStore.getApp().getIn(["status"])).to.equal("loading");
-    });
-  });
-
-  describe("when signed request is recieved", () => {
-    beforeEach(() => {
-      AppActions.receiveSignedRequest(Immutable.fromJS({
-        use_post: true,
-        secret_key: "new_secret",
-        payload: {
-          instance_id: "abcdef",
-          timestamp: "1234",
-          is_admin: false,
-          is_guest: true,
-          user_id: "aaaaaaaa-aaaa-5aaa-9aaa-aaaaaaaaaaaa"
-        }
-      }));
-    });
-
-    it("updates the post_data state", () => {
-      expect(AppStore.getApp().getIn(["post_data", "use_post"])).to.equal(true);
-      expect(AppStore.getApp().getIn(["post_data", "secret_key"])).to.equal("new_secret");
-      expect(AppStore.getApp().getIn(["post_data", "payload", "timestamp"])).to.equal("1234");
-    });
-
-    it("updates the status to loading", () => {
-      expect(AppStore.getApp().getIn(["status"])).to.equal("loading");
+      it("doesn't populates post_data with default values", () => {
+        expect(AppStore.getApp().get("post_data")).to.eql(Immutable.fromJS({
+          secret_key: "a_secret_key",
+          payload: {
+            instance_id: "an_instance_id",
+            timestamp: 0,
+            user_id: "a_user_id",
+            is_admin: false,
+            is_guest: true,
+          }
+        }));
+      });
     });
   });
 });

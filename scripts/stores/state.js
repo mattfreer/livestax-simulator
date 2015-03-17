@@ -10,10 +10,10 @@ module.exports = {
       app: {
         name: "Test App",
         namespace: "test-app",
-        url: "examples/app.html"
+        url: "examples/app.html",
+        use_post: false,
       },
       post_data: {
-        use_post: false,
         secret_key: "293da16e7a31cd27666f3332675d644d",
         payload: {
           instance_id: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
