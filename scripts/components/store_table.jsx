@@ -32,7 +32,7 @@ var StoreTable = React.createClass({
       return (
         <tr onClick={this.itemClicked.bind(this, key, val)}>
           <td>{key}</td>
-          <td>{output}</td>
+          <td>{output.toString()}</td>
           <td className="delete-item" onClick={this.itemDeleted.bind(this, key)}>
             <i className="fa fa-times text-muted"></i>
           </td>
