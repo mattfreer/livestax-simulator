@@ -69,15 +69,20 @@ class AppStore extends EventEmitter {
     }
   }
 
-  _receiveAppConfiguration(data) {
-    this.setState(["app"], data);
-    this.setState(["status"], "loading");
-    this._startTimer({ duration: Constants.Timer.DURATION });
+  _setSignedRequestToDefaults() {
+    this.setState(["post_data"], State.initial().get("post_data"));
   }
 
-  _receiveSignedRequest(data) {
-    this.setState(["post_data"], data);
+  _receiveAppConfiguration(data) {
+    this.setState(["app"], data.get("app"));
     this.setState(["status"], "loading");
+
+    if(data.getIn(["app", "use_post"])) {
+      this.setState(["post_data"], data.get("post_data"));
+    } else {
+      this._setSignedRequestToDefaults();
+    }
+
     this._startTimer({ duration: Constants.Timer.DURATION });
   }
 
@@ -90,10 +95,6 @@ class AppStore extends EventEmitter {
 
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
           this._receiveAppConfiguration(action.payload);
-        break;
-
-        case ActionTypes.RECEIVE_SIGNED_REQUEST:
-          this._receiveSignedRequest(action.payload);
         break;
 
         case ActionTypes.START_APP_TIMEOUT:
