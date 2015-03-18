@@ -16,6 +16,7 @@ describe("StorePanel", () => {
         id: 15,
         name: "Some Customer"
     });
+    KeyValueStore.setValue("very-different-app.bool_value", true);
     KeyValueStore.setValue("some-other-app.simple_value", 22);
     sinon.spy(AppActions, "receiveStoreConfiguration");
     storePanel = TestUtils.renderIntoDocument(React.createElement(StorePanel));
@@ -73,20 +74,36 @@ describe("StorePanel", () => {
     });
   });
 
-  describe("clicking on delete in the store table", () => {
+  describe("Store Table rows", () => {
     var rows;
     beforeEach(() => {
       rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
     });
 
-    it("deletes the row", function() {
-      expect(rows.length).to.eql(2);
-      TestUtils.Simulate.click(rows[1].getDOMNode().querySelector("td:last-child"));
-      rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
-      expect(rows.length).to.eql(1);
-      TestUtils.Simulate.click(rows[0].getDOMNode().querySelector("td:last-child"));
-      rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
-      expect(rows.length).to.eql(0);
+    it("shows JSON in the table rows", function() {
+      expect(rows[0].getDOMNode().textContent).to.include("our-customers.selected_customer");
+      expect(rows[0].getDOMNode().textContent).to.include("{\"id\":15,\"name\":\"Some Customer\"}");
+    });
+
+    it("shows integers in the table rows", function() {
+      expect(rows[1].getDOMNode().textContent).to.include("22");
+    });
+
+    it("shows booleans in the table rows", function() {
+      expect(rows[2].getDOMNode().textContent).to.include("true");
+    });
+
+    describe("clicking on delete in the store table", () => {
+      it("deletes the row", function() {
+        expect(rows.length).to.eql(3);
+        TestUtils.Simulate.click(rows[1].getDOMNode().querySelector("td:last-child"));
+        rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
+        expect(rows.length).to.eql(2);
+        TestUtils.Simulate.click(rows[0].getDOMNode().querySelector("td:last-child"));
+        rows = TestUtils.scryRenderedDOMComponentsWithTag(storePanel, "tr");
+        expect(rows.length).to.eql(1);
+      });
     });
   });
+
 });
