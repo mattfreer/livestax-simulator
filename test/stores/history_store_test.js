@@ -48,6 +48,13 @@ describe("HistoryStore", () => {
       expect(HistoryStore.getHistory("messages").size).to.eql(1);
     });
 
+    it("adds a `historyType` attribute to each history item", () => {
+      var types = HistoryStore.getHistory("apps").map((item) => {
+        return item.get("historyType");
+      });
+      expect(types).to.eql(Immutable.List(["apps", "apps"]));
+    });
+
     describe("when no key is specified", () => {
       it("returns all history items", () => {
         expect(HistoryStore.getHistory().size).to.eql(3);
@@ -60,7 +67,13 @@ describe("HistoryStore", () => {
         expect(types).to.eql(Immutable.List(["apps", "apps", "messages"]));
       });
     });
+  });
 
+  describe("getHistoryTypes", () => {
+    it("returns a list of all current history types", () => {
+      var types = HistoryStore.getHistoryTypes();
+      expect(Immutable.is(types, Immutable.List(["apps", "messages"]))).to.be.true;
+    });
   });
 
   describe("when a generated mesage is received", () => {

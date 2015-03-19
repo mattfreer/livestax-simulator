@@ -28,6 +28,13 @@ describe("History", () => {
           namespace: "another-app",
           url: "examples/app.html"
         }
+      ],
+      messages: [
+        {
+          namespace: "some-app",
+          key: "m1",
+          value: "a val"
+        }
       ]
     }));
     history = TestUtils.renderIntoDocument(<History onClick={callback} heading="History" />);
@@ -39,7 +46,7 @@ describe("History", () => {
   });
 
   it("renders a tr per history item", function() {
-    expect(listItems.length).to.eql(2);
+    expect(listItems.length).to.eql(3);
   });
 
   it("renders a timestamp per item", function() {
@@ -61,6 +68,37 @@ describe("History", () => {
     var links = TestUtils.scryRenderedDOMComponentsWithClass(listItems[0], "delete-item");
     TestUtils.Simulate.click(links[0].getDOMNode());
     listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
-    expect(listItems.length).to.eql(1);
+    expect(listItems.length).to.eql(2);
+  });
+
+  describe("filters", () => {
+    var filters;
+
+    beforeEach(() => {
+      filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+    });
+
+    it("renders a filter per history type", function() {
+      var filterText = Immutable.List(filters).map((item) => {
+        return item.getDOMNode().textContent;
+      });
+      expect(filterText).to.eql(Immutable.List(["All", "App config", "Messages"]));
+    });
+
+    describe("when a filter is selected", () => {
+      it("only renders history items for that filter", function() {
+        TestUtils.Simulate.click(filters[2].getDOMNode());
+        listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
+        expect(listItems.length).to.eql(1);
+
+        TestUtils.Simulate.click(filters[1].getDOMNode());
+        listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
+        expect(listItems.length).to.eql(2);
+
+        TestUtils.Simulate.click(filters[0].getDOMNode());
+        listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
+        expect(listItems.length).to.eql(3);
+      });
+    });
   });
 });
