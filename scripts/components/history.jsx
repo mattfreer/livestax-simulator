@@ -106,9 +106,9 @@ var History = React.createClass({
     return [];
   },
 
-  render() {
+  buildHistoryItemsList() {
     var icon;
-    var history = this.state.get("historyItems").map((historyItem, i) => {
+    return this.state.get("historyItems").map((historyItem, i) => {
       icon = `fa fa-${historyIcons.get(this.getHistoryType(historyItem))} text-muted`;
 
       return (
@@ -125,7 +125,9 @@ var History = React.createClass({
         </tr>
       );
     }).toJS();
+  },
 
+  render() {
     return (
       <CollapsiblePanel heading={this.props.heading}>
         <div className="history-filter">
@@ -133,7 +135,7 @@ var History = React.createClass({
         </div>
         <table className="table table-condensed table-hover history-table">
           <tbody>
-            {history}
+            {this.buildHistoryItemsList()}
           </tbody>
         </table>
       </CollapsiblePanel>
