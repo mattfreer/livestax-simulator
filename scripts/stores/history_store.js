@@ -84,12 +84,15 @@ class HistoryStore extends EventEmitter {
     this._state = Immutable.fromJS(getFromStorage());
   }
 
+  injectHistoryType(data, historyType) {
+    return data.map((item) => {
+      return item.set("historyType", historyType);
+    });
+  }
+
   allHistory() {
     return this._state.reduce((acc, value, key) => {
-      value = value.map((item) => {
-        return item.set("historyType", key);
-      });
-
+      value = this.injectHistoryType(value, key);
       return acc.concat(value);
     }, Immutable.List());
   }
@@ -98,7 +101,11 @@ class HistoryStore extends EventEmitter {
     if(key === undefined) {
       return this.allHistory();
     }
-    return this._state.get(key);
+    return this.injectHistoryType(this._state.get(key), key);
+  }
+
+  getHistoryTypes() {
+    return Immutable.List(this._state.keys());
   }
 
   _processAppConfigPayload(payload) {

@@ -17,6 +17,11 @@ var historyIcons = Immutable.Map()
   .set(HistoryTypes.APPS, "cog")
   .set(HistoryTypes.MESSAGES, "volume-off");
 
+var historyFilters = Immutable.Map()
+  .set("all", "All")
+  .set(HistoryTypes.APPS, "App config")
+  .set(HistoryTypes.MESSAGES, "Messages");
+
 var History = React.createClass({
   propTypes: {
     onClick: React.PropTypes.func.isRequired,
@@ -24,7 +29,10 @@ var History = React.createClass({
   },
 
   getInitialState() {
-    return HistoryStore.getHistory(this.props.historyKey);
+    return Immutable.fromJS({
+      filter: this.props.historyKey,
+      historyItems: HistoryStore.getHistory(this.props.historyKey)
+    });
   },
 
   componentDidMount() {
@@ -36,7 +44,9 @@ var History = React.createClass({
   },
 
   _onChange() {
-    this.replaceState(HistoryStore.getHistory(this.props.historyKey));
+    this.replaceState(this.state.set("historyItems",
+      HistoryStore.getHistory(this.state.get("filter"))
+    ));
   },
 
   triggerHistoryClick(historyItem) {
@@ -54,9 +64,19 @@ var History = React.createClass({
     return this.props.historyKey;
   },
 
+  applyFilter(item) {
+    var filter = item === "all" ? undefined : item;
+
+    var nextState = this.state
+      .set("filter", filter)
+      .set("historyItems", HistoryStore.getHistory(filter));
+
+    this.replaceState(nextState);
+  },
+
   render() {
     var icon;
-    var history = this.state.map((historyItem, i) => {
+    var history = this.state.get("historyItems").map((historyItem, i) => {
       icon = `fa fa-${historyIcons.get(this.getHistoryType(historyItem))} text-muted`;
 
       return (
@@ -74,8 +94,28 @@ var History = React.createClass({
       );
     }).toJS();
 
+    var filterList = HistoryStore.getHistoryTypes()
+      .unshift("all")
+      .map((item) => {
+        var itemCssClass = "label label-default";
+
+        if(item === this.state.get("filter") || item === "all" && !this.state.get("filter")) {
+          itemCssClass = "label label-primary";
+        }
+
+        return <span
+          onClick={this.applyFilter.bind(this, item)}
+          key={item}
+          className={itemCssClass}>
+          {historyFilters.get(item)}
+        </span>
+      }).toJS();
+
     return (
       <CollapsiblePanel heading={this.props.heading}>
+        <div className="history-filter">
+          {filterList}
+        </div>
         <table className="table table-condensed table-hover history-table">
           <tbody>
             {history}
