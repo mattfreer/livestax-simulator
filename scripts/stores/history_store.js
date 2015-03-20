@@ -105,7 +105,10 @@ class HistoryStore extends EventEmitter {
   }
 
   getHistoryTypes() {
-    return Immutable.List(this._state.keys());
+    var currentTypes = this._state.filter((list) => {
+      return !list.isEmpty();
+    });
+    return Immutable.List(currentTypes.keys());
   }
 
   _processAppConfigPayload(payload) {

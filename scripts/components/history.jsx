@@ -53,8 +53,15 @@ var History = React.createClass({
     this.props.onClick(historyItem);
   },
 
+  doesFilterExist(key) {
+    return HistoryStore.getHistoryTypes().contains(key);
+  },
+
   deleteHistoryItem(key, historyItem) {
     HistoryActions.deleteHistoryItem(key, historyItem);
+    if(!this.doesFilterExist(key)) {
+      this.applyFilter("all");
+    }
   },
 
   getHistoryType(item) {
@@ -74,9 +81,34 @@ var History = React.createClass({
     this.replaceState(nextState);
   },
 
-  render() {
+  buildFilterList() {
+    var historyTypes = HistoryStore.getHistoryTypes();
+
+    if(!historyTypes.isEmpty()) {
+      return historyTypes
+        .unshift("all")
+        .map((item) => {
+          var itemCssClass = "label label-default";
+
+          if(item === this.state.get("filter") || item === "all" && !this.state.get("filter")) {
+            itemCssClass = "label label-primary";
+          }
+
+          return <span
+            onClick={this.applyFilter.bind(this, item)}
+            key={item}
+            className={itemCssClass}>
+            {historyFilters.get(item)}
+          </span>
+        }
+      ).toJS();
+    }
+    return [];
+  },
+
+  buildHistoryItemsList() {
     var icon;
-    var history = this.state.get("historyItems").map((historyItem, i) => {
+    return this.state.get("historyItems").map((historyItem, i) => {
       icon = `fa fa-${historyIcons.get(this.getHistoryType(historyItem))} text-muted`;
 
       return (
@@ -93,32 +125,17 @@ var History = React.createClass({
         </tr>
       );
     }).toJS();
+  },
 
-    var filterList = HistoryStore.getHistoryTypes()
-      .unshift("all")
-      .map((item) => {
-        var itemCssClass = "label label-default";
-
-        if(item === this.state.get("filter") || item === "all" && !this.state.get("filter")) {
-          itemCssClass = "label label-primary";
-        }
-
-        return <span
-          onClick={this.applyFilter.bind(this, item)}
-          key={item}
-          className={itemCssClass}>
-          {historyFilters.get(item)}
-        </span>
-      }).toJS();
-
+  render() {
     return (
       <CollapsiblePanel heading={this.props.heading}>
         <div className="history-filter">
-          {filterList}
+          {this.buildFilterList()}
         </div>
         <table className="table table-condensed table-hover history-table">
           <tbody>
-            {history}
+            {this.buildHistoryItemsList()}
           </tbody>
         </table>
       </CollapsiblePanel>

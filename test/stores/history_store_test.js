@@ -70,9 +70,13 @@ describe("HistoryStore", () => {
   });
 
   describe("getHistoryTypes", () => {
-    it("returns a list of all current history types", () => {
+    it("returns a list of all history types that are not empty", () => {
       var types = HistoryStore.getHistoryTypes();
       expect(Immutable.is(types, Immutable.List(["apps", "messages"]))).to.be.true;
+
+      HistoryActions.deleteHistoryItem("messages", HistoryStore.getHistory().get(2));
+      types = HistoryStore.getHistoryTypes();
+      expect(Immutable.is(types, Immutable.List(["apps"]))).to.be.true;
     });
   });
 
