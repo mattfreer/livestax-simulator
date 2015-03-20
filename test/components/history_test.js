@@ -124,5 +124,18 @@ describe("History", () => {
         expect(selectedFilter.getDOMNode().textContent).to.eql("All");
       });
     });
+
+    describe("when all history items are deleted", () => {
+      beforeEach(() => {
+        TestUtils.scryRenderedDOMComponentsWithClass(history, "delete-item").forEach((deleteLink) => {
+          TestUtils.Simulate.click(deleteLink);
+        });
+      });
+
+      it("displays no filters", () => {
+        var filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+        expect(filters.length).to.eql(0);
+      });
+    });
   });
 });
