@@ -53,8 +53,15 @@ var History = React.createClass({
     this.props.onClick(historyItem);
   },
 
+  doesFilterExist(key) {
+    return HistoryStore.getHistoryTypes().contains(key);
+  },
+
   deleteHistoryItem(key, historyItem) {
     HistoryActions.deleteHistoryItem(key, historyItem);
+    if(!this.doesFilterExist(key)) {
+      this.applyFilter("all");
+    }
   },
 
   getHistoryType(item) {

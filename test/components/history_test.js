@@ -100,5 +100,29 @@ describe("History", () => {
         expect(listItems.length).to.eql(3);
       });
     });
+
+    describe("when the last history item is deleted from a filter set", () => {
+      beforeEach(() => {
+        TestUtils.Simulate.click(filters[2].getDOMNode());
+        var deleteLinks = TestUtils.scryRenderedDOMComponentsWithClass(history, "delete-item");
+        TestUtils.Simulate.click(deleteLinks[0]);
+      });
+
+      it("removes the filter type from the list", function() {
+        filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+        var filterText = Immutable.List(filters).map((item) => {
+          return item.getDOMNode().textContent;
+        });
+        expect(filterText).to.eql(Immutable.List(["All", "App config"]));
+      });
+
+      it("selects the 'All' filter", () => {
+        filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+        var selectedFilter = Immutable.List(filters).find((item) => {
+          return item.getDOMNode().className.match(/label-primary/);
+        });
+        expect(selectedFilter.getDOMNode().textContent).to.eql("All");
+      });
+    });
   });
 });
