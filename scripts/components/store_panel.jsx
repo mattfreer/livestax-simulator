@@ -18,7 +18,7 @@ var getState = () => {
   });
 };
 
-var AppConfigurator = React.createClass({
+var StorePanel = React.createClass({
   getInitialState: getState,
 
   componentDidMount() {
@@ -83,4 +83,4 @@ var AppConfigurator = React.createClass({
   }
 });
 
-module.exports = AppConfigurator;
+module.exports = StorePanel;
