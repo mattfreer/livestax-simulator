@@ -17,21 +17,52 @@ describe("LoggerStore", () => {
     });
 
     describe("When a postMessage is received", () => {
-      it("adds the log to the store", () => {
-        AppActions.receivePostMessage({
-          type: "on",
-          payload: {
-            type: "another-app.heading"
-          }
+      describe("if type is not in the whitelist", () => {
+        it("doesn't add the log to the store", () => {
+          AppActions.receivePostMessage({
+            type: "ready"
+          });
+
+          var logs = LoggerStore.getLogs();
+
+          expect(logs.size).to.eql(0);
+        });
+      });
+
+      describe("if type is in the whitelist", () => {
+        describe("if the subtype is not in the whitelist", () => {
+          it("doesn't add the log to the store", () => {
+            AppActions.receivePostMessage({
+              type: "flash",
+              payload: {
+                type: "foobar"
+              }
+            });
+
+            var logs = LoggerStore.getLogs();
+
+            expect(logs.size).to.eql(0);
+          });
         });
 
-        var logs = LoggerStore.getLogs();
+        describe("if the subtype is in the whitelist", () => {
+          it("adds the log to the store", () => {
+            AppActions.receivePostMessage({
+              type: "on",
+              payload: {
+                type: "another-app.heading"
+              }
+            });
 
-        expect(logs.size).to.eql(1);
-        expect(logs.getIn([0, "type"])).to.eql("on");
-        expect(logs.getIn([0, "direction"])).to.eql("from");
-        expect(logs.getIn([0, "payload"])).to.eql({
-          type: "another-app.heading"
+            var logs = LoggerStore.getLogs();
+
+            expect(logs.size).to.eql(1);
+            expect(logs.getIn([0, "type"])).to.eql("on");
+            expect(logs.getIn([0, "direction"])).to.eql("from");
+            expect(logs.getIn([0, "payload"])).to.eql({
+              type: "another-app.heading"
+            });
+          });
         });
       });
     });
