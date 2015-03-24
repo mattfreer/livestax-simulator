@@ -5,6 +5,7 @@ require("../test_helper");
 var Immutable = require("immutable");
 var LoggerStore = require("../../scripts/stores/logger_store");
 var AppActions = require("../../scripts/actions/app_actions");
+var LoggerActions = require("../../scripts/actions/logger_actions");
 
 describe("LoggerStore", () => {
   beforeEach(() => {
@@ -126,6 +127,21 @@ describe("LoggerStore", () => {
         expect(logs.getIn([0, "type"])).to.eql("store");
         expect(logs.getIn([0, "direction"])).to.eql("to");
         expect(Immutable.is(logs.getIn([0, "payload"]), expected)).to.eql(true);
+      });
+    });
+
+    describe("When a clear event is sent", () => {
+      it("removes the loges in the store", () => {
+        AppActions.deleteStoreItem("some-app.some-key");
+        AppActions.deleteStoreItem("some-app.some-key");
+
+        var logs = LoggerStore.getLogs();
+        expect(logs.size).to.eql(2);
+
+        LoggerActions.clearLog();
+
+        logs = LoggerStore.getLogs();
+        expect(logs.size).to.eql(0);
       });
     });
   });
