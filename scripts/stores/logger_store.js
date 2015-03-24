@@ -39,6 +39,8 @@ class LoggerStore extends EventEmitter {
   }
 
   _receivePostMessage(data) {
+    data = Immutable.Map(data)
+      .set("direction", "from");
     this._state = this._state.push(Immutable.Map(data));
   }
 
