@@ -113,6 +113,9 @@ class LoggerStore extends EventEmitter {
         case ActionTypes.DELETE_STORE_ITEM:
           this._deleteStoreItem(action.payload);
         break;
+        case ActionTypes.CLEAR_LOG:
+          this.reset();
+        break;
       }
       this.emitChange();
       return true;

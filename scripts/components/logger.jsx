@@ -4,6 +4,7 @@ var React = require("react");
 var Immutable = require("immutable");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var LogStore = require("../stores/logger_store");
+var LoggerActions = require("../actions/logger_actions");
 
 var getState = () => {
   return Immutable.Map({
@@ -24,6 +25,10 @@ var Logger = React.createClass({
 
   _onChange() {
     this.replaceState(getState());
+  },
+
+  clear() {
+    LoggerActions.clearLog();
   },
 
   _renderLog(log, key) {
@@ -47,13 +52,27 @@ var Logger = React.createClass({
         <td>{log.get("type")}</td>
         <td>{subtype}</td>
         <td>{payload}</td>
-      </tr>)
+      </tr>);
   },
 
   render() {
     var logs = this.state.get("logs").map(this._renderLog).toJS();
+
+    if (this.state.get("logs").size === 0) {
+      return (
+        <CollapsiblePanel heading="Logger">
+          <h2>Events to and from the app will appear in this panel.</h2>
+        </CollapsiblePanel>
+      );
+    }
+
     return (
       <CollapsiblePanel heading="Logger">
+        <div className="logger-actions">
+          <button className="btn btn-primary btn-xs clear-logger" onClick={this.clear}>
+            Clear
+          </button>
+        </div>
         <table className="table table-condensed table-hover logger-table">
           <tbody>
             {logs}

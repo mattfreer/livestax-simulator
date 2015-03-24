@@ -9,6 +9,7 @@ module.exports = {
     DELETE_STORE_ITEM: null,
     RECEIVE_GENERATED_MESSAGE: null,
     START_APP_TIMEOUT: null,
+    CLEAR_LOG: null,
     DELETE_HISTORY_ITEM: null
   }),
   ChangeTypes: keyMirror({

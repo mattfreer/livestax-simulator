@@ -40,4 +40,12 @@ describe("Logger", () => {
     expect(rows[1].getDOMNode().textContent).to.include("selected_customer");
     expect(rows[1].getDOMNode().textContent).to.include("57");
   });
+
+  it("clears the results when clear is pressed", function() {
+    var logger = TestUtils.renderIntoDocument(<Logger />);
+    var clear = TestUtils.findRenderedDOMComponentWithTag(logger, "button");
+    expect(LoggerStore.getLogs().size).to.eql(2);
+    TestUtils.Simulate.click(clear.getDOMNode());
+    expect(LoggerStore.getLogs().size).to.eql(0);
+  });
 });
