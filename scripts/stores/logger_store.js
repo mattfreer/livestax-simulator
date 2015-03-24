@@ -89,6 +89,15 @@ class LoggerStore extends EventEmitter {
     this._state = this._state.push(data);
   }
 
+  _deleteStoreItem(key) {
+    var payload = Immutable.Map()
+      .setIn(["data", "key"], key.split(".")[1]);
+    payload = Projections.storePayload(payload)
+      .set("direction", "to")
+      .setIn(["payload", "type"], "unset");
+    this._state = this._state.push(payload);
+  }
+
   _registerInterests() {
     this.dispatchIndex = AppDispatcher.register((action) => {
       switch(action.type) {
@@ -100,6 +109,9 @@ class LoggerStore extends EventEmitter {
         break;
         case ActionTypes.RECEIVE_STORE_CONFIGURATION:
           this._receiveStoreConfiguration(action.payload);
+        break;
+        case ActionTypes.DELETE_STORE_ITEM:
+          this._deleteStoreItem(action.payload);
         break;
       }
       this.emitChange();

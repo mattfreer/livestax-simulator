@@ -109,5 +109,24 @@ describe("LoggerStore", () => {
         expect(Immutable.is(logs.getIn([0, "payload"]), expected)).to.eql(true);
       });
     });
+
+    describe("When a store item is deleted", () => {
+      it("adds the store deletoin log to the store", () => {
+        AppActions.deleteStoreItem("some-app.some-key");
+
+        var logs = LoggerStore.getLogs();
+        var expected = Immutable.fromJS({
+          type: "unset",
+          data: {
+            key: "some-key"
+          }
+        });
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("store");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(Immutable.is(logs.getIn([0, "payload"]), expected)).to.eql(true);
+      });
+    });
   });
 });
