@@ -11,12 +11,12 @@ var Logger = require("../../scripts/components/logger");
 describe("Logger", () => {
   beforeEach(() => {
     LoggerStore.reset();
-    var logState = Immutable.List([
-      Immutable.Map({
+    var logState = Immutable.fromJS([
+      {
         type: "on",
-        payload: "another-app.some_id"
-      }),
-      Immutable.Map({
+        payload: {type: "another-app.some_id"}
+      },
+      {
         type: "store",
         payload: {
           type: "set",
@@ -25,14 +25,14 @@ describe("Logger", () => {
             value: 57
           }
         }
-      }),
+      },
     ]);
     LoggerStore.replaceState(logState);
   });
 
   it("displays the results in the panel", function() {
     var logger = TestUtils.renderIntoDocument(<Logger />);
-    var rows = TestUtils.scryRenderedDOMComponentsWithTag(logger, "li");
+    var rows = TestUtils.scryRenderedDOMComponentsWithTag(logger, "tr");
     expect(rows[0].getDOMNode().textContent).to.include("on");
     expect(rows[0].getDOMNode().textContent).to.include("another-app.some_id");
     expect(rows[1].getDOMNode().textContent).to.include("store");

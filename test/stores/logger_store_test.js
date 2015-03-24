@@ -59,9 +59,9 @@ describe("LoggerStore", () => {
             expect(logs.size).to.eql(1);
             expect(logs.getIn([0, "type"])).to.eql("on");
             expect(logs.getIn([0, "direction"])).to.eql("from");
-            expect(logs.getIn([0, "payload"])).to.eql({
+            expect(logs.getIn([0, "payload"])).to.eql(Immutable.fromJS({
               type: "another-app.heading"
-            });
+            }));
           });
         });
       });

@@ -26,21 +26,39 @@ var Logger = React.createClass({
     this.replaceState(getState());
   },
 
-  _renderLog(log) {
+  _renderLog(log, key) {
     var payload = log.get("payload");
-    if (typeof payload === "object") {
-      payload = JSON.stringify(payload);
+    var subtype = (<span className="text-muted">null</span>);
+
+    if(payload) {
+      if(payload.has("type")) {
+        subtype = payload.get("type");
+        payload = payload.delete("type");
+      }
+
+      if(!payload.isEmpty()) {
+        payload = JSON.stringify(payload.toJS());
+      } else {
+        payload = undefined;
+      }
     }
-    return (<li>{log.get("type")}: {payload}</li>);
+
+    return (<tr key={key}>
+        <td>{log.get("type")}</td>
+        <td>{subtype}</td>
+        <td>{payload}</td>
+      </tr>)
   },
 
   render() {
     var logs = this.state.get("logs").map(this._renderLog).toJS();
     return (
       <CollapsiblePanel heading="Logger">
-        <ul>
-          {logs}
-        </ul>
+        <table className="table table-condensed table-hover logger-table">
+          <tbody>
+            {logs}
+          </tbody>
+        </table>
       </CollapsiblePanel>
     );
   },

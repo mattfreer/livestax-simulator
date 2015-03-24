@@ -65,7 +65,7 @@ class LoggerStore extends EventEmitter {
 
   _receivePostMessage(data) {
     if(this.isTypeInWhitelist(data) && this.isSubtypeInWhitelist(data)) {
-      data = Immutable.Map(data)
+      data = Immutable.fromJS(data)
         .set("direction", "from");
       this._state = this._state.push(Immutable.Map(data));
     }
