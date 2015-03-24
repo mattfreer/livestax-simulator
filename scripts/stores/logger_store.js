@@ -5,6 +5,7 @@ var Immutable = require("immutable");
 var EventEmitter = require("events").EventEmitter;
 var Constants = require("../constants/app_constants");
 var ActionTypes = Constants.ActionTypes;
+var safeJSONParse = require("../lib/safe_json_parse");
 var Projections = require("../projections/app_projections");
 var CHANGE_EVENT = Constants.ChangeTypes.LOG_CHANGE;
 var whitelist = Immutable.fromJS({
@@ -78,6 +79,16 @@ class LoggerStore extends EventEmitter {
     this._state = this._state.push(Immutable.Map(data));
   }
 
+  _receiveStoreConfiguration(data) {
+    var payload = Immutable.Map()
+      .setIn(["data", "key"], data.get("key").split(".")[1])
+      .setIn(["data", "value"], Immutable.fromJS(safeJSONParse(data.get("value"))));
+    data = Projections.storePayload(payload)
+      .set("direction", "to")
+      .setIn(["payload", "type"], "set");
+    this._state = this._state.push(data);
+  }
+
   _registerInterests() {
     this.dispatchIndex = AppDispatcher.register((action) => {
       switch(action.type) {
@@ -86,6 +97,9 @@ class LoggerStore extends EventEmitter {
         break;
         case ActionTypes.RECEIVE_GENERATED_MESSAGE:
           this._receiveGeneratedMessage(action.payload);
+        break;
+        case ActionTypes.RECEIVE_STORE_CONFIGURATION:
+          this._receiveStoreConfiguration(action.payload);
         break;
       }
       this.emitChange();

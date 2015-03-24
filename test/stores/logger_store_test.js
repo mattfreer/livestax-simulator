@@ -86,5 +86,28 @@ describe("LoggerStore", () => {
         }));
       });
     });
+
+    describe("When a store generator configuration is received", () => {
+      it("adds the log to the store", () => {
+        AppActions.receiveStoreConfiguration(Immutable.fromJS({
+          key: "some-app.some-key",
+          value: 123
+        }));
+
+        var logs = LoggerStore.getLogs();
+        var expected = Immutable.fromJS({
+          type: "set",
+          data: {
+            key: "some-key",
+            value: 123
+          }
+        });
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("store");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(Immutable.is(logs.getIn([0, "payload"]), expected)).to.eql(true);
+      });
+    });
   });
 });
