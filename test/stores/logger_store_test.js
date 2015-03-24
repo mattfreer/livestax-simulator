@@ -66,5 +66,67 @@ describe("LoggerStore", () => {
         });
       });
     });
+
+    describe("When a message generator message is received", () => {
+      it("adds the log to the store", () => {
+        AppActions.receiveGeneratedMessage(Immutable.fromJS({
+          namespace: "some-app",
+          key: "some-key",
+          value: 123
+        }));
+
+        var logs = LoggerStore.getLogs();
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("trigger");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(logs.getIn([0, "payload"])).to.eql(Immutable.fromJS({
+          type: "some-app.some-key",
+          data: 123
+        }));
+      });
+    });
+
+    describe("When a store generator configuration is received", () => {
+      it("adds the log to the store", () => {
+        AppActions.receiveStoreConfiguration(Immutable.fromJS({
+          key: "some-app.some-key",
+          value: 123
+        }));
+
+        var logs = LoggerStore.getLogs();
+        var expected = Immutable.fromJS({
+          type: "set",
+          data: {
+            key: "some-key",
+            value: 123
+          }
+        });
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("store");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(Immutable.is(logs.getIn([0, "payload"]), expected)).to.eql(true);
+      });
+    });
+
+    describe("When a store item is deleted", () => {
+      it("adds the store deletoin log to the store", () => {
+        AppActions.deleteStoreItem("some-app.some-key");
+
+        var logs = LoggerStore.getLogs();
+        var expected = Immutable.fromJS({
+          type: "unset",
+          data: {
+            key: "some-key"
+          }
+        });
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("store");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(Immutable.is(logs.getIn([0, "payload"]), expected)).to.eql(true);
+      });
+    });
   });
 });

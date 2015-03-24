@@ -4,7 +4,7 @@ var React = require("react");
 var SignedRequestApp = require("./signed_request_app");
 var MessageStore = require("../stores/message_store");
 var KeyValueStore = require("../stores/key_value_store");
-var safeJSONParse = require("../lib/safe_json_parse");
+var Projections = require("../projections/app_projections");
 
 var AppIframe = React.createClass({
   propTypes:{
@@ -39,7 +39,7 @@ var AppIframe = React.createClass({
     return nextProps.status !== "ready";
   },
 
-  _postMessage(type, payload) {
+  _postMessage(payload) {
     if (!this.getDOMNode()) {
       return;
     }
@@ -47,10 +47,7 @@ var AppIframe = React.createClass({
     var contentWindow = this.getDOMNode().querySelector("iframe").contentWindow;
 
     if(contentWindow.postMessage) {
-      contentWindow.postMessage({
-        type: type,
-        payload: payload
-      }, "*");
+      contentWindow.postMessage(payload.toJS(), "*");
     }
   },
 
@@ -58,15 +55,11 @@ var AppIframe = React.createClass({
     if (!event) {
       return;
     }
-    this._postMessage("store", event);
+    this._postMessage(Projections.storePayload(event));
   },
 
   _onMessageChange(event) {
-    var payload = {
-      type:(event.get("namespace") + "." + event.get("key")),
-      data: safeJSONParse(event.get("value"))
-    };
-    this._postMessage("trigger", payload);
+    this._postMessage(Projections.generatorPayload(event));
   },
 
   render() {

@@ -5,6 +5,8 @@ var Immutable = require("immutable");
 var EventEmitter = require("events").EventEmitter;
 var Constants = require("../constants/app_constants");
 var ActionTypes = Constants.ActionTypes;
+var safeJSONParse = require("../lib/safe_json_parse");
+var Projections = require("../projections/app_projections");
 var CHANGE_EVENT = Constants.ChangeTypes.LOG_CHANGE;
 var whitelist = Immutable.fromJS({
   on: ["*"],
@@ -71,11 +73,45 @@ class LoggerStore extends EventEmitter {
     }
   }
 
+  _receiveGeneratedMessage(data) {
+    data = Projections.generatorPayload(data)
+      .set("direction", "to");
+    this._state = this._state.push(Immutable.Map(data));
+  }
+
+  _receiveStoreConfiguration(data) {
+    var payload = Immutable.Map()
+      .setIn(["data", "key"], data.get("key").split(".")[1])
+      .setIn(["data", "value"], Immutable.fromJS(safeJSONParse(data.get("value"))));
+    data = Projections.storePayload(payload)
+      .set("direction", "to")
+      .setIn(["payload", "type"], "set");
+    this._state = this._state.push(data);
+  }
+
+  _deleteStoreItem(key) {
+    var payload = Immutable.Map()
+      .setIn(["data", "key"], key.split(".")[1]);
+    payload = Projections.storePayload(payload)
+      .set("direction", "to")
+      .setIn(["payload", "type"], "unset");
+    this._state = this._state.push(payload);
+  }
+
   _registerInterests() {
     this.dispatchIndex = AppDispatcher.register((action) => {
       switch(action.type) {
         case ActionTypes.RECEIVE_POST_MESSAGE:
           this._receivePostMessage(action.payload);
+        break;
+        case ActionTypes.RECEIVE_GENERATED_MESSAGE:
+          this._receiveGeneratedMessage(action.payload);
+        break;
+        case ActionTypes.RECEIVE_STORE_CONFIGURATION:
+          this._receiveStoreConfiguration(action.payload);
+        break;
+        case ActionTypes.DELETE_STORE_ITEM:
+          this._deleteStoreItem(action.payload);
         break;
       }
       this.emitChange();
