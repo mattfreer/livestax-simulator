@@ -6,6 +6,16 @@ var EventEmitter = require("events").EventEmitter;
 var Constants = require("../constants/app_constants");
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = Constants.ChangeTypes.LOG_CHANGE;
+var whitelist = Immutable.fromJS({
+  on: ["*"],
+  off: ["*"],
+  trigger: ["*"],
+  dialog: ["show"],
+  menu: ["set", "unset", "clear"],
+  store: ["watch", "unwatch", "set", "unset", "get"],
+  title: ["set"],
+  flash: ["primary", "success", "info", "danger", "warning"]
+});
 
 class LoggerStore extends EventEmitter {
   constructor() {
@@ -38,10 +48,27 @@ class LoggerStore extends EventEmitter {
     return this._state;
   }
 
+  hasWildcardSubtype(data) {
+    return whitelist.get(data.type).contains("*");
+  }
+
+  isSubtypeInWhitelist(data) {
+    if (this.hasWildcardSubtype(data)) {
+      return true;
+    }
+    return whitelist.get(data.type).contains(data.payload.type);
+  }
+
+  isTypeInWhitelist(data) {
+    return whitelist.has(data.type);
+  }
+
   _receivePostMessage(data) {
-    data = Immutable.Map(data)
-      .set("direction", "from");
-    this._state = this._state.push(Immutable.Map(data));
+    if(this.isTypeInWhitelist(data) && this.isSubtypeInWhitelist(data)) {
+      data = Immutable.Map(data)
+        .set("direction", "from");
+      this._state = this._state.push(Immutable.Map(data));
+    }
   }
 
   _registerInterests() {
