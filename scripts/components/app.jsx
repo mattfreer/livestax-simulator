@@ -39,10 +39,10 @@ var App = React.createClass({
           <AppPanel />
           <VerticalPanelBlock>
             <StorePanel />
-            <Logger />
             <History heading="History" onClick={this.triggerHistory} />
           </VerticalPanelBlock>
         </div>
+        <Logger />
       </div>
     );
   }
