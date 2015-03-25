@@ -23,6 +23,18 @@ var Logger = React.createClass({
     LogStore.removeChangeListener(this._onChange);
   },
 
+  componentWillUpdate() {
+    var node = this.getDOMNode().querySelector(".panel-collapse");
+    this.shouldScroll = node.scrollTop + node.offsetHeight >= node.scrollHeight;
+  },
+
+  componentDidUpdate() {
+    if (this.shouldScroll) {
+      var node = this.getDOMNode().querySelector(".panel-collapse");
+      node.scrollTop = node.scrollHeight;
+    }
+  },
+
   _onChange() {
     this.replaceState(getState());
   },
