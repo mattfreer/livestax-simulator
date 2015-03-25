@@ -5,6 +5,7 @@ var AppPanel = require("./app_panel");
 var VerticalPanelBlock = require("./vertical_panel_block");
 var AppConfigurator = require("./app_configurator");
 var StorePanel = require("./store_panel");
+var Logger = require("./logger");
 var AppActions = require("../actions/app_actions");
 var MessageGenerator = require("./message_generator");
 var Constants = require("../constants/app_constants");
@@ -38,9 +39,8 @@ var App = React.createClass({
           <AppPanel />
           <VerticalPanelBlock>
             <StorePanel />
-            <History heading="History"
-              onClick={this.triggerHistory}
-            />
+            <Logger />
+            <History heading="History" onClick={this.triggerHistory} />
           </VerticalPanelBlock>
         </div>
       </div>
