@@ -5,6 +5,7 @@ var CollapsiblePanel = require("./lib/collapsible_panel");
 var HistoryStore = require("../stores/history_store");
 var HistoryActions = require("../actions/history_actions");
 var Constants = require("../constants/app_constants");
+var FilterList = require("./lib/filter_list");
 var HistoryTypes = Constants.History;
 var Moment = require("moment");
 var Immutable = require("immutable");
@@ -17,10 +18,24 @@ var historyIcons = Immutable.Map()
   .set(HistoryTypes.APPS, "cog")
   .set(HistoryTypes.MESSAGES, "volume-off");
 
-var historyFilters = Immutable.Map()
-  .set("all", "All")
-  .set(HistoryTypes.APPS, "App config")
-  .set(HistoryTypes.MESSAGES, "Messages");
+var getFilters = () => {
+  var labels = Immutable.Map()
+    .set(HistoryTypes.APPS, "App config")
+    .set(HistoryTypes.MESSAGES, "Messages");
+
+  return HistoryStore.getHistoryTypes().map((item) => {
+    return Immutable.Map({
+      label: labels.get(item),
+      data: item
+    });
+  });
+};
+
+var doesFilterExist = (list, filter) => {
+  return list.map((item) => {
+    return item.get("data");
+  }).contains(filter);
+};
 
 var History = React.createClass({
   propTypes: {
@@ -30,8 +45,9 @@ var History = React.createClass({
 
   getInitialState() {
     return Immutable.fromJS({
-      filter: this.props.historyKey,
-      historyItems: HistoryStore.getHistory(this.props.historyKey)
+      historyItems: HistoryStore.getHistory(this.props.historyKey),
+      filters: getFilters(),
+      filter: undefined
     });
   },
 
@@ -44,24 +60,15 @@ var History = React.createClass({
   },
 
   _onChange() {
-    this.replaceState(this.state.set("historyItems",
-      HistoryStore.getHistory(this.state.get("filter"))
-    ));
+    this.onFilterChange(this.state.get("filter"));
   },
 
   triggerHistoryClick(historyItem) {
     this.props.onClick(historyItem);
   },
 
-  doesFilterExist(key) {
-    return HistoryStore.getHistoryTypes().contains(key);
-  },
-
   deleteHistoryItem(key, historyItem) {
     HistoryActions.deleteHistoryItem(key, historyItem);
-    if(!this.doesFilterExist(key)) {
-      this.applyFilter("all");
-    }
   },
 
   getHistoryType(item) {
@@ -69,41 +76,6 @@ var History = React.createClass({
       return item.get("historyType");
     }
     return this.props.historyKey;
-  },
-
-  applyFilter(item) {
-    var filter = item === "all" ? undefined : item;
-
-    var nextState = this.state
-      .set("filter", filter)
-      .set("historyItems", HistoryStore.getHistory(filter));
-
-    this.replaceState(nextState);
-  },
-
-  buildFilterList() {
-    var historyTypes = HistoryStore.getHistoryTypes();
-
-    if(!historyTypes.isEmpty()) {
-      return historyTypes
-        .unshift("all")
-        .map((item) => {
-          var itemCssClass = "label label-default";
-
-          if(item === this.state.get("filter") || item === "all" && !this.state.get("filter")) {
-            itemCssClass = "label label-primary";
-          }
-
-          return <span
-            onClick={this.applyFilter.bind(this, item)}
-            key={item}
-            className={itemCssClass}>
-            {historyFilters.get(item)}
-          </span>
-        }
-      ).toJS();
-    }
-    return [];
   },
 
   buildHistoryItemsList() {
@@ -127,12 +99,28 @@ var History = React.createClass({
     }).toJS();
   },
 
+  onFilterChange(filter) {
+    var filters = getFilters();
+
+    if(!doesFilterExist(filters, filter)) {
+      filter = undefined;
+    }
+
+    var nextState = this.state
+      .set("filters", filters)
+      .set("filter", filter)
+      .set("historyItems", HistoryStore.getHistory(filter));
+
+    this.replaceState(nextState);
+  },
+
   render() {
     return (
       <CollapsiblePanel heading={this.props.heading}>
-        <div className="history-filter">
-          {this.buildFilterList()}
-        </div>
+        <FilterList filters={this.state.get("filters").toJS()}
+          active={this.state.get("filter")}
+          onFilterChange={this.onFilterChange} />
+
         <table className="table table-condensed table-hover history-table">
           <tbody>
             {this.buildHistoryItemsList()}

@@ -79,13 +79,6 @@ describe("History", () => {
       filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
     });
 
-    it("renders a filter per history type", function() {
-      var filterText = Immutable.List(filters).map((item) => {
-        return item.getDOMNode().textContent;
-      });
-      expect(filterText).to.eql(Immutable.List(["All", "App config", "Messages"]));
-    });
-
     describe("when a filter is selected", () => {
       it("only renders history items for that filter", function() {
         TestUtils.Simulate.click(filters[2].getDOMNode());
