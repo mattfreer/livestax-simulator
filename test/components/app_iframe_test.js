@@ -19,7 +19,7 @@ describe("AppIframe", () => {
   describe("postMessage", () => {
 
     beforeEach(() => {
-      appIframe = TestUtils.renderIntoDocument(<AppIframe usePost={false} postData={Immutable.Map()} />);
+      appIframe = TestUtils.renderIntoDocument(<AppIframe src="http://foo.com/bar.html" usePost={false} postData={Immutable.Map()} />);
       iframe = TestUtils.findRenderedDOMComponentWithTag(appIframe, "iframe");
       contentWindow = iframe.getDOMNode().contentWindow;
 
@@ -28,6 +28,10 @@ describe("AppIframe", () => {
       } else {
         contentWindow.postMessage = sinon.stub();
       }
+    });
+
+    afterEach(() => {
+      React.unmountComponentAtNode(appIframe.getDOMNode().parentNode);
     });
 
     describe("when a store event is received", () => {
@@ -99,7 +103,7 @@ describe("AppIframe", () => {
   describe("When use_post is true", () => {
     it("renders a form and an iframe", () => {
       var postData = Immutable.fromJS({payload: {}, secret_key: "key"});
-      appIframe = TestUtils.renderIntoDocument(<AppIframe usePost={true} postData={postData} />);
+      appIframe = TestUtils.renderIntoDocument(<AppIframe src="http://foo.com/bar.html" usePost={true} postData={postData} />);
       iframe = TestUtils.findRenderedDOMComponentWithTag(appIframe, "iframe");
       var form = TestUtils.findRenderedDOMComponentWithTag(appIframe, "form");
       expect(iframe.getDOMNode()).to.not.eql(null);
@@ -110,7 +114,7 @@ describe("AppIframe", () => {
   describe("When use_post is false", () => {
     it("doesn't render a form", () => {
       var postData = Immutable.fromJS({payload: {}, secret_key: "key"});
-      appIframe = TestUtils.renderIntoDocument(<AppIframe usePost={false} postData={postData} />);
+      appIframe = TestUtils.renderIntoDocument(<AppIframe src="http://foo.com/bar.html" usePost={false} postData={postData} />);
       iframe = TestUtils.findRenderedDOMComponentWithTag(appIframe, "iframe");
       var forms = TestUtils.scryRenderedDOMComponentsWithTag(appIframe, "form");
       expect(iframe.getDOMNode()).to.not.eql(null);

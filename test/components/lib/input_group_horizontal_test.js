@@ -16,11 +16,14 @@ describe("InputGroup", () => {
 
   describe("props.children", () => {
     it("puts the children in a div", () => {
-      var instance = TestUtils.renderIntoDocument(<InputGroup>
+      var instance = TestUtils.renderIntoDocument(<InputGroup label="My Label">
         <h1>Test</h1>
         <h2>Content</h2>
       </InputGroup>);
-      expect(instance.getDOMNode().textContent).to.eql("TestContent");
+      var header1 = TestUtils.findRenderedDOMComponentWithTag(instance, "h1");
+      var header2 = TestUtils.findRenderedDOMComponentWithTag(instance, "h2");
+      expect(header1.getDOMNode().textContent).to.eql("Test");
+      expect(header2.getDOMNode().textContent).to.eql("Content");
     });
   });
 });

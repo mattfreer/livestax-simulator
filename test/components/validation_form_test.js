@@ -9,43 +9,56 @@ var Input = require("../../scripts/components/lib/input_horizontal");
 var Immutable = require("immutable");
 
 describe("ValidationForm", () => {
+  var instance, data, validations, errors, onErrorCallback, onSubmitFormCallback;
+
+  beforeEach(() => {
+    data = Immutable.fromJS({
+      firstname: ""
+    });
+
+    validations = {
+      firstname: [Validator.required]
+    };
+
+    onErrorCallback = sinon.spy((e) => {
+      errors = e;
+    });
+
+    onSubmitFormCallback = sinon.stub();
+  });
+
+  afterEach(() => {
+    React.unmountComponentAtNode(instance.getDOMNode().parentNode);
+  });
+
   it("renders the children", () => {
-      var instance = TestUtils.renderIntoDocument(
-        <ValidationForm>
-          <h2>Heading</h2>
-        </ValidationForm>
-      );
-      var heading = TestUtils.findRenderedDOMComponentWithTag(instance, "h2");
-      expect(heading.getDOMNode().textContent).to.eql("Heading");
+    instance = TestUtils.renderIntoDocument(
+      <ValidationForm fields={data}
+        validations={validations}
+        onError={onErrorCallback}
+        onSubmit={onSubmitFormCallback}>
+
+        <h2>Heading</h2>
+      </ValidationForm>
+    );
+
+    var heading = TestUtils.findRenderedDOMComponentWithTag(instance, "h2");
+    expect(heading.getDOMNode().textContent).to.eql("Heading");
   });
 
   describe("validation", () => {
-    var validations, onErrorCallback, errors, onSubmitFormCallback;
-
-    beforeEach(() => {
-      validations = {
-        firstname: [Validator.required]
-      };
-      onErrorCallback = sinon.spy((e) => {
-        errors = e;
-      })
-      onSubmitFormCallback = sinon.stub();
-    });
 
     describe("when validation errors exist", () => {
-      var instance, submitBtn;
+      var submitBtn;
 
       beforeEach(() => {
-        var data = Immutable.fromJS({
-          firstname: ""
-        });
-
         instance = TestUtils.renderIntoDocument(
           <ValidationForm fields={data}
             validations={validations}
-            onError={onErrorCallback}>
+            onError={onErrorCallback}
+            onSubmit={onSubmitFormCallback}>
 
-            <Input name="firstname" />
+            <Input name="firstname" label="firstname" />
             <button type="submit">Submit</button>
           </ValidationForm>
         );
@@ -71,7 +84,7 @@ describe("ValidationForm", () => {
     });
 
     describe("when no validation errors exist", () => {
-      var instance, submitBtn;
+      var submitBtn;
 
       beforeEach(() => {
         var data = Immutable.fromJS({
@@ -81,9 +94,10 @@ describe("ValidationForm", () => {
         instance = TestUtils.renderIntoDocument(
           <ValidationForm fields={data}
             validations={validations}
+            onError={onErrorCallback}
             onSubmit={onSubmitFormCallback}>
 
-            <Input name="firstname" />
+            <Input name="firstname" label="firstname" />
             <button type="submit">Submit</button>
           </ValidationForm>
         );

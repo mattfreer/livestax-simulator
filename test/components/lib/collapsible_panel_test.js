@@ -11,7 +11,7 @@ describe("CollapsiblePanel", () => {
       var instance;
 
       beforeEach(() => {
-        instance = TestUtils.renderIntoDocument(<CollapsiblePanel />);
+        instance = TestUtils.renderIntoDocument(<CollapsiblePanel heading="foo" />);
       });
 
       it("applies an `expanded` css class to the panel element", () => {
@@ -34,7 +34,7 @@ describe("CollapsiblePanel", () => {
       var instance;
 
       beforeEach(() => {
-        instance = TestUtils.renderIntoDocument(<CollapsiblePanel collapsed={false} />);
+        instance = TestUtils.renderIntoDocument(<CollapsiblePanel heading="foo" collapsed={false} />);
       });
 
       it("applies an `expanded` css class to the panel element", () => {
@@ -57,7 +57,7 @@ describe("CollapsiblePanel", () => {
       var instance;
 
       beforeEach(() => {
-        instance = TestUtils.renderIntoDocument(<CollapsiblePanel collapsed={true} />);
+        instance = TestUtils.renderIntoDocument(<CollapsiblePanel heading="foo" collapsed={true} />);
       });
 
       it("doesn't apply a `expanded` css class to the panel element", () => {
@@ -87,13 +87,13 @@ describe("CollapsiblePanel", () => {
 
   describe("props.type", () => {
     it("applies a panel-default class by default", () => {
-      var instance = TestUtils.renderIntoDocument(<CollapsiblePanel />);
+      var instance = TestUtils.renderIntoDocument(<CollapsiblePanel heading="foo" />);
       var panel = TestUtils.findRenderedDOMComponentWithClass(instance, "panel");
       expect(panel.getDOMNode().className).to.include("panel-default");
     });
 
     it("applies a panel-warning class when type is warning", () => {
-      var instance = TestUtils.renderIntoDocument(<CollapsiblePanel type="warning"/>);
+      var instance = TestUtils.renderIntoDocument(<CollapsiblePanel heading="foo" type="warning"/>);
       var panel = TestUtils.findRenderedDOMComponentWithClass(instance, "panel");
       expect(panel.getDOMNode().className).to.include("panel-warning");
     });

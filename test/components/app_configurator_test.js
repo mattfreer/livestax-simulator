@@ -233,7 +233,7 @@ describe("AppConfigurator", () => {
         var errors = Immutable.List(appConfigurator.getDOMNode().querySelectorAll(".help-block"))
           .map((item) => { return item.textContent; })
           .filter((item) => { return item === "Can't be blank"; });
-        expect(errors.length).to.eql(2);
+        expect(errors.size).to.eql(2);
       });
     });
   });
