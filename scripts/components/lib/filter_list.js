@@ -23,7 +23,7 @@ var FilterList = React.createClass({
     }
 
     return filters
-      .map((item) => {
+      .map((item, index) => {
         var itemCssClass = "label label-default";
 
         if(item.data === this.props.active) {
@@ -33,7 +33,7 @@ var FilterList = React.createClass({
         return (
           <span
             onClick={this.applyFilter.bind(this, item.data)}
-            key={item.data}
+            key={index}
             className={itemCssClass}>
             {item.label}
           </span>
