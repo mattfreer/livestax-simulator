@@ -14,7 +14,8 @@ describe("Logger", () => {
     var logState = Immutable.fromJS([
       {
         type: "on",
-        payload: {type: "another-app.some_id"}
+        payload: {type: "another-app.some_id"},
+        direction: "from"
       },
       {
         type: "store",
@@ -24,7 +25,8 @@ describe("Logger", () => {
             key: "selected_customer",
             value: 57
           }
-        }
+        },
+        direction: "to"
       },
     ]);
     LoggerStore.replaceState(logState);
@@ -35,10 +37,12 @@ describe("Logger", () => {
     var rows = TestUtils.scryRenderedDOMComponentsWithTag(logger, "tr");
     expect(rows[0].getDOMNode().textContent).to.include("on");
     expect(rows[0].getDOMNode().textContent).to.include("another-app.some_id");
+    expect(rows[0].getDOMNode().querySelector("i").className).to.include("fa-sign-out");
     expect(rows[1].getDOMNode().textContent).to.include("store");
     expect(rows[1].getDOMNode().textContent).to.include("set");
     expect(rows[1].getDOMNode().textContent).to.include("selected_customer");
     expect(rows[1].getDOMNode().textContent).to.include("57");
+    expect(rows[1].getDOMNode().querySelector("i").className).to.include("fa-sign-in");
   });
 
   it("clears the results when clear is pressed", function() {
