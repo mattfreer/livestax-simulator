@@ -12,6 +12,10 @@ describe("AppBlocker", () => {
       blocker = TestUtils.renderIntoDocument(React.createElement(AppBlocker, { status: "loading" }));
     });
 
+    afterEach(() => {
+      React.unmountComponentAtNode(blocker.getDOMNode().parentNode);
+    });
+
     it("renders loading text", () => {
       expect(blocker.getDOMNode().textContent).to.include("loading");
     });

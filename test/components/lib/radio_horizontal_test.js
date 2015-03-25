@@ -20,13 +20,14 @@ describe("Radio", () => {
 
   describe("props.checked", () => {
     it("sets the checked attribute of the input when false", () => {
-      var instance = TestUtils.renderIntoDocument(<Radio checked={false} />);
+      var instance = TestUtils.renderIntoDocument(<Radio name="male" checked={false} />);
       var element = TestUtils.findRenderedDOMComponentWithTag(instance, "input");
       expect(element.getDOMNode().checked).to.eql(false);
     });
 
     it("sets the checked attribute of the input when true", () => {
-      var instance = TestUtils.renderIntoDocument(<Radio checked={true} />);
+      var callback = sinon.spy();
+      var instance = TestUtils.renderIntoDocument(<Radio name="male" onChange={callback} checked={true} />);
       var element = TestUtils.findRenderedDOMComponentWithTag(instance, "input");
       expect(element.getDOMNode().checked).to.eql(true);
     });
@@ -35,7 +36,7 @@ describe("Radio", () => {
   describe("props.onChange", () => {
     it("calls the passed function when the input changes", () => {
       var callback = sinon.spy();
-      var instance = TestUtils.renderIntoDocument(<Radio onChange={callback} />);
+      var instance = TestUtils.renderIntoDocument(<Radio name="male" onChange={callback} />);
       var element = TestUtils.findRenderedDOMComponentWithTag(instance, "input");
       TestUtils.Simulate.change(element.getDOMNode(), {});
       expect(callback).to.have.been.called;
@@ -44,7 +45,7 @@ describe("Radio", () => {
 
   describe("props.text", () => {
     it("outputs the text in a label next to the checkbox", () => {
-      var instance = TestUtils.renderIntoDocument(<Radio text="Male" />);
+      var instance = TestUtils.renderIntoDocument(<Radio name="male" text="Male" />);
       var element = TestUtils.findRenderedDOMComponentWithTag(instance, "label");
       expect(element.getDOMNode().textContent).to.eql("Male");
     });
@@ -52,7 +53,7 @@ describe("Radio", () => {
 
   describe("other props", () => {
     it("puts all other props on the input", () => {
-      var instance = TestUtils.renderIntoDocument(<Radio disabled="true" title="bar" />);
+      var instance = TestUtils.renderIntoDocument(<Radio name="male" disabled="true" title="bar" />);
       var element = TestUtils.findRenderedDOMComponentWithTag(instance, "input");
       expect(element.getDOMNode().disabled).to.eql(true);
       expect(element.getDOMNode().title).to.eql("bar");

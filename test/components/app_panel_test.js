@@ -18,6 +18,10 @@ describe("AppPanel", () => {
     blocker = TestUtils.findRenderedComponentWithType(appPanel, AppBlocker);
   });
 
+  afterEach(() => {
+    React.unmountComponentAtNode(appPanel.getDOMNode().parentNode);
+  });
+
   describe("when loading", () => {
     it("renders an iframe with the correct src", () => {
       expect(iframe.getDOMNode().querySelector("iframe").src).to.eql("examples/app.html");

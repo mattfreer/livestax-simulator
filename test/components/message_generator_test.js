@@ -16,6 +16,10 @@ describe("MessageGenerator", () => {
     form = TestUtils.findRenderedDOMComponentWithTag(messageGenerator, "form");
   });
 
+  afterEach(() => {
+    React.unmountComponentAtNode(messageGenerator.getDOMNode().parentNode);
+  });
+
   it("displays a form with the store values", () => {
     var message = MessageStore.getMessage();
     expect(inputs[0].getDOMNode().value).to.eql(message.get("namespace"));

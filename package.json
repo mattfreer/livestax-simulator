@@ -1,6 +1,10 @@
 {
   "name": "livestax-simulator",
   "version": "0.1.0",
+  "repository": {
+    "type" : "git",
+    "url" : "http://github.com/livestax/livestax-simulator.git"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "mocha --recursive --compilers js:test/compiler"
@@ -14,6 +18,7 @@
     "jsdom": "^3.1.1",
     "jsx-loader": "^0.12.2",
     "jsx-require-extension": "^0.2.0",
+    "less": "^2.3.1",
     "less-loader": "^2.0.0",
     "matchdep": "^0.3.0",
     "mocha": "^2.1.0",

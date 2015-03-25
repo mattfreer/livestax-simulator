@@ -26,6 +26,7 @@ describe("StorePanel", () => {
 
   afterEach(() => {
     AppActions.receiveStoreConfiguration.restore();
+    React.unmountComponentAtNode(storePanel.getDOMNode().parentNode);
   });
 
   describe("when the form is changed with valid data", () => {

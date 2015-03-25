@@ -8,7 +8,7 @@ var TestUtils = React.addons.TestUtils;
 var SignedRequestApp = require("../../scripts/components/signed_request_app");
 
 describe("SignedRequestAll", () => {
-  var payload;
+  var payload, app;
 
   beforeEach(() => {
     payload = Immutable.Map({
@@ -20,12 +20,16 @@ describe("SignedRequestAll", () => {
     });
   });
 
+  afterEach(() => {
+    React.unmountComponentAtNode(app.getDOMNode().parentNode);
+  });
+
   it("populates the signed request input", () => {
     var postData = Immutable.fromJS({
       secret_key: "bananas",
       payload: payload
     });
-    var app = TestUtils.renderIntoDocument(<SignedRequestApp src="examples/test_app.html" postData={postData} />);
+    app = TestUtils.renderIntoDocument(<SignedRequestApp src="examples/test_app.html" postData={postData} />);
     var input = TestUtils.findRenderedDOMComponentWithTag(app, "input");
     var expected = jwt.encode(payload, "bananas");
     expect(input.getDOMNode().value).to.eql(expected);
@@ -38,7 +42,7 @@ describe("SignedRequestAll", () => {
         secret_key: "bananas",
         payload: guestPayload
       });
-      var app = TestUtils.renderIntoDocument(<SignedRequestApp src="examples/test_app.html" postData={postData} />);
+      app = TestUtils.renderIntoDocument(<SignedRequestApp src="examples/test_app.html" postData={postData} />);
       var input = TestUtils.findRenderedDOMComponentWithTag(app, "input");
       var expected = jwt.encode(guestPayload.set("user_id", null), "bananas");
       expect(input.getDOMNode().value).to.eql(expected);

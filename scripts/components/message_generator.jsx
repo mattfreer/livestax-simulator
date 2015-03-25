@@ -62,21 +62,21 @@ var MessageGenerator = React.createClass({
 
           <Input label="Namespace"
             name="namespace"
-            value={message.get("namespace")}
+            value={message.get("namespace").toString()}
             error={errors.getIn(["namespace", 0])}
             onChange={this.changeField}
           />
 
           <Input label="Key"
             name="key"
-            value={message.get("key")}
+            value={message.get("key").toString()}
             error={errors.getIn(["key", 0])}
             onChange={this.changeField}
           />
 
           <Input label="Value"
             name="value"
-            value={message.get("value")}
+            value={message.get("value").toString()}
             error={errors.getIn(["value", 0])}
             onChange={this.changeField}
           />

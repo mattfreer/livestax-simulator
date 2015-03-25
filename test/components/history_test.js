@@ -43,6 +43,7 @@ describe("History", () => {
 
   afterEach(() => {
     clock.restore();
+    React.unmountComponentAtNode(history.getDOMNode().parentNode);
   });
 
   it("renders a tr per history item", function() {
