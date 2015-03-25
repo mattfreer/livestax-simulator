@@ -43,6 +43,10 @@ var Logger = React.createClass({
     LoggerActions.clearLog();
   },
 
+  arrowClass(log) {
+    return log.get("direction") === "to" ? "sign-in text-muted" : "sign-out text-primary";
+  },
+
   _renderLog(log, key) {
     var payload = log.get("payload");
     var subtype = (<span className="text-muted">null</span>);
@@ -61,7 +65,10 @@ var Logger = React.createClass({
     }
 
     return (<tr key={key}>
-        <td>{log.get("type")}</td>
+        <td>
+          <i className={"fa fa-" + this.arrowClass(log)}></i>
+          {log.get("type")}
+        </td>
         <td>{subtype}</td>
         <td>{payload}</td>
       </tr>);
