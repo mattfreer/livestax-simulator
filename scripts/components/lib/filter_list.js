@@ -44,7 +44,7 @@ var FilterList = React.createClass({
 
   render() {
     return (
-      <div className="history-filter">
+      <div className="filters">
         {this.renderFilterList()}
       </div>
     );

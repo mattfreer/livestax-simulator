@@ -5,11 +5,30 @@ var Immutable = require("immutable");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var LogStore = require("../stores/logger_store");
 var LoggerActions = require("../actions/logger_actions");
+var FilterList = require("./lib/filter_list");
+
+var getFilters = () => {
+  return LogStore.getLogTypes().map((item) => {
+    return Immutable.Map({
+      label: item,
+      data: item
+    });
+  });
+};
 
 var getState = () => {
   return Immutable.Map({
-    logs: LogStore.getLogs()
+    logs: LogStore.getLogs(),
+    filters: getFilters(),
+    filter: undefined
   });
+};
+
+
+var doesFilterExist = (list, filter) => {
+  return list.map((item) => {
+    return item.get("data");
+  }).contains(filter);
 };
 
 var Logger = React.createClass({
@@ -74,6 +93,21 @@ var Logger = React.createClass({
       </tr>);
   },
 
+  onFilterChange(filter) {
+    var filters = getFilters();
+
+    if(!doesFilterExist(filters, filter)) {
+      filter = undefined;
+    }
+
+    var nextState = this.state
+      .set("filters", filters)
+      .set("filter", filter)
+      .set("logs", LogStore.getLogs(filter));
+
+    this.replaceState(nextState);
+  },
+
   render() {
     var logs = this.state.get("logs").map(this._renderLog).toJS();
 
@@ -88,7 +122,11 @@ var Logger = React.createClass({
     return (
       <CollapsiblePanel heading="Logger">
         <div className="logger-actions">
-          <button className="btn btn-primary btn-xs clear-logger" onClick={this.clear}>
+          <FilterList filters={this.state.get("filters").toJS()}
+            active={this.state.get("filter")}
+            onFilterChange={this.onFilterChange} />
+
+          <button className="btn btn-danger btn-xs clear-logger" onClick={this.clear}>
             Clear
           </button>
         </div>

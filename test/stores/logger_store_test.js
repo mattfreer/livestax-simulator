@@ -144,5 +144,39 @@ describe("LoggerStore", () => {
         expect(logs.size).to.eql(0);
       });
     });
+
+    describe("when multiple log types exist", () => {
+      beforeEach(() => {
+        AppActions.receiveGeneratedMessage(Immutable.fromJS({
+          namespace: "some-app",
+          key: "some-key",
+          value: 123
+        }));
+
+        AppActions.deleteStoreItem("some-app.some-key");
+        AppActions.deleteStoreItem("some-app.some-other-key");
+      });
+
+      it("returns the logs for a specified filter", () => {
+        expect(LoggerStore.getLogs("trigger").size).to.eql(1);
+        expect(LoggerStore.getLogs("store").size).to.eql(2);
+      });
+    });
+  });
+
+  describe("getLogTypes", () => {
+    it("returns a (unique) set of all log types", () => {
+      AppActions.receiveGeneratedMessage(Immutable.fromJS({
+        namespace: "some-app",
+        key: "some-key",
+        value: 123
+      }));
+
+      AppActions.deleteStoreItem("some-app.some-key");
+      AppActions.deleteStoreItem("some-app.some-key");
+
+      var types = LoggerStore.getLogTypes();
+      expect(Immutable.is(types, Immutable.Set(["store", "trigger"]))).to.be.true;
+    });
   });
 });

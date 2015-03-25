@@ -98,7 +98,6 @@ html, body, .main-container {
 
 .table-condensed.logger-table {
   border: 1px solid @background-color;
-  margin-top: 30px;
   margin-bottom: 0;
   font-size: 12px;
   font-family: monospace;
@@ -123,7 +122,12 @@ html, body, .main-container {
 }
 
 .logger-actions {
-  position: fixed;
+  width: 100%;
+  height: 30px;
+
+  .filters {
+    float: left;
+  }
 
   .clear-logger {
     cursor: pointer;
@@ -186,7 +190,7 @@ html, body, .main-container {
   }
 }
 
-.history-filter {
+.filters {
   margin-bottom: 1em;
 
   span {
