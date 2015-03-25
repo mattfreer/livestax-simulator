@@ -46,8 +46,19 @@ class LoggerStore extends EventEmitter {
     this._state = Immutable.List();
   }
 
-  getLogs() {
-    return this._state;
+  getLogs(filter) {
+    if(filter === undefined) {
+      return this._state;
+    }
+    return this._state.filter((item) => {
+      return item.get("type") === filter;
+    });
+  }
+
+  getLogTypes() {
+    return this._state.reduce((acc, item) => {
+      return acc.add(item.get("type"));
+    }, Immutable.Set());
   }
 
   hasWildcardSubtype(data) {
