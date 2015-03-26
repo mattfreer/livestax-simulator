@@ -12,9 +12,15 @@ var filters = [
 ];
 
 describe("FilterList", () => {
+  var callback;
+
+  beforeEach(() => {
+    callback = sinon.stub();
+  });
+
   it("renders labels for each filter and includes an `All` filter", () => {
     var instance = TestUtils.renderIntoDocument(
-      <FilterList filters={filters} />
+      <FilterList filters={filters} onFilterChange={callback} />
     );
     var labels = TestUtils.scryRenderedDOMComponentsWithClass(instance, "label");
     var filterText = Immutable.List(labels).map((item) => {
@@ -24,8 +30,6 @@ describe("FilterList", () => {
   });
 
    describe("when a filter is clicked", () => {
-     var callback = sinon.stub();
-
      it("triggers `props.onFilterChange`", () => {
        var instance = TestUtils.renderIntoDocument(
          <FilterList filters={filters} onFilterChange={callback} />
@@ -36,6 +40,5 @@ describe("FilterList", () => {
        expect(callback).to.have.been.calledWith("messages");
      });
    });
-
 });
 
