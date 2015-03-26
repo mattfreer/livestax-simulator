@@ -6,6 +6,7 @@ var HistoryStore = require("../stores/history_store");
 var HistoryActions = require("../actions/history_actions");
 var Constants = require("../constants/app_constants");
 var FilterList = require("./lib/filter_list");
+var PanelToolbar = require("./lib/panel_toolbar");
 var HistoryTypes = Constants.History;
 var Moment = require("moment");
 var Immutable = require("immutable");
@@ -117,9 +118,11 @@ var History = React.createClass({
   render() {
     return (
       <CollapsiblePanel heading={this.props.heading}>
-        <FilterList filters={this.state.get("filters").toJS()}
-          active={this.state.get("filter")}
-          onFilterChange={this.onFilterChange} />
+        <PanelToolbar>
+          <FilterList filters={this.state.get("filters").toJS()}
+            active={this.state.get("filter")}
+            onFilterChange={this.onFilterChange} />
+        </PanelToolbar>
 
         <table className="table table-condensed table-hover history-table">
           <tbody>

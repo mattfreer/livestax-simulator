@@ -6,6 +6,7 @@ var CollapsiblePanel = require("./lib/collapsible_panel");
 var LogStore = require("../stores/logger_store");
 var LoggerActions = require("../actions/logger_actions");
 var FilterList = require("./lib/filter_list");
+var PanelToolbar = require("./lib/panel_toolbar");
 
 var getFilters = () => {
   return LogStore.getLogTypes().map((item) => {
@@ -121,15 +122,18 @@ var Logger = React.createClass({
 
     return (
       <CollapsiblePanel heading="Logger">
-        <div className="logger-actions">
-          <FilterList filters={this.state.get("filters").toJS()}
-            active={this.state.get("filter")}
-            onFilterChange={this.onFilterChange} />
+        <PanelToolbar>
+          <div className="logger-actions">
+            <FilterList filters={this.state.get("filters").toJS()}
+              active={this.state.get("filter")}
+              onFilterChange={this.onFilterChange} />
 
-          <button className="btn btn-danger btn-xs clear-logger" onClick={this.clear}>
-            Clear
-          </button>
-        </div>
+            <span className="label label-danger clear-logger" onClick={this.clear}>
+              Clear
+            </span>
+          </div>
+        </PanelToolbar>
+
         <table className="table table-condensed table-hover logger-table">
           <tbody>
             {logs}
