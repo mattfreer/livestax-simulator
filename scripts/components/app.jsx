@@ -11,6 +11,7 @@ var MessageGenerator = require("./message_generator");
 var Constants = require("../constants/app_constants");
 var HistoryTypes = Constants.History;
 var History = require("./history");
+var FlashMessage = require("./flash_message");
 var Immutable = require("immutable");
 
 var cleanHistoryItem = (item) => {
@@ -40,6 +41,7 @@ var App = React.createClass({
           <VerticalPanelBlock>
             <StorePanel />
             <History heading="History" onClick={this.triggerHistory} />
+            <FlashMessage heading="Flash Message"/>
           </VerticalPanelBlock>
         </div>
         <Logger />
