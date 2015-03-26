@@ -22,6 +22,14 @@ class FlashMessageStore extends EventEmitter {
     this.emitChange();
   }
 
+  replaceState(state) {
+    if(!Immutable.is(state, Immutable.fromJS(state))) {
+      console.warn("replaceState expects an Immutable data structure");
+    }
+    this._state = state;
+    this.emitChange();
+  }
+
   getFlash() {
     return this._state.get("flash");
   }
