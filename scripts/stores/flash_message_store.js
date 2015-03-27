@@ -34,6 +34,10 @@ class FlashMessageStore extends EventEmitter {
     return this._state.get("flash");
   }
 
+  getInteraction() {
+    return this._state.get("interaction");
+  }
+
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   }
@@ -48,11 +52,19 @@ class FlashMessageStore extends EventEmitter {
     }
   }
 
+  _receiveFlashInteraction(data) {
+    this.setState(["interaction"], data.interaction);
+  }
+
   _registerInterests() {
     AppDispatcher.register((action) => {
       switch(action.type) {
         case ActionTypes.RECEIVE_POST_MESSAGE:
           this._receivePostMessage(action.payload);
+        break;
+
+        case ActionTypes.FLASH_INTERACTION:
+          this._receiveFlashInteraction(action.payload);
         break;
       }
     });

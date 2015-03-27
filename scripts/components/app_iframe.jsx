@@ -4,7 +4,9 @@ var React = require("react");
 var SignedRequestApp = require("./signed_request_app");
 var MessageStore = require("../stores/message_store");
 var KeyValueStore = require("../stores/key_value_store");
+var FlashMessageStore = require("../stores/flash_message_store");
 var Projections = require("../projections/app_projections");
+var Immutable = require("immutable");
 
 var AppIframe = React.createClass({
   propTypes:{
@@ -16,11 +18,13 @@ var AppIframe = React.createClass({
   componentDidMount() {
     MessageStore.addChangeListener(this._onMessageChange);
     KeyValueStore.addChangeListener(this._onKeyValueChange);
+    FlashMessageStore.addChangeListener(this._onFlashMessageChange);
   },
 
   componentWillUnmount() {
     MessageStore.removeChangeListener(this._onMessageChange);
     KeyValueStore.removeChangeListener(this._onKeyValueChange);
+    FlashMessageStore.removeChangeListener(this._onFlashMessageChange);
   },
 
   componentWillUpdate() {
@@ -60,6 +64,20 @@ var AppIframe = React.createClass({
 
   _onMessageChange(event) {
     this._postMessage(Projections.generatorPayload(event));
+  },
+
+  _onFlashMessageChange(event) {
+    var interaction = FlashMessageStore.getInteraction();
+
+    if(interaction) {
+      var payload = Immutable.Map({
+        type: "flash",
+        payload: {
+          type: interaction
+        }
+      });
+      this._postMessage(payload);
+    }
   },
 
   render() {

@@ -3,6 +3,7 @@
 var React = require("react");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var FlashMessageStore = require("../stores/flash_message_store");
+var FlashActions = require("../actions/flash_actions");
 
 var getState = () => {
   return FlashMessageStore.getFlash();
@@ -23,6 +24,25 @@ var FlashMessage = React.createClass({
     this.replaceState(FlashMessageStore.getFlash());
   },
 
+  triggerAction(type) {
+    FlashActions.flashInteraction({type: type});
+  },
+
+  renderButtons() {
+    return ["ignore", "dismiss", "confirm"]
+      .map((item, index) => {
+        return (
+          <a key={index}
+            href="#"
+            className="btn btn-default btn-xs"
+            onClick={this.triggerAction.bind(this, item)}>
+
+            {item}
+          </a>
+        )
+      });
+  },
+
   render() {
     if(this.state === null) {
       return (
@@ -39,6 +59,12 @@ var FlashMessage = React.createClass({
         <div className={panelClasses}>
           <div className="panel-body">
             {this.state.get("message")}
+          </div>
+
+          <div className="panel-footer">
+            <div className="btn-group btn-group-justified">
+              {this.renderButtons()}
+            </div>
           </div>
         </div>
       </CollapsiblePanel>
