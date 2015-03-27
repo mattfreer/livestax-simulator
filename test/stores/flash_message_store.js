@@ -28,6 +28,16 @@ describe("FlashMessageStore", () => {
           Immutable.fromJS(postMessage.payload)
         );
       });
+
+      describe("when an app configuration action is received", () => {
+        beforeEach(() => {
+          AppActions.receiveAppConfiguration(Immutable.fromJS({}));
+        });
+
+        it("resets the state.flash property to null", () => {
+          expect(FlashMessageStore.getFlash()).to.eql(null);
+        });
+      });
     });
   });
 
@@ -43,6 +53,16 @@ describe("FlashMessageStore", () => {
 
       it("updates the store state", () => {
         expect(FlashMessageStore.getInteraction()).to.eql("confirm");
+      });
+
+      describe("when an app configuration action is received", () => {
+        beforeEach(() => {
+          AppActions.receiveAppConfiguration(Immutable.fromJS({}));
+        });
+
+        it("resets the state.flash property to null", () => {
+          expect(FlashMessageStore.getInteraction()).to.eql(null);
+        });
       });
     });
   });
