@@ -7,6 +7,7 @@ var MessageStore = require("../../scripts/stores/message_store");
 var KeyValueStore = require("../../scripts/stores/key_value_store");
 var AppIframe = require("../../scripts/components/app_iframe");
 var MessageActions = require("../../scripts/actions/message_actions");
+var FlashActions = require("../../scripts/actions/flash_actions");
 var Immutable = require("immutable");
 
 describe("AppIframe", () => {
@@ -94,6 +95,21 @@ describe("AppIframe", () => {
           payload: {
             type: "another-app.selected",
             data: 3
+          }
+        });
+      });
+    });
+
+    describe("when a flash message event is received", () => {
+      beforeEach(() => {
+        FlashActions.flashInteraction({type: "confirm"});
+      });
+
+      it("sends a trigger postMessage", () => {
+        expect(contentWindow.postMessage).to.have.been.calledWith({
+          type: "flash",
+          payload: {
+            type: "confirm"
           }
         });
       });
