@@ -90,6 +90,17 @@ class LoggerStore extends EventEmitter {
     this._state = this._state.push(Immutable.Map(data));
   }
 
+  _receiveFlashInteraction(data) {
+    data = Immutable.fromJS({
+      direction: "to",
+      type: "flash",
+      payload: {
+       type: data.interaction
+      }
+    });
+    this._state = this._state.push(Immutable.Map(data));
+  }
+
   _receiveStoreConfiguration(data) {
     var payload = Immutable.Map()
       .setIn(["data", "key"], data.get("key").split(".")[1])
@@ -123,6 +134,9 @@ class LoggerStore extends EventEmitter {
         break;
         case ActionTypes.DELETE_STORE_ITEM:
           this._deleteStoreItem(action.payload);
+        break;
+        case ActionTypes.FLASH_INTERACTION:
+          this._receiveFlashInteraction(action.payload);
         break;
         case ActionTypes.CLEAR_LOG:
           this.reset();
