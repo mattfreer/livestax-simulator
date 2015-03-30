@@ -6,6 +6,7 @@ var Immutable = require("immutable");
 var LoggerStore = require("../../scripts/stores/logger_store");
 var AppActions = require("../../scripts/actions/app_actions");
 var LoggerActions = require("../../scripts/actions/logger_actions");
+var FlashActions = require("../../scripts/actions/flash_actions");
 
 describe("LoggerStore", () => {
   beforeEach(() => {
@@ -84,6 +85,21 @@ describe("LoggerStore", () => {
         expect(logs.getIn([0, "payload"])).to.eql(Immutable.fromJS({
           type: "some-app.some-key",
           data: 123
+        }));
+      });
+    });
+
+    describe("When a flash message interaction is received", () => {
+      it("adds the log to the store", () => {
+        FlashActions.flashInteraction({ type: "confirm" });
+
+        var logs = LoggerStore.getLogs();
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("flash");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(logs.getIn([0, "payload"])).to.eql(Immutable.fromJS({
+          type: "confirm"
         }));
       });
     });
