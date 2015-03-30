@@ -6,11 +6,13 @@ var FlashMessageStore = require("../stores/flash_message_store");
 var FlashActions = require("../actions/flash_actions");
 
 var getState = () => {
-  return FlashMessageStore.getFlash();
+  return {
+    flash: FlashMessageStore.getFlash()
+  };
 };
 
 var FlashMessage = React.createClass({
-  getInitialState: getState(),
+  getInitialState: getState,
 
   componentDidMount() {
     FlashMessageStore.addChangeListener(this._onChange);
@@ -21,7 +23,7 @@ var FlashMessage = React.createClass({
   },
 
   _onChange() {
-    this.replaceState(FlashMessageStore.getFlash());
+    this.replaceState(getState());
   },
 
   triggerAction(type) {
@@ -44,7 +46,9 @@ var FlashMessage = React.createClass({
   },
 
   render() {
-    if(this.state === null) {
+    var flash = this.state.flash;
+
+    if(flash === null) {
       return (
         <CollapsiblePanel heading={this.props.heading}>
           <h4 className="help-message">Flash messages from the app will appear in this panel.</h4>
@@ -52,13 +56,13 @@ var FlashMessage = React.createClass({
       );
     }
 
-    var panelClasses = `panel panel-${this.state.get("type")} flash-message`;
+    var panelClasses = `panel panel-${flash.get("type")} flash-message`;
 
     return (
       <CollapsiblePanel heading={this.props.heading}>
         <div className={panelClasses}>
           <div className="panel-body">
-            {this.state.get("message")}
+            {flash.get("message")}
           </div>
 
           <div className="panel-footer">

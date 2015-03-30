@@ -9,8 +9,15 @@ var Immutable = require("immutable");
 
 class FlashMessageStore extends EventEmitter {
   constructor() {
-    this._state = Immutable.Map();
+    this.reset();
     this._registerInterests();
+  }
+
+  reset() {
+    this.replaceState(Immutable.fromJS({
+      flash: null,
+      interaction: null
+    }));
   }
 
   emitChange() {
@@ -52,6 +59,10 @@ class FlashMessageStore extends EventEmitter {
     }
   }
 
+  _receiveAppConfiguration() {
+    this.reset();
+  }
+
   _receiveFlashInteraction(data) {
     this.setState(["interaction"], data.interaction);
   }
@@ -65,6 +76,10 @@ class FlashMessageStore extends EventEmitter {
 
         case ActionTypes.FLASH_INTERACTION:
           this._receiveFlashInteraction(action.payload);
+        break;
+
+        case ActionTypes.RECEIVE_APP_CONFIGURATION:
+          this._receiveAppConfiguration();
         break;
       }
     });
