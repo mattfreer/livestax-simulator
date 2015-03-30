@@ -7,6 +7,9 @@
 @link-margin-right: 5px;
 @toolbar-height: 16px + (@toolbar-padding * 2);
 @table-border-width: 1px;
+@primary-color: #15a4fa;
+@success-color: #24b499;
+@danger-color: #ec7b65;
 
 html, body, .main-container {
   height: 100%;
@@ -221,6 +224,40 @@ html, body, .main-container {
 
     &.label-primary {
       cursor: default;
+    }
+  }
+}
+
+.flash-header {
+  height: 5px;
+  margin-right: 3px;
+
+  &.flash-header-primary {
+    background-color: @primary-color;
+  }
+
+  &.flash-header-success {
+    background-color: @success-color;
+  }
+
+  &.flash-header-danger {
+    background-color: @danger-color;
+  }
+}
+
+.flash-header + .flash-message {
+  margin-top: 0;
+  border-top-width: 0;
+}
+
+.flash-message {
+  .panel-footer {
+    a:focus {
+      background-color: white;
+      border-color: #e8e8e8;
+    }
+    a:active {
+      background-color: #f7f7f7;
     }
   }
 }

@@ -47,9 +47,9 @@ describe("FlashMessage", () => {
       expect(panelBody.getDOMNode().textContent).to.eql("a flash message");
     });
 
-    it("renders a panel with a class based on the type of the message", () => {
-      var panel = TestUtils.findRenderedDOMComponentWithClass(instance, "flash-message");
-      expect(panel.getDOMNode().className.match(/panel-success/)).to.not.be.null;
+    it("renders a flash-header with a class based on the type of the message", () => {
+      var header = TestUtils.findRenderedDOMComponentWithClass(instance, "flash-header");
+      expect(header.getDOMNode().className.match(/flash-header-success/)).to.not.be.null;
     });
 
     describe("interaction buttons", () => {

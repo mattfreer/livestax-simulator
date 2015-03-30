@@ -56,11 +56,12 @@ var FlashMessage = React.createClass({
       );
     }
 
-    var panelClasses = `panel panel-${flash.get("type")} flash-message`;
+    var panelHeaderClasses = `flash-header flash-header-${flash.get("type")}`;
 
     return (
       <CollapsiblePanel heading={this.props.heading}>
-        <div className={panelClasses}>
+        <div className={panelHeaderClasses}></div>
+        <div className="panel panel-default flash-message">
           <div className="panel-body">
             {flash.get("message")}
           </div>
