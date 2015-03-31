@@ -30,18 +30,25 @@ var FlashMessage = React.createClass({
     FlashActions.flashInteraction({type: type});
   },
 
-  renderButtons() {
+  renderButtons(callbacks) {
     return ["ignore", "dismiss", "confirm"]
       .map((item, index) => {
+        var disabled = callbacks.indexOf(item) === -1;
+        var btnClass = "btn btn-default";
+        if (disabled) {
+          btnClass += " disabled";
+        } else {
+          btnClass += " btn-primary-inverse";
+        }
         return (
           <a key={index}
             href="#"
-            className="btn btn-default btn-xs"
+            className={btnClass}
             onClick={this.triggerAction.bind(this, item)}>
 
             {item}
           </a>
-        )
+        );
       });
   },
 
@@ -57,6 +64,7 @@ var FlashMessage = React.createClass({
     }
 
     var panelHeaderClasses = `flash-header flash-header-${flash.get("type")}`;
+    var callbacks = flash.get("callbacks") || ["ignore", "dismiss", "confirm"];
 
     return (
       <CollapsiblePanel heading={this.props.heading}>
@@ -66,9 +74,9 @@ var FlashMessage = React.createClass({
             {flash.get("message")}
           </div>
 
-          <div className="panel-footer">
+          <div className="panel-footer" style={{background: "white"}}>
             <div className="btn-group btn-group-justified">
-              {this.renderButtons()}
+              {this.renderButtons(callbacks)}
             </div>
           </div>
         </div>

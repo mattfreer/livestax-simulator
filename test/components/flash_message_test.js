@@ -36,7 +36,7 @@ describe("FlashMessage", () => {
         flash: {
           type: "success",
           message: "a flash message",
-          showConfirm: false
+          callbacks: ["ignore", "confirm"]
         }
       }));
       flashMessage = TestUtils.findRenderedDOMComponentWithClass(instance, "flash-message");
@@ -66,6 +66,11 @@ describe("FlashMessage", () => {
           return item.getDOMNode().textContent;
         });
         expect(buttonText).to.eql(Immutable.List(["ignore", "dismiss", "confirm"]));
+      });
+
+      it("disables the buttons that don't have callbacks", () => {
+        var disabled = TestUtils.scryRenderedDOMComponentsWithClass(panelFooter, "disabled");
+        expect(disabled.length).to.eql(1);
       });
 
       describe("when a flash message button is clicked", () => {
