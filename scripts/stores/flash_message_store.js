@@ -15,13 +15,12 @@ class FlashMessageStore extends EventEmitter {
 
   reset() {
     this.replaceState(Immutable.fromJS({
-      flash: null,
-      interaction: null
+      flash: null
     }));
   }
 
-  emitChange() {
-    this.emit(CHANGE_EVENT, this._state);
+  emitChange(data) {
+    this.emit(CHANGE_EVENT, data);
   }
 
   setState(path, value) {
@@ -39,10 +38,6 @@ class FlashMessageStore extends EventEmitter {
 
   getFlash() {
     return this._state.get("flash");
-  }
-
-  getInteraction() {
-    return this._state.get("interaction");
   }
 
   addChangeListener(callback) {
@@ -64,7 +59,7 @@ class FlashMessageStore extends EventEmitter {
   }
 
   _receiveFlashInteraction(data) {
-    this.setState(["interaction"], data.interaction);
+    this.emitChange(data.interaction);
   }
 
   _registerInterests() {
