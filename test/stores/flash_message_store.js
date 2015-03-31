@@ -41,28 +41,23 @@ describe("FlashMessageStore", () => {
     });
   });
 
-  describe("getInteraction()", () => {
+  describe("interaction events", () => {
     var interaction = {
       type: "confirm"
     };
 
-    describe("when a flash interaction action is triggerd", () => {
-      beforeEach(() => {
+    describe("when a flash interaction action is triggered", () => {
+      it("triggers a change event with the interaction", () => {
+        var callback = sinon.stub();
+        FlashMessageStore.addChangeListener(callback);
         FlashActions.flashInteraction(interaction);
+        expect(callback).to.have.been.calledWith("confirm");
       });
 
-      it("updates the store state", () => {
-        expect(FlashMessageStore.getInteraction()).to.eql("confirm");
-      });
-
-      describe("when an app configuration action is received", () => {
-        beforeEach(() => {
-          AppActions.receiveAppConfiguration(Immutable.fromJS({}));
-        });
-
-        it("resets the state.flash property to null", () => {
-          expect(FlashMessageStore.getInteraction()).to.eql(null);
-        });
+      it("resets the state.flash property to null", () => {
+        FlashMessageStore.setState(["flash"], {type: "success"});
+        FlashActions.flashInteraction(interaction);
+        expect(FlashMessageStore.getFlash()).to.eql(null);
       });
     });
   });

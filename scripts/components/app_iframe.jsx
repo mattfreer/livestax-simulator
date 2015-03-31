@@ -66,18 +66,18 @@ var AppIframe = React.createClass({
     this._postMessage(Projections.generatorPayload(event));
   },
 
-  _onFlashMessageChange(event) {
-    var interaction = FlashMessageStore.getInteraction();
-
-    if(interaction) {
-      var payload = Immutable.Map({
-        type: "flash",
-        payload: {
-          type: interaction
-        }
-      });
-      this._postMessage(payload);
+  _onFlashMessageChange(interaction) {
+    if(!interaction) {
+      return;
     }
+
+    var payload = Immutable.Map({
+      type: "flash",
+      payload: {
+        type: interaction
+      }
+    });
+    this._postMessage(payload);
   },
 
   render() {
