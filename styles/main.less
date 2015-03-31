@@ -1,12 +1,8 @@
 @import "mixins/flexbox.less";
 @app-width: 317px;
 @background-color: #efefef;
-@additional-columns: 2;
-@panel-body-padding: 15px;
-@toolbar-padding: 10px;
+@toolbar-padding: 5px;
 @link-margin-right: 5px;
-@toolbar-height: 16px + (@toolbar-padding * 2);
-@table-border-width: 1px;
 @primary-color: #15a4fa;
 @success-color: #24b499;
 @danger-color: #ec7b65;
@@ -30,30 +26,21 @@ html, body, .main-container {
   .flex-display;
   .flex-direction(column);
   .flex(1);
-
-  .panel-collapsible {
-    .panel-toolbar {
-      width: calc(~'(100% - @{app-width} - @{link-margin-right}) / @{additional-columns} - (@{panel-body-padding} * 2 + @{link-margin-right})');
-    }
-  }
 }
 
 .panel-collapsible {
-  .panel-toolbar{
-    margin-top: -@panel-body-padding;
-    background-color: #fff;
-    padding-top: @toolbar-padding;
-    height: @toolbar-height;
-    position: fixed;
-    width: calc(~'100% - (@{panel-body-padding} * 2 + @{link-margin-right})');
+  .panel-toolbar-container{
+    flex: initial;
+    padding: @toolbar-padding;
 
-    span {
-      cursor: pointer;
+    .panel-toolbar {
+      background-color: #fff;
+      width: 100%;
+
+      span {
+        cursor: pointer;
+      }
     }
-  }
-
-  .panel-toolbar + * {
-    margin-top: (@toolbar-padding * 2) + @table-border-width;
   }
 
   .panel-body {
@@ -155,7 +142,6 @@ html, body, .main-container {
 
 .logger-actions {
   width: 100%;
-  height: @toolbar-height;
 
   .clear-logger {
     float: right;
