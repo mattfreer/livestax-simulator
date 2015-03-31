@@ -79,15 +79,15 @@ describe("History", () => {
       filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
     });
 
-    describe("when a filter is selected", () => {
-      it("only renders history items for that filter", function() {
+    describe("when filters are selected", () => {
+      it("only renders history items for those filters", function() {
         TestUtils.Simulate.click(filters[2].getDOMNode());
         listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
         expect(listItems.length).to.eql(1);
 
         TestUtils.Simulate.click(filters[1].getDOMNode());
         listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
-        expect(listItems.length).to.eql(2);
+        expect(listItems.length).to.eql(3);
 
         TestUtils.Simulate.click(filters[0].getDOMNode());
         listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");

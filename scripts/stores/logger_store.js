@@ -46,13 +46,17 @@ class LoggerStore extends EventEmitter {
     this._state = Immutable.List();
   }
 
-  getLogs(filter) {
-    if(filter === undefined) {
+  filteredHistory(filters) {
+    return this._state.filter((item) => {
+      return Immutable.fromJS(filters).contains(item.get("type"));
+    });
+  }
+
+  getLogs(...filters) {
+    if(filters.length === 0 || filters[0] === undefined) {
       return this._state;
     }
-    return this._state.filter((item) => {
-      return item.get("type") === filter;
-    });
+    return this.filteredHistory(filters);
   }
 
   getLogTypes() {

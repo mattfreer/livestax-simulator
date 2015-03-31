@@ -48,6 +48,10 @@ describe("HistoryStore", () => {
       expect(HistoryStore.getHistory("messages").size).to.eql(1);
     });
 
+    it("returns history for multiple specified types", () => {
+      expect(HistoryStore.getHistory("apps", "messages").size).to.eql(3);
+    });
+
     it("adds a `historyType` attribute to each history item", () => {
       var types = HistoryStore.getHistory("apps").map((item) => {
         return item.get("historyType");

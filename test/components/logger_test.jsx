@@ -47,9 +47,31 @@ describe("Logger", () => {
 
   it("clears the results when clear is pressed", function() {
     var logger = TestUtils.renderIntoDocument(<Logger />);
-    var clear = TestUtils.findRenderedDOMComponentWithTag(logger, "button");
+    var clear = TestUtils.findRenderedDOMComponentWithClass(logger, "clear-logger");
     expect(LoggerStore.getLogs().size).to.eql(2);
     TestUtils.Simulate.click(clear.getDOMNode());
     expect(LoggerStore.getLogs().size).to.eql(0);
+  });
+
+  describe("filters", () => {
+    var logger, filters;
+
+    beforeEach(() => {
+      logger = TestUtils.renderIntoDocument(<Logger />);
+      var filterContainer = TestUtils.findRenderedDOMComponentWithClass(logger, "filters");
+      filters = TestUtils.scryRenderedDOMComponentsWithClass(filterContainer, "label");
+    });
+
+    it("renders log items for selected filters", function() {
+      var rows;
+
+      TestUtils.Simulate.click(filters[1].getDOMNode());
+      rows = TestUtils.scryRenderedDOMComponentsWithTag(logger, "tr");
+      expect(rows.length).to.eql(1);
+
+      TestUtils.Simulate.click(filters[2].getDOMNode());
+      rows = TestUtils.scryRenderedDOMComponentsWithTag(logger, "tr");
+      expect(rows.length).to.eql(2);
+    });
   });
 });

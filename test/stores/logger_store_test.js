@@ -177,6 +177,10 @@ describe("LoggerStore", () => {
         expect(LoggerStore.getLogs("trigger").size).to.eql(1);
         expect(LoggerStore.getLogs("store").size).to.eql(2);
       });
+
+      it("returns the logs for multiple specified types", () => {
+        expect(LoggerStore.getLogs("trigger", "store").size).to.eql(3);
+      });
     });
   });
 
