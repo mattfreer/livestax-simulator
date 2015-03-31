@@ -5,7 +5,7 @@
     <script src="//dz44vc6ose3il.cloudfront.net/livestax-0.2.0.min.js"></script>
     <script>
       Livestax.on("another-app.heading", function(val) {
-        document.querySelector("h2").innerText = val;
+        document.getElementById("heading").innerText = val;
       })
     </script>
     <link href="//dz44vc6ose3il.cloudfront.net/theme.css" media="screen" rel="stylesheet" />
@@ -18,7 +18,51 @@
   </style>
   <body>
     <div class="big">
-      <h2>Example App</h2>
-     </div>
+      <h2 id="heading">Example App</h2>
+      <hr />
+      <h2>Flash</h2>
+      <ul class="list-unstyled">
+        <li><button class="btn btn-primary btn-block" id="show-flash-primary">Show primary flash</button></li>
+        <li><button class="btn btn-success btn-block" id="show-flash-success">Show success flash</button></li>
+        <li><button class="btn btn-danger btn-block" id="show-flash-danger">Show danger flash</button></li>
+      </ul>
+      <div class="well" id="output">No dialog buttons clicked</div>
+    </div>
+
+    <script>
+      document.getElementById("show-flash-primary").addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("output").innerHTML = "";
+        Livestax.flash.primary("This is a primary flash");
+      });
+
+      document.getElementById("show-flash-danger").addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("output").innerHTML = "";
+        Livestax.flash.danger({
+          message: "This is a danger flash",
+          confirm: function() {
+            document.getElementById("output").innerHTML = "Confirm Button Pressed";
+          },
+          ignore: function() {
+            document.getElementById("output").innerHTML = "Ignored";
+          },
+        });
+      });
+
+      document.getElementById("show-flash-success").addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("output").innerHTML = "";
+        Livestax.flash.success({
+          message: "This is a success flash",
+          confirm: function() {
+            document.getElementById("output").innerHTML = "Confirm Button Pressed";
+          },
+          dismiss: function() {
+            document.getElementById("output").innerHTML = "Dismiss Button Pressed";
+          }
+        });
+      });
+    </script>
   </body>
 </html>
