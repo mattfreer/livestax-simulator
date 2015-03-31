@@ -53,6 +53,12 @@ describe("FlashMessageStore", () => {
         FlashActions.flashInteraction(interaction);
         expect(callback).to.have.been.calledWith("confirm");
       });
+
+      it("resets the state.flash property to null", () => {
+        FlashMessageStore.setState(["flash"], {type: "success"});
+        FlashActions.flashInteraction(interaction);
+        expect(FlashMessageStore.getFlash()).to.eql(null);
+      });
     });
   });
 });

@@ -59,6 +59,7 @@ class FlashMessageStore extends EventEmitter {
   }
 
   _receiveFlashInteraction(data) {
+    this.reset();
     this.emitChange(data.interaction);
   }
 
