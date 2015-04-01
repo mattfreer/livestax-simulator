@@ -6,6 +6,8 @@
 @primary-color: #15a4fa;
 @success-color: #24b499;
 @danger-color: #ec7b65;
+@info-color: #5699a9;
+@warning-color: #e7b739;
 
 html, body, .main-container {
   height: 100%;
@@ -220,6 +222,14 @@ html, body, .main-container {
 
   &.flash-header-danger {
     background-color: @danger-color;
+  }
+
+  &.flash-header-warning {
+    background-color: @warning-color;
+  }
+
+  &.flash-header-info {
+    background-color: @info-color;
   }
 }
 
