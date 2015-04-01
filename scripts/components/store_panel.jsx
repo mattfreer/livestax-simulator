@@ -7,6 +7,13 @@ var Input = require("./lib/input_horizontal");
 var StoreTable = require("./store_table");
 var AppActions = require("../actions/app_actions");
 var KeyValueStore = require("../stores/key_value_store");
+var Validator = require("../lib/validator");
+var CustomValidators = require("../lib/custom_validators");
+var ValidationForm = require("./validation_form");
+
+var validations = {
+  key: [Validator.required, CustomValidators.namespaceKey]
+};
 
 var getState = () => {
   return Immutable.Map({
@@ -14,7 +21,8 @@ var getState = () => {
       key: "",
       value: ""
     }),
-    values: Immutable.fromJS(KeyValueStore.getValues())
+    values: Immutable.fromJS(KeyValueStore.getValues()),
+    errors: Immutable.Map()
   });
 };
 
@@ -30,7 +38,9 @@ var StorePanel = React.createClass({
   },
 
   _onChange() {
-    var nextState = this.state.set("values", getState().get("values"));
+    var nextState = this.state
+      .set("values", getState().get("values"))
+      .set("errors", Immutable.Map());
     this.replaceState(nextState);
   },
 
@@ -40,7 +50,7 @@ var StorePanel = React.createClass({
   },
 
   submitForm(event) {
-    event.preventDefault();
+    this.replaceState(this.state.set("errors", null));
     AppActions.receiveStoreConfiguration(this.state.get("form"));
   },
 
@@ -58,25 +68,38 @@ var StorePanel = React.createClass({
     AppActions.deleteStoreItem(key);
   },
 
+  formError(errors) {
+    this.replaceState(this.state.set("errors", errors));
+  },
+
   render() {
+    var form = this.state.get("form");
+    var errors = this.state.get("errors");
     return (
       <CollapsiblePanel heading="Key Value Store">
-        <form className="form-horizontal" onSubmit={this.submitForm}>
+        <ValidationForm fields={form}
+          validations={validations}
+          onSubmit={this.submitForm}
+          onError={this.formError}>
 
           <Input label="Key"
+            placeholder="Namespace.Key"
             name="key"
             value={this.state.getIn(["form", "key"])}
+            error={errors.getIn(["key", 0])}
             onChange={this.changeField}
           />
 
           <Input label="Value"
             name="value"
             value={this.state.getIn(["form", "value"])}
+            error={errors.getIn(["value", 0])}
             onChange={this.changeField}
           />
 
           <button type="submit" className="btn btn-primary pull-right">Submit</button>
-        </form>
+        </ValidationForm>
+
         <StoreTable onClick={this.populateForm} onDelete={this.deleteItem} values={this.state.get("values")} />
       </CollapsiblePanel>
     );

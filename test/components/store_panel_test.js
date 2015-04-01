@@ -29,6 +29,54 @@ describe("StorePanel", () => {
     React.unmountComponentAtNode(storePanel.getDOMNode().parentNode);
   });
 
+  describe("when the form is changed with empty data", () => {
+    beforeEach(() => {
+      TestUtils.Simulate.change(inputs[0].getDOMNode(), {
+        target: {
+          name: "key",
+          value: ""
+        }
+      });
+
+      TestUtils.Simulate.change(inputs[1].getDOMNode(), {
+        target: {
+          name: "value",
+          value: "27"
+        }
+      });
+    });
+
+    it("highlights the errors to the fields", () => {
+      expect(storePanel.getDOMNode().textContent).to.not.include("Can't be blank");
+      TestUtils.Simulate.submit(form.getDOMNode());
+      expect(storePanel.getDOMNode().textContent).to.include("Can't be blank");
+    });
+  });
+
+  describe("when the form is changed with invalid data", () => {
+    beforeEach(() => {
+      TestUtils.Simulate.change(inputs[0].getDOMNode(), {
+        target: {
+          name: "key",
+          value: "invalid namespace.invalid_key"
+        }
+      });
+
+      TestUtils.Simulate.change(inputs[1].getDOMNode(), {
+        target: {
+          name: "value",
+          value: "27"
+        }
+      });
+    });
+
+    it("highlights the errors to the fields", () => {
+      expect(storePanel.getDOMNode().textContent).to.not.include("Must contain a namespace and key");
+      TestUtils.Simulate.submit(form.getDOMNode());
+      expect(storePanel.getDOMNode().textContent).to.include("Must contain a namespace and key");
+    });
+  });
+
   describe("when the form is changed with valid data", () => {
     beforeEach(() => {
       TestUtils.Simulate.change(inputs[0].getDOMNode(), {
@@ -44,6 +92,12 @@ describe("StorePanel", () => {
           value: "27"
         }
       });
+    });
+
+    it("doesn't show any errors", function() {
+      TestUtils.Simulate.submit(form.getDOMNode());
+      expect(storePanel.getDOMNode().textContent).to.not.include("Can't be blank");
+      expect(storePanel.getDOMNode().textContent).to.not.include("Must contain a namespace and key");
     });
 
     it("shows the new value in the input box", () => {
