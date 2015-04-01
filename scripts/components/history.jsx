@@ -116,6 +116,14 @@ var History = React.createClass({
   },
 
   render() {
+    if (this.state.get("historyItems").size === 0) {
+      return (
+        <CollapsiblePanel heading={this.props.heading}>
+          <h2>History items will appear in this panel.</h2>
+        </CollapsiblePanel>
+      );
+    }
+
     return (
       <CollapsiblePanel heading={this.props.heading}>
         <PanelToolbar>
