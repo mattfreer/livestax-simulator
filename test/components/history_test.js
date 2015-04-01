@@ -121,9 +121,10 @@ describe("History", () => {
 
     describe("when all history items are deleted", () => {
       beforeEach(() => {
-        TestUtils.scryRenderedDOMComponentsWithClass(history, "delete-item").forEach((deleteLink) => {
-          TestUtils.Simulate.click(deleteLink);
-        });
+        var deleteLinks = TestUtils.scryRenderedDOMComponentsWithClass(history, "delete-item");
+        TestUtils.Simulate.click(deleteLinks[2]);
+        TestUtils.Simulate.click(deleteLinks[1]);
+        TestUtils.Simulate.click(deleteLinks[0]);
       });
 
       it("displays no filters", () => {
