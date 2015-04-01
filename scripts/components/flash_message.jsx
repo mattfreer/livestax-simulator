@@ -47,7 +47,6 @@ var FlashMessage = React.createClass({
         }
         return (
           <a key={index}
-            href="#"
             className={btnClass}
             onClick={this.triggerAction.bind(this, item)}>
 
