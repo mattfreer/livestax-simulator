@@ -122,12 +122,12 @@ var Logger = React.createClass({
     return (
       <CollapsiblePanel heading="Logger">
         <PanelToolbar>
-          <div className="logger-actions">
+          <div className="panel-toolbar-actions">
             <FilterList filters={this.state.get("filters").toJS()}
               active={this.state.get("active").toJS()}
               onFilterChange={this.onFilterChange} />
 
-            <span className="label label-danger clear-logger" onClick={this.clear}>
+            <span className="label label-danger clear-logger pull-right" onClick={this.clear}>
               Clear
             </span>
           </div>

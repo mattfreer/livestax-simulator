@@ -52,6 +52,13 @@ describe("FlashMessage", () => {
       expect(header.getDOMNode().className.match(/flash-header-success/)).to.not.be.null;
     });
 
+  it("clears the flash when clear is pressed", function() {
+    var clear = TestUtils.findRenderedDOMComponentWithClass(instance, "clear-flash");
+    expect(FlashMessageStore.getFlash()).to.not.eql(null);
+    TestUtils.Simulate.click(clear.getDOMNode());
+    expect(FlashMessageStore.getFlash()).to.eql(null);
+  });
+
     describe("interaction buttons", () => {
       var panelFooter;
       var buttons;

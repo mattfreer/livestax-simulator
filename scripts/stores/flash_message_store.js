@@ -54,10 +54,6 @@ class FlashMessageStore extends EventEmitter {
     }
   }
 
-  _receiveAppConfiguration() {
-    this.reset();
-  }
-
   _receiveFlashInteraction(data) {
     this.reset();
     this.emitChange(data.interaction);
@@ -74,8 +70,12 @@ class FlashMessageStore extends EventEmitter {
           this._receiveFlashInteraction(action.payload);
         break;
 
+        case ActionTypes.CLEAR_FLASH:
+          this.reset();
+        break;
+
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
-          this._receiveAppConfiguration();
+          this.reset();
         break;
       }
     });

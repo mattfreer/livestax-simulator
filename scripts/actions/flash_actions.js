@@ -11,6 +11,12 @@ var FlashActions = {
         interaction: data.type
       }
     });
+  },
+
+  clearFlash() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.CLEAR_FLASH,
+    });
   }
 };
 
