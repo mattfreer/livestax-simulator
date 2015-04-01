@@ -48,7 +48,7 @@ var History = React.createClass({
     return Immutable.fromJS({
       historyItems: HistoryStore.getHistory(this.props.historyKey),
       filters: getFilters(),
-      filter: undefined
+      active: Immutable.List(),
     });
   },
 
@@ -61,7 +61,7 @@ var History = React.createClass({
   },
 
   _onChange() {
-    this.onFilterChange(this.state.get("filter"));
+    this.onFilterChange(this.state.get("active").toJS());
   },
 
   triggerHistoryClick(historyItem) {
@@ -100,17 +100,17 @@ var History = React.createClass({
     }).toJS();
   },
 
-  onFilterChange(filter) {
+  onFilterChange(filterList) {
     var filters = getFilters();
 
-    if(!doesFilterExist(filters, filter)) {
-      filter = undefined;
-    }
+    var list = Immutable.fromJS(filterList).filter((filter) => {
+      return doesFilterExist(filters, filter);
+    })
 
     var nextState = this.state
       .set("filters", filters)
-      .set("filter", filter)
-      .set("historyItems", HistoryStore.getHistory(filter));
+      .set("active", list)
+      .set("historyItems", HistoryStore.getHistory.apply(HistoryStore, list.toJS()));
 
     this.replaceState(nextState);
   },
@@ -120,7 +120,7 @@ var History = React.createClass({
       <CollapsiblePanel heading={this.props.heading}>
         <PanelToolbar>
           <FilterList filters={this.state.get("filters").toJS()}
-            active={this.state.get("filter")}
+            active={this.state.get("active").toJS()}
             onFilterChange={this.onFilterChange} />
         </PanelToolbar>
 

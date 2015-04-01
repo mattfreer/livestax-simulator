@@ -21,10 +21,9 @@ var getState = () => {
   return Immutable.Map({
     logs: LogStore.getLogs(),
     filters: getFilters(),
-    filter: undefined
+    active: Immutable.List()
   });
 };
-
 
 var doesFilterExist = (list, filter) => {
   return list.map((item) => {
@@ -56,7 +55,7 @@ var Logger = React.createClass({
   },
 
   _onChange() {
-    this.replaceState(getState());
+    this.onFilterChange(this.state.get("active").toJS());
   },
 
   clear() {
@@ -94,17 +93,17 @@ var Logger = React.createClass({
       </tr>);
   },
 
-  onFilterChange(filter) {
+  onFilterChange(filterList) {
     var filters = getFilters();
 
-    if(!doesFilterExist(filters, filter)) {
-      filter = undefined;
-    }
+    var list = Immutable.fromJS(filterList).filter((filter) => {
+      return doesFilterExist(filters, filter);
+    })
 
     var nextState = this.state
       .set("filters", filters)
-      .set("filter", filter)
-      .set("logs", LogStore.getLogs(filter));
+      .set("active", Immutable.fromJS(filterList))
+      .set("logs", LogStore.getLogs.apply(LogStore, filterList));
 
     this.replaceState(nextState);
   },
@@ -125,7 +124,7 @@ var Logger = React.createClass({
         <PanelToolbar>
           <div className="logger-actions">
             <FilterList filters={this.state.get("filters").toJS()}
-              active={this.state.get("filter")}
+              active={this.state.get("active").toJS()}
               onFilterChange={this.onFilterChange} />
 
             <span className="label label-danger clear-logger" onClick={this.clear}>
