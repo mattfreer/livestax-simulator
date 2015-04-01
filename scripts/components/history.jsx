@@ -10,6 +10,7 @@ var PanelToolbar = require("./lib/panel_toolbar");
 var HistoryTypes = Constants.History;
 var Moment = require("moment");
 var Immutable = require("immutable");
+var EmptyPanel = require("./empty_panel");
 
 var timestampToDateString = (timestamp) => {
   return Moment.unix(timestamp).format("DD/MM/YYYY, HH:mm");
@@ -118,9 +119,8 @@ var History = React.createClass({
   render() {
     if (this.state.get("historyItems").size === 0) {
       return (
-        <CollapsiblePanel heading={this.props.heading}>
-          <h2>History items will appear in this panel.</h2>
-        </CollapsiblePanel>
+        <EmptyPanel header={this.props.heading}
+          message="History items will appear in this panel." />
       );
     }
 
