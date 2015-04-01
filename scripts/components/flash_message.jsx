@@ -5,6 +5,7 @@ var CollapsiblePanel = require("./lib/collapsible_panel");
 var FlashMessageStore = require("../stores/flash_message_store");
 var FlashActions = require("../actions/flash_actions");
 var PanelToolbar = require("./lib/panel_toolbar");
+var EmptyPanel = require("./empty_panel");
 
 var getState = () => {
   return {
@@ -61,9 +62,8 @@ var FlashMessage = React.createClass({
 
     if(flash === null) {
       return (
-        <CollapsiblePanel heading={this.props.heading}>
-          <h4 className="help-message">Flash messages from the app will appear in this panel.</h4>
-        </CollapsiblePanel>
+        <EmptyPanel header={this.props.heading}
+          message="Flash messages from the app will appear in this panel." />
       );
     }
 

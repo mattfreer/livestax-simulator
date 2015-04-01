@@ -7,6 +7,7 @@ var LogStore = require("../stores/logger_store");
 var LoggerActions = require("../actions/logger_actions");
 var FilterList = require("./lib/filter_list");
 var PanelToolbar = require("./lib/panel_toolbar");
+var EmptyPanel = require("./empty_panel");
 
 var getFilters = () => {
   return LogStore.getLogTypes().map((item) => {
@@ -114,9 +115,8 @@ var Logger = React.createClass({
 
     if (this.state.get("logs").size === 0) {
       return (
-        <CollapsiblePanel heading="Logger">
-          <h2>Events to and from the app will appear in this panel.</h2>
-        </CollapsiblePanel>
+        <EmptyPanel header="Logger"
+          message="Events to and from the app will appear in this panel." />
       );
     }
 
