@@ -59,7 +59,8 @@ var Logger = React.createClass({
   },
 
   clear() {
-    LoggerActions.clearLog();
+    var nextState = this.state.set("active", Immutable.List());
+    this.replaceState(nextState, LoggerActions.clearLog);
   },
 
   arrowClass(log) {

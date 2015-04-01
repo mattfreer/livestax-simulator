@@ -73,5 +73,15 @@ describe("Logger", () => {
       rows = TestUtils.scryRenderedDOMComponentsWithTag(logger, "tr");
       expect(rows.length).to.eql(2);
     });
+
+    describe("when clear is clicked", () => {
+      it("clears the active filters", function() {
+        var clear = TestUtils.findRenderedDOMComponentWithClass(logger, "clear-logger");
+        TestUtils.Simulate.click(filters[1].getDOMNode());
+        expect(logger.state.get("active")).to.eql(Immutable.List(["on"]));
+        TestUtils.Simulate.click(clear.getDOMNode());
+        expect(logger.state.get("active")).to.eql(Immutable.List([]));
+      });
+    });
   });
 });
