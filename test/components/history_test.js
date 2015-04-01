@@ -131,6 +131,11 @@ describe("History", () => {
         var filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
         expect(filters.length).to.eql(0);
       });
+
+      it("displays a notice", () => {
+        var help = TestUtils.findRenderedDOMComponentWithClass(history, "panel-body");
+        expect(help.getDOMNode().textContent).to.eql("History items will appear in this panel.");
+      });
     });
   });
 });
