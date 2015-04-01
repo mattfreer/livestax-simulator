@@ -64,6 +64,7 @@ var StorePanel = React.createClass({
         <form className="form-horizontal" onSubmit={this.submitForm}>
 
           <Input label="Key"
+            placeholder="Namespace.Key"
             name="key"
             value={this.state.getIn(["form", "key"])}
             onChange={this.changeField}
