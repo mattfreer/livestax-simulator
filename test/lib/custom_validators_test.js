@@ -25,7 +25,7 @@ describe("CustomValidators", () => {
   });
 
   describe("namespaceKey", () => {
-    var error = "Must contain a namespace and key which only contain lowercase letters, numbers and dashes";
+    var error = "Must contain a namespace and key which only contain letters, numbers and dashes";
 
     it("returns undefined when valid", function() {
       var namespace = "valid-namespace.valid-key";
@@ -37,7 +37,7 @@ describe("CustomValidators", () => {
         "invalid namespace",
         "invalid-namespacE",
         "namespace@",
-        "valid-namespace.valid-Key",
+        "valid-namespAce.valid-key",
         "valid-namespace.valid key",
         "valid-namespace.ke!"
       ];

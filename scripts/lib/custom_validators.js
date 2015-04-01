@@ -8,8 +8,8 @@ var CustomValidators = {
   },
 
   namespaceKey(field) {
-    if (!field.match(/^[a-z0-9\-]+\.[a-z0-9\-\_]+$/)) {
-      return "Must contain a namespace and key which only contain lowercase letters, numbers and dashes";
+    if (!field.match(/^[a-z0-9\-]+\.[a-zA-Z0-9\-\_]+$/)) {
+      return "Must contain a namespace and key which only contain letters, numbers and dashes";
     }
   }
 };
