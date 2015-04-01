@@ -4,6 +4,7 @@ var React = require("react");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var FlashMessageStore = require("../stores/flash_message_store");
 var FlashActions = require("../actions/flash_actions");
+var PanelToolbar = require("./lib/panel_toolbar");
 
 var getState = () => {
   return {
@@ -28,6 +29,10 @@ var FlashMessage = React.createClass({
 
   triggerAction(type) {
     FlashActions.flashInteraction({type: type});
+  },
+
+  clear() {
+    FlashActions.clearFlash();
   },
 
   renderButtons(callbacks) {
@@ -68,6 +73,13 @@ var FlashMessage = React.createClass({
 
     return (
       <CollapsiblePanel heading={this.props.heading}>
+        <PanelToolbar>
+          <div className="panel-toolbar-actions">
+            <span className="label label-danger clear-flash pull-right" onClick={this.clear}>
+              Clear
+            </span>
+          </div>
+        </PanelToolbar>
         <div className={panelHeaderClasses}></div>
         <div className="panel panel-default flash-message">
           <div className="panel-body">

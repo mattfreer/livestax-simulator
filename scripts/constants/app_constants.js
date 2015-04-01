@@ -10,6 +10,8 @@ module.exports = {
     RECEIVE_GENERATED_MESSAGE: null,
     START_APP_TIMEOUT: null,
     CLEAR_LOG: null,
+    FLASH_INTERACTION: null,
+    CLEAR_FLASH: null,
     DELETE_HISTORY_ITEM: null
   }),
   ChangeTypes: keyMirror({
