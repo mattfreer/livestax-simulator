@@ -96,9 +96,9 @@ var Logger = React.createClass({
   onFilterChange(filterList) {
     var filters = getFilters();
 
-    var list = Immutable.fromJS(filterList).filter((filter) => {
+    Immutable.fromJS(filterList).filter((filter) => {
       return doesFilterExist(filters, filter);
-    })
+    });
 
     var nextState = this.state
       .set("filters", filters)

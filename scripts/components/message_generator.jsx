@@ -42,7 +42,7 @@ var MessageGenerator = React.createClass({
     this.replaceState(nextState);
   },
 
-  submitForm(event) {
+  submitForm() {
     MessageActions.receiveGeneratedMessage(this.state.get("message"));
   },
 
