@@ -5,6 +5,12 @@ var CustomValidators = {
     if (!field.match(/^[a-z0-9\-]+$/)) {
       return "Must only contain lowercase letters, numbers and dashes";
     }
+  },
+
+  namespaceKey(field) {
+    if (!field.match(/^[a-z0-9\-]+\.[a-z0-9\-\_]+$/)) {
+      return "Must contain a namespace and key which only contain lowercase letters, numbers and dashes";
+    }
   }
 };
 
