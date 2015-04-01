@@ -67,7 +67,7 @@ var FilterList = React.createClass({
             className={itemCssClass}>
             {item.label}
           </span>
-        )
+        );
       }
     );
   },

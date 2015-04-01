@@ -91,7 +91,7 @@ var AppConfigurator = React.createClass({
     this.replaceState(this.state.set("errors", errors));
   },
 
-  submitForm(event) {
+  submitForm() {
     AppActions.receiveAppConfiguration(this.state.delete("errors"));
   },
 

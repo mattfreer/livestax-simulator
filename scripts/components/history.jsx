@@ -85,7 +85,7 @@ var History = React.createClass({
       icon = `fa fa-${historyIcons.get(this.getHistoryType(historyItem))} text-muted`;
 
       return (
-        <tr key={historyItem}>
+        <tr key={i}>
           <td onClick={this.triggerHistoryClick.bind(this, historyItem)}><i className={icon}></i></td>
           <td className="item-content" onClick={this.triggerHistoryClick.bind(this, historyItem)}>
             <span className="timestamp text-muted">{timestampToDateString(historyItem.get("createdAt"))}</span>
@@ -105,7 +105,7 @@ var History = React.createClass({
 
     var list = Immutable.fromJS(filterList).filter((filter) => {
       return doesFilterExist(filters, filter);
-    })
+    });
 
     var nextState = this.state
       .set("filters", filters)
