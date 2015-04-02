@@ -136,7 +136,8 @@ describe("AppConfigurator", () => {
       var radios = appConfigurator.getDOMNode().querySelectorAll(`input[name="user_type"]`);
 
       inputs = inputs.set("is_guest", radios[0]);
-      inputs = inputs.set("is_admin", radios[1]);
+      inputs = inputs.set("user_radio_button", radios[1]);
+      inputs = inputs.set("is_admin", radios[2]);
     });
 
     it("displays the signed request form", () => {
@@ -195,6 +196,14 @@ describe("AppConfigurator", () => {
         });
         expect(inputs.get("is_guest").checked).to.eql(false);
         expect(inputs.get("is_admin").checked).to.eql(true);
+      });
+
+      it("updates both guest and admin to false when selecting the user radio button", function() {
+        TestUtils.Simulate.change(inputs.get("user_radio_button"), {
+          target: {}
+        });
+        expect(inputs.get("is_guest").checked).to.eql(false);
+        expect(inputs.get("is_admin").checked).to.eql(false);
       });
 
       it("Updates the store with the new state on submit", () => {
