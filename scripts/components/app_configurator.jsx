@@ -80,9 +80,12 @@ var AppConfigurator = React.createClass({
   },
 
   toggleUserType(event) {
-    var nextState = this.state.setIn(["post_data", "payload", "is_admin"], false)
-      .setIn(["post_data", "payload", "is_guest"], false)
-      .setIn(["post_data", "payload", event.target.value], true);
+    var nextState = this.state
+      .setIn(["post_data", "payload", "is_admin"], false)
+      .setIn(["post_data", "payload", "is_guest"], false);
+    if (["is_admin", "is_guest"].indexOf(event.target.value) > -1) {
+      nextState = nextState.setIn(["post_data", "payload", event.target.value], true);
+    }
     nextState = nextState.set("disabled_fields", disableFields(nextState));
     this.replaceState(nextState);
   },
@@ -175,6 +178,12 @@ var AppConfigurator = React.createClass({
                 value="is_guest"
                 text="Guest"
                 checked={payload.get("is_guest")}
+                onChange={this.toggleUserType}
+              />
+
+              <Radio name="user_type"
+                text="User"
+                checked={!payload.get("is_guest") && !payload.get("is_admin")}
                 onChange={this.toggleUserType}
               />
 
