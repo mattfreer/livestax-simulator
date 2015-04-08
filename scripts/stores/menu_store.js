@@ -50,8 +50,14 @@ class MenuStore extends EventEmitter {
 
   _receivePostMessage(data) {
     if(data.type === "menu") {
-      if (data.payload.type === "set") {
-        this._state = this._state.update("items", (items) => items.add(Immutable.fromJS(data.payload.data)));
+      switch(data.payload.type) {
+        case "set":
+          this._state = this._state.update("items", (items) => items.add(Immutable.fromJS(data.payload.data)));
+        break;
+
+        case "clear":
+          this.reset();
+        break;
       }
     }
   }

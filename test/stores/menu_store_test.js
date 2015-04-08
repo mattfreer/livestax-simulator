@@ -22,7 +22,6 @@ describe("MenuStore", () => {
   };
 
   describe("getItems()", () => {
-
     it("is empty by default", () => {
       expect(MenuStore.getItems()).to.eql(Immutable.OrderedSet());
     });
@@ -52,6 +51,36 @@ describe("MenuStore", () => {
           expect(MenuStore.getItems()).to.eql(Immutable.OrderedSet());
         });
       });
+    });
+  });
+
+  describe("removing menu items", () => {
+
+    beforeEach(() => {
+      MenuStore.replaceState(Immutable.Map({
+        items: Immutable.OrderedSet([
+          Immutable.Map({
+            name: "Help"
+          }),
+          Immutable.Map({
+            name: "Another"
+          }),
+          Immutable.Map({
+            name: "Clear Selection"
+          })
+        ])
+      }));
+    });
+
+    it("clears all the menu items on a clear event", () => {
+      expect(MenuStore.getItems().size).to.eql(3);
+      AppActions.receivePostMessage({
+        type: "menu",
+        payload: {
+          type: "clear"
+        }
+      });
+      expect(MenuStore.getItems().size).to.eql(0);
     });
   });
 });
