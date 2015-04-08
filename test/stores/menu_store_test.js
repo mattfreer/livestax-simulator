@@ -82,6 +82,20 @@ describe("MenuStore", () => {
       });
       expect(MenuStore.getItems().size).to.eql(0);
     });
+
+    it("removes a specific item on an unset event", () => {
+      AppActions.receivePostMessage({
+        type: "menu",
+        payload: {
+          type: "unset",
+          data: {
+            name: "Another"
+          }
+        }
+      });
+      var expected = MenuStore.getItems().toList().map((item) => item.get("name"));
+      expect(expected).to.eql(Immutable.List(["Help", "Clear Selection"]));
+    });
   });
 });
 

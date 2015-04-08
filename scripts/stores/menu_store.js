@@ -55,6 +55,11 @@ class MenuStore extends EventEmitter {
           this._state = this._state.update("items", (items) => items.add(Immutable.fromJS(data.payload.data)));
         break;
 
+        case "unset":
+          var newItems = this._state.get("items").filter((item) => item.get("name") !== data.payload.data.name);
+          this._state = this._state.set("items", newItems);
+        break;
+
         case "clear":
           this.reset();
         break;
