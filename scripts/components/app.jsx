@@ -12,6 +12,7 @@ var Constants = require("../constants/app_constants");
 var HistoryTypes = Constants.History;
 var History = require("./history");
 var FlashMessage = require("./flash_message");
+var MenuPanel = require("./menu_panel");
 var Immutable = require("immutable");
 
 var cleanHistoryItem = (item) => {
@@ -36,6 +37,7 @@ var App = React.createClass({
           <VerticalPanelBlock>
             <AppConfigurator />
             <MessageGenerator />
+            <MenuPanel />
           </VerticalPanelBlock>
           <AppPanel />
           <VerticalPanelBlock>

@@ -19,7 +19,9 @@
   <body>
     <div class="big">
       <h2 id="heading">Example App</h2>
+
       <hr />
+
       <h2>Flash</h2>
       <ul class="list-unstyled">
         <li><button class="btn btn-primary btn-block" id="show-flash-primary">Show primary flash</button></li>
@@ -27,6 +29,20 @@
         <li><button class="btn btn-danger btn-block" id="show-flash-danger">Show danger flash</button></li>
       </ul>
       <div class="well" id="output">No dialog buttons clicked</div>
+
+      <hr />
+
+      <h2>Menu Items</h2>
+      <ul class="list-unstyled">
+        <li><button class="btn btn-default btn-block" id="add-btn">Add menu item</button></li>
+        <li><button class="btn btn-default btn-block" id="add-reload-btn">Add reload menu item</button></li>
+        <li><button class="btn btn-default btn-block" id="add-with-icon-btn">Add menu item with icon</button></li>
+        <li><button class="btn btn-default btn-block" id="clear-btn">Clear menu</button></li>
+        <li><button class="btn btn-default btn-block" id="unset-btn">Remove help</button></li>
+      </ul>
+      <div class="well" id="menu-output">Menu item not clicked</div>
+      <div class="well" id="reload-output">app.reload not clicked</div>
+
     </div>
 
     <script>
@@ -63,6 +79,37 @@
           }
         });
       });
+
+      document.getElementById("add-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        Livestax.menu.set("custom", function() {
+          document.getElementById("menu-output").innerHTML = "Menu item clicked";
+        });
+      });
+
+      document.getElementById("add-with-icon-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        Livestax.menu.set("beer", "beer", function(){});
+      });
+
+      document.getElementById("clear-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        Livestax.menu.clear();
+      });
+
+      document.getElementById("add-reload-btn").addEventListener("click", function(e) {
+        Livestax.menu.set("app.reload", function() {
+          document.getElementById("reload-output").innerHTML = "app.reload clicked";
+        });
+      });
+
+      document.getElementById("unset-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        Livestax.menu.unset("help");
+      });
+
+      Livestax.menu.set("help", function(){});
+      Livestax.menu.set("another", function(){});
     </script>
   </body>
 </html>
