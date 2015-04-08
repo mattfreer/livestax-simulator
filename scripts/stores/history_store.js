@@ -142,7 +142,9 @@ class HistoryStore extends EventEmitter {
       var payload = action.payload;
       switch(action.type) {
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
-          this._addHistoryItem(HistoryTypes.APPS, this._processAppConfigPayload(payload));
+          if (payload) {
+            this._addHistoryItem(HistoryTypes.APPS, this._processAppConfigPayload(payload));
+          }
         break;
 
         case ActionTypes.RECEIVE_GENERATED_MESSAGE:
