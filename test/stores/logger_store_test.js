@@ -7,6 +7,7 @@ var LoggerStore = require("../../scripts/stores/logger_store");
 var AppActions = require("../../scripts/actions/app_actions");
 var LoggerActions = require("../../scripts/actions/logger_actions");
 var FlashActions = require("../../scripts/actions/flash_actions");
+var MenuActions = require("../../scripts/actions/menu_actions");
 
 describe("LoggerStore", () => {
   beforeEach(() => {
@@ -100,6 +101,21 @@ describe("LoggerStore", () => {
         expect(logs.getIn([0, "direction"])).to.eql("to");
         expect(logs.getIn([0, "payload"])).to.eql(Immutable.fromJS({
           type: "confirm"
+        }));
+      });
+    });
+
+    describe("When a menu message interaction is received", () => {
+      it("adds the log to the store", () => {
+        MenuActions.menuInteraction("help");
+
+        var logs = LoggerStore.getLogs();
+
+        expect(logs.size).to.eql(1);
+        expect(logs.getIn([0, "type"])).to.eql("menu");
+        expect(logs.getIn([0, "direction"])).to.eql("to");
+        expect(logs.getIn([0, "payload"])).to.eql(Immutable.fromJS({
+          type: "help"
         }));
       });
     });

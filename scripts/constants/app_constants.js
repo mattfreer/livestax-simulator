@@ -12,10 +12,12 @@ module.exports = {
     CLEAR_LOG: null,
     FLASH_INTERACTION: null,
     CLEAR_FLASH: null,
+    MENU_INTERACTION: null,
     DELETE_HISTORY_ITEM: null
   }),
   ChangeTypes: keyMirror({
     APP_CHANGE: null,
+    MENU_CHANGE: null,
     LOG_CHANGE: null,
     HISTORY_CHANGE: null,
     KEYVAL_CHANGE: null

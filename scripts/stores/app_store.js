@@ -74,15 +74,17 @@ class AppStore extends EventEmitter {
   }
 
   _receiveAppConfiguration(data) {
-    this.setState(["app"], data.get("app"));
-    this.setState(["status"], "loading");
+    if (data) {
+      this.setState(["app"], data.get("app"));
 
-    if(data.getIn(["app", "use_post"])) {
-      this.setState(["post_data"], data.get("post_data"));
-    } else {
-      this._setSignedRequestToDefaults();
+      if(data.getIn(["app", "use_post"])) {
+        this.setState(["post_data"], data.get("post_data"));
+      } else {
+        this._setSignedRequestToDefaults();
+      }
     }
 
+    this.setState(["status"], "loading");
     this._startTimer({ duration: Constants.Timer.DURATION });
   }
 

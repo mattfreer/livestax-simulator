@@ -5,6 +5,7 @@ var SignedRequestApp = require("./signed_request_app");
 var MessageStore = require("../stores/message_store");
 var KeyValueStore = require("../stores/key_value_store");
 var FlashMessageStore = require("../stores/flash_message_store");
+var MenuStore = require("../stores/menu_store");
 var Projections = require("../projections/app_projections");
 var Immutable = require("immutable");
 
@@ -19,12 +20,14 @@ var AppIframe = React.createClass({
     MessageStore.addChangeListener(this._onMessageChange);
     KeyValueStore.addChangeListener(this._onKeyValueChange);
     FlashMessageStore.addChangeListener(this._onFlashMessageChange);
+    MenuStore.addChangeListener(this._onMenuChange);
   },
 
   componentWillUnmount() {
     MessageStore.removeChangeListener(this._onMessageChange);
     KeyValueStore.removeChangeListener(this._onKeyValueChange);
     FlashMessageStore.removeChangeListener(this._onFlashMessageChange);
+    MenuStore.removeChangeListener(this._onMenuChange);
   },
 
   componentWillUpdate() {
@@ -75,6 +78,20 @@ var AppIframe = React.createClass({
       type: "flash",
       payload: {
         type: interaction
+      }
+    });
+    this._postMessage(payload);
+  },
+
+  _onMenuChange(name) {
+    if(!name) {
+      return;
+    }
+
+    var payload = Immutable.Map({
+      type: "menu",
+      payload: {
+        type: name
       }
     });
     this._postMessage(payload);
