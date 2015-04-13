@@ -4,6 +4,7 @@ var React = require("react");
 var Immutable = require("immutable");
 var AppActions = require("../actions/app_actions");
 var MenuStore = require("../stores/menu_store");
+var MenuActions = require("../actions/menu_actions");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 
 var menuItems = Immutable.fromJS([
@@ -15,7 +16,6 @@ var menuItems = Immutable.fromJS([
 ]);
 
 var defaultIcon = "circle-o";
-var noop = () => {};
 
 var getState = () => {
   return {
@@ -38,6 +38,10 @@ var MenuPanel = React.createClass({
     this.replaceState(getState());
   },
 
+  triggerCustomAction(name) {
+    MenuActions.menuInteraction(name);
+  },
+
   triggerItem(cb, event) {
     event.preventDefault();
     cb();
@@ -45,10 +49,12 @@ var MenuPanel = React.createClass({
 
   render() {
     var items = menuItems.concat(this.state.items).map((item) => {
+      var defaultAction = this.triggerCustomAction.bind(this, item.get("name"));
       return (
         <a className="list-group-item"
+          key={item.get("name")}
           href="#"
-          onClick={this.triggerItem.bind(this, item.get("action") || noop)}
+          onClick={this.triggerItem.bind(this, item.get("action") || defaultAction)}
         >
           <i className={`fa fa-${item.get("icon") || defaultIcon} fa-fw`} />{item.get("name")}
         </a>

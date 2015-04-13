@@ -8,6 +8,7 @@ var KeyValueStore = require("../../scripts/stores/key_value_store");
 var AppIframe = require("../../scripts/components/app_iframe");
 var MessageActions = require("../../scripts/actions/message_actions");
 var FlashActions = require("../../scripts/actions/flash_actions");
+var MenuActions = require("../../scripts/actions/menu_actions");
 var Immutable = require("immutable");
 
 describe("AppIframe", () => {
@@ -110,6 +111,21 @@ describe("AppIframe", () => {
           type: "flash",
           payload: {
             type: "confirm"
+          }
+        });
+      });
+    });
+
+    describe("when a menu message event is received", () => {
+      beforeEach(() => {
+        MenuActions.menuInteraction("help");
+      });
+
+      it("sends a menu postMessage", () => {
+        expect(contentWindow.postMessage).to.have.been.calledWith({
+          type: "menu",
+          payload: {
+            type: "help"
           }
         });
       });

@@ -94,6 +94,17 @@ class LoggerStore extends EventEmitter {
     this._state = this._state.push(Immutable.Map(data));
   }
 
+  _receiveMenuInteraction(type) {
+    var data = Immutable.fromJS({
+      direction: "to",
+      type: "menu",
+      payload: {
+       type: type
+      }
+    });
+    this._state = this._state.push(Immutable.Map(data));
+  }
+
   _receiveFlashInteraction(data) {
     data = Immutable.fromJS({
       direction: "to",
@@ -141,6 +152,9 @@ class LoggerStore extends EventEmitter {
         break;
         case ActionTypes.FLASH_INTERACTION:
           this._receiveFlashInteraction(action.payload);
+        break;
+        case ActionTypes.MENU_INTERACTION:
+          this._receiveMenuInteraction(action.payload);
         break;
         case ActionTypes.CLEAR_LOG:
           this.reset();

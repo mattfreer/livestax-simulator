@@ -4,6 +4,7 @@ require("../test_helper");
 var Immutable = require("immutable");
 var MenuStore = require("../../scripts/stores/menu_store");
 var AppActions = require("../../scripts/actions/app_actions");
+var MenuActions = require("../../scripts/actions/menu_actions");
 
 describe("MenuStore", () => {
 
@@ -97,5 +98,13 @@ describe("MenuStore", () => {
       expect(expected).to.eql(Immutable.List(["Help", "Clear Selection"]));
     });
   });
-});
 
+  describe("when a menu interaction action is triggered", () => {
+    it("triggers a change event with the interaction", () => {
+      var callback = sinon.stub();
+      MenuStore.addChangeListener(callback);
+      MenuActions.menuInteraction("help");
+      expect(callback).to.have.been.calledWith("help");
+    });
+  });
+});

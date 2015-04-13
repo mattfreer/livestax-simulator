@@ -64,7 +64,12 @@ class MenuStore extends EventEmitter {
           this.reset();
         break;
       }
+      this.emitChange();
     }
+  }
+
+  _menuInteraction(name) {
+    this.emitChange(name);
   }
 
   _registerInterests() {
@@ -76,10 +81,13 @@ class MenuStore extends EventEmitter {
 
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
           this.reset();
+          this.emitChange();
+        break;
+
+        case ActionTypes.MENU_INTERACTION:
+          this._menuInteraction(action.payload);
         break;
       }
-
-      this.emitChange();
     });
   }
 }

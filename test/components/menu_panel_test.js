@@ -6,6 +6,7 @@ var Immutable = require("immutable");
 var TestUtils = React.addons.TestUtils;
 var MenuPanel = require("../../scripts/components/menu_panel");
 var MenuStore = require("../../scripts/stores/menu_store");
+var MenuActions = require("../../scripts/actions/menu_actions");
 
 describe("MenuPanel", () => {
   var instance;
@@ -65,7 +66,12 @@ describe("MenuPanel", () => {
         expect(icons.get(1)).to.include("beer");
         expect(icons.get(2)).to.include("circle-o");
       });
-    });
 
+      it("triggers a menu action with the item name", () => {
+        sinon.spy(MenuActions, "menuInteraction");
+        TestUtils.Simulate.click(items[3].getDOMNode());
+        expect(MenuActions.menuInteraction).to.have.been.calledWith("Another Menu Item");
+      });
+    });
   });
 });
