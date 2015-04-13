@@ -52,6 +52,16 @@ describe("MenuStore", () => {
           expect(MenuStore.getItems()).to.eql(Immutable.OrderedSet());
         });
       });
+
+      describe("when a `ready` message is received", () => {
+        beforeEach(() => {
+          AppActions.receivePostMessage({ type: "ready" });
+        });
+
+        it("resets the menu", () => {
+          expect(MenuStore.getItems()).to.eql(Immutable.OrderedSet());
+        });
+      });
     });
   });
 
