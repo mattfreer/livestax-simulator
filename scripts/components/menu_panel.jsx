@@ -48,23 +48,24 @@ var MenuPanel = React.createClass({
   },
 
   render() {
-    var items = menuItems.concat(this.state.items).map((item) => {
+    var items = menuItems.concat(this.state.items).map((item, index) => {
       var defaultAction = this.triggerCustomAction.bind(this, item.get("name"));
       return (
-        <a className="list-group-item"
-          key={item.get("name")}
-          href="#"
-          onClick={this.triggerItem.bind(this, item.get("action") || defaultAction)}
-        >
-          <i className={`fa fa-${item.get("icon") || defaultIcon} fa-fw`} />{item.get("name")}
-        </a>
+        <tr key={index} className="menu-item" onClick={this.triggerItem.bind(this, item.get("action") || defaultAction)}>
+          <td><i className={`fa fa-${item.get("icon") || defaultIcon} fa-fw`} /></td>
+          <td className="item-content">
+            {item.get("name")}
+          </td>
+        </tr>
       );
     }).toJS();
     return (
       <CollapsiblePanel heading="Menu">
-        <div className="list-group">
-          {items}
-        </div>
+        <table className="table table-condensed table-hover menu-table">
+          <tbody>
+            {items}
+          </tbody>
+        </table>
       </CollapsiblePanel>
     );
   }
