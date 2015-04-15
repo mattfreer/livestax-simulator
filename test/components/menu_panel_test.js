@@ -39,7 +39,7 @@ describe("MenuPanel", () => {
     var items;
 
     beforeEach(() => {
-      items = TestUtils.scryRenderedDOMComponentsWithClass(instance, "list-group-item");
+      items = TestUtils.scryRenderedDOMComponentsWithClass(instance, "menu-item");
     });
 
 
