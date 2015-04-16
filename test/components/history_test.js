@@ -72,15 +72,25 @@ describe("History", () => {
     expect(listItems.length).to.eql(2);
   });
 
+  it("clears all history items when `clear` is clicked", function() {
+    var toolbar = TestUtils.findRenderedDOMComponentWithClass(history, "panel-toolbar-actions");
+    var actions = TestUtils.scryRenderedDOMComponentsWithClass(toolbar, "label");
+    TestUtils.Simulate.click(actions[0].getDOMNode());
+    listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
+    expect(listItems.length).to.eql(0);
+  });
+
   describe("filters", () => {
-    var filters;
+    var filterContainer;
 
     beforeEach(() => {
-      filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+      filterContainer = TestUtils.findRenderedDOMComponentWithClass(history, "filters");
     });
 
     describe("when filters are selected", () => {
       it("only renders history items for those filters", function() {
+        var filters = TestUtils.scryRenderedDOMComponentsWithClass(filterContainer, "label");
+
         TestUtils.Simulate.click(filters[2].getDOMNode());
         listItems = TestUtils.scryRenderedDOMComponentsWithTag(history, "tr");
         expect(listItems.length).to.eql(1);
@@ -97,13 +107,14 @@ describe("History", () => {
 
     describe("when the last history item is deleted from a filter set", () => {
       beforeEach(() => {
+        var filters = TestUtils.scryRenderedDOMComponentsWithClass(filterContainer, "label");
         TestUtils.Simulate.click(filters[2].getDOMNode());
         var deleteLinks = TestUtils.scryRenderedDOMComponentsWithClass(history, "delete-item");
         TestUtils.Simulate.click(deleteLinks[0]);
       });
 
       it("removes the filter type from the list", function() {
-        filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+        var filters = TestUtils.scryRenderedDOMComponentsWithClass(filterContainer, "label");
         var filterText = Immutable.List(filters).map((item) => {
           return item.getDOMNode().textContent;
         });
@@ -111,7 +122,7 @@ describe("History", () => {
       });
 
       it("selects the 'All' filter", () => {
-        filters = TestUtils.scryRenderedDOMComponentsWithClass(history, "label");
+        var filters = TestUtils.scryRenderedDOMComponentsWithClass(filterContainer, "label");
         var selectedFilter = Immutable.List(filters).find((item) => {
           return item.getDOMNode().className.match(/label-primary/);
         });

@@ -12,6 +12,12 @@ var HistoryActions = {
         item: item
       }
     });
+  },
+
+  clear() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.CLEAR_HISTORY,
+    });
   }
 };
 

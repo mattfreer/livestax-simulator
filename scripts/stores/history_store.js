@@ -84,6 +84,11 @@ class HistoryStore extends EventEmitter {
     this._state = Immutable.fromJS(getFromStorage());
   }
 
+  _clearHistory() {
+    window.localStorage.clear();
+    this.reset();
+  }
+
   injectHistoryType(data) {
     return data.map((value, key) => {
       return value.map((item) => item.set("historyType", key));
@@ -154,6 +159,10 @@ class HistoryStore extends EventEmitter {
 
         case ActionTypes.DELETE_HISTORY_ITEM:
           this._removeHistoryItem(payload);
+        break;
+
+        case ActionTypes.CLEAR_HISTORY:
+          this._clearHistory();
         break;
       }
       this.emitChange();

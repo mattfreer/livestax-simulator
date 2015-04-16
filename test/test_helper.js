@@ -15,7 +15,11 @@ if (typeof document === "undefined") {
 }
 
 if (!global.window.localStorage) {
-  global.window.localStorage = {};
+  global.window.localStorage = {
+    clear: function() {
+      this.history = null;
+    }
+  };
 }
 
 var deepEqual = global.sinon.deepEqual;

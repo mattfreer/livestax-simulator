@@ -116,6 +116,10 @@ var History = React.createClass({
     this.replaceState(nextState);
   },
 
+  clear() {
+    HistoryActions.clear();
+  },
+
   render() {
     if (this.state.get("historyItems").size === 0) {
       return (
@@ -130,6 +134,12 @@ var History = React.createClass({
           <FilterList filters={this.state.get("filters").toJS()}
             active={this.state.get("active").toJS()}
             onFilterChange={this.onFilterChange} />
+
+          <div className="panel-toolbar-actions">
+            <span className="label label-danger clear-flash pull-right" onClick={this.clear}>
+              Clear
+            </span>
+          </div>
         </PanelToolbar>
 
         <table className="table table-condensed table-hover history-table">
