@@ -13,7 +13,8 @@ module.exports = {
     FLASH_INTERACTION: null,
     CLEAR_FLASH: null,
     MENU_INTERACTION: null,
-    DELETE_HISTORY_ITEM: null
+    DELETE_HISTORY_ITEM: null,
+    CLEAR_HISTORY: null
   }),
   ChangeTypes: keyMirror({
     APP_CHANGE: null,
