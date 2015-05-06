@@ -43,9 +43,41 @@
       <div class="well" id="menu-output">Menu item not clicked</div>
       <div class="well" id="reload-output">app.reload not clicked</div>
 
+      <hr />
+
+      <h2>Dialog</h2>
+      <ul class="list-unstyled">
+        <li><button class="btn btn-primary btn-block" id="show-dialog">Show Dialog</button></li>
+      </ul>
+      <div class="well" id="dialog-output">No dialog buttons clicked</div>
     </div>
 
     <script>
+      function onOkClicked() {
+        document.getElementById("dialog-output").innerHTML = "ok clicked";
+      }
+
+      document.getElementById("show-dialog").addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("dialog-output").innerHTML = "";
+
+        var data = {
+          title: "Do you want to do stuff?",
+          message: "By confirming this action you will do stuff",
+        };
+
+        data.buttons = [
+          {
+            title: "ok",
+            callback: onOkClicked,
+            type: "ok"
+          }
+        ];
+
+        e.preventDefault();
+        Livestax.dialog.show(data);
+      });
+
       document.getElementById("show-flash-primary").addEventListener("click", function(e) {
         e.preventDefault();
         document.getElementById("output").innerHTML = "";
