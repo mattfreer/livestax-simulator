@@ -80,7 +80,7 @@ var FlashMessage = React.createClass({
           </div>
         </PanelToolbar>
         <div className={panelHeaderClasses}></div>
-        <div className="panel panel-default flash-message">
+        <div className="panel panel-default panel-message flash-message">
           <div className="panel-body">
             {flash.get("message")}
           </div>

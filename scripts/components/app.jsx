@@ -13,6 +13,7 @@ var HistoryTypes = Constants.History;
 var History = require("./history");
 var FlashMessage = require("./flash_message");
 var MenuPanel = require("./menu_panel");
+var DialogPanel = require("./dialog_panel");
 var Immutable = require("immutable");
 
 var cleanHistoryItem = (item) => {
@@ -44,6 +45,7 @@ var App = React.createClass({
             <StorePanel />
             <History heading="History" onClick={this.triggerHistory} />
             <FlashMessage heading="Flash Message"/>
+            <DialogPanel/>
           </VerticalPanelBlock>
         </div>
         <Logger />
