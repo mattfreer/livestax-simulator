@@ -53,13 +53,13 @@
     </div>
 
     <script>
-      function onOkClicked() {
-        document.getElementById("dialog-output").innerHTML = "ok clicked";
+      function onDialogBtnClicked(title) {
+        document.getElementById("dialog-output").innerHTML = title + " clicked";
       }
 
       document.getElementById("show-dialog").addEventListener("click", function(e) {
         e.preventDefault();
-        document.getElementById("dialog-output").innerHTML = "";
+        document.getElementById("dialog-output").innerHTML = "Showing Dialog";
 
         var data = {
           title: "Do you want to do stuff?",
@@ -68,10 +68,20 @@
 
         data.buttons = [
           {
-            title: "ok",
-            callback: onOkClicked,
+            title: "Yes",
+            callback: onDialogBtnClicked.bind(this, "Yes"),
             type: "ok"
-          }
+          },
+          {
+            title: "No",
+            callback: onDialogBtnClicked.bind(this, "No"),
+            type: "cancel"
+          },
+          {
+            title: "Dangerous",
+            callback: onDialogBtnClicked.bind(this, "Dangerous"),
+            type: "danger"
+          },
         ];
 
         e.preventDefault();

@@ -4,11 +4,28 @@ var React = require("react");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var DialogStore = require("../stores/dialog_store");
 var EmptyPanel = require("./empty_panel");
+var DialogProjections = require("../projections/dialog_projections");
+var DialogActions = require("../actions/dialog_actions");
 
 var getState = () => {
   return {
     dialog: DialogStore.getDialog()
   };
+};
+
+var triggerAction = (title) => {
+  DialogActions.dialogInteraction({title: title});
+};
+
+var renderButtons = (buttons) => {
+  return buttons.map((item, index) => {
+    return (
+      <a key={index} className="btn btn-default"
+        onClick={triggerAction.bind(this, item.get("title"))}>
+        {item.get("title")}
+      </a>
+    );
+  }).toJS();
 };
 
 var DialogPanel = React.createClass({
@@ -31,10 +48,12 @@ var DialogPanel = React.createClass({
 
     if(dialog === null) {
       return (
-        <EmptyPanel header={this.props.heading}
+        <EmptyPanel header="Dialog"
           message="Dialog messages from the app will appear in this panel." />
       );
     }
+
+    var buttons = dialog.get("buttons");
 
     return (
       <CollapsiblePanel heading="Dialog">
@@ -42,6 +61,12 @@ var DialogPanel = React.createClass({
           <div className="panel-body">
             <div>{dialog.get("title")}</div>
             <div>{dialog.get("message")}</div>
+          </div>
+
+          <div className="panel-footer" style={{background: "white"}}>
+            <div className="btn-group btn-group-justified">
+              {renderButtons(DialogProjections.orderedButtons(buttons))}
+            </div>
           </div>
         </div>
       </CollapsiblePanel>

@@ -6,6 +6,7 @@ var Immutable = require("immutable");
 var TestUtils = React.addons.TestUtils;
 var DialogStore = require("../../scripts/stores/dialog_store");
 var DialogPanel = require("../../scripts/components/dialog_panel");
+var DialogActions = require("../../scripts/actions/dialog_actions");
 
 describe("DialogPanel", () => {
   var instance;
@@ -34,7 +35,19 @@ describe("DialogPanel", () => {
       DialogStore.replaceState(Immutable.fromJS({
         dialog: {
           title: "a dialog title",
-          message: "a dialog message"
+          message: "a dialog message",
+          buttons: [
+            {
+              title: "yes",
+              callback: function(){},
+              type: "ok"
+            },
+            {
+              title: "no",
+              callback: function(){},
+              type: "cancel"
+            }
+          ]
         }
       }));
       dialogMessage = TestUtils.findRenderedDOMComponentWithClass(instance, "dialog-message");
@@ -44,6 +57,33 @@ describe("DialogPanel", () => {
       var panelBody = TestUtils.findRenderedDOMComponentWithClass(dialogMessage, "panel-body");
       expect(panelBody.getDOMNode().children[0].textContent).to.eql("a dialog title");
       expect(panelBody.getDOMNode().children[1].textContent).to.eql("a dialog message");
+    });
+
+    describe("dialog buttons", () => {
+      var buttons;
+
+      beforeEach(() => {
+        var panelFooter = TestUtils.findRenderedDOMComponentWithClass(dialogMessage, "panel-footer");
+        buttons = TestUtils.scryRenderedDOMComponentsWithClass(panelFooter, "btn");
+      });
+
+      it("rendered in the correct order", () => {
+        var buttonText = Immutable.List(buttons).map((item) => {
+          return item.getDOMNode().textContent;
+        });
+        expect(buttonText).to.eql(Immutable.List(["no", "yes"]));
+      });
+
+      describe("when clicked", () => {
+        it("trigger a dialog interaction action", () => {
+          sinon.spy(DialogActions, "dialogInteraction");
+          var cancelBtn = buttons[0].getDOMNode();
+          TestUtils.Simulate.click(cancelBtn);
+          expect(DialogActions.dialogInteraction).to.have.been.calledWith({
+            title: "no"
+          });
+        });
+      });
     });
   });
 });
