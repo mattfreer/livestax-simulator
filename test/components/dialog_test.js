@@ -34,7 +34,19 @@ describe("DialogPanel", () => {
       DialogStore.replaceState(Immutable.fromJS({
         dialog: {
           title: "a dialog title",
-          message: "a dialog message"
+          message: "a dialog message",
+          buttons: [
+            {
+              title: "yes",
+              callback: function(){},
+              type: "ok"
+            },
+            {
+              title: "no",
+              callback: function(){},
+              type: "cancel"
+            }
+          ]
         }
       }));
       dialogMessage = TestUtils.findRenderedDOMComponentWithClass(instance, "dialog-message");
@@ -44,6 +56,22 @@ describe("DialogPanel", () => {
       var panelBody = TestUtils.findRenderedDOMComponentWithClass(dialogMessage, "panel-body");
       expect(panelBody.getDOMNode().children[0].textContent).to.eql("a dialog title");
       expect(panelBody.getDOMNode().children[1].textContent).to.eql("a dialog message");
+    });
+
+    describe("dialog buttons", () => {
+      var buttons;
+
+      beforeEach(() => {
+        var panelFooter = TestUtils.findRenderedDOMComponentWithClass(dialogMessage, "panel-footer");
+        buttons = TestUtils.scryRenderedDOMComponentsWithClass(panelFooter, "btn");
+      });
+
+      it("rendered in the correct order", () => {
+        var buttonText = Immutable.List(buttons).map((item) => {
+          return item.getDOMNode().textContent;
+        });
+        expect(buttonText).to.eql(Immutable.List(["no", "yes"]));
+      });
     });
   });
 });

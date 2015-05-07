@@ -68,10 +68,20 @@
 
         data.buttons = [
           {
-            title: "ok",
+            title: "Yes",
             callback: onOkClicked,
             type: "ok"
-          }
+          },
+          {
+            title: "No",
+            callback: function(){},
+            type: "cancel"
+          },
+          {
+            title: "Dangerous",
+            callback: function(){},
+            type: "danger"
+          },
         ];
 
         e.preventDefault();

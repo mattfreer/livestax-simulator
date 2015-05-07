@@ -4,11 +4,22 @@ var React = require("react");
 var CollapsiblePanel = require("./lib/collapsible_panel");
 var DialogStore = require("../stores/dialog_store");
 var EmptyPanel = require("./empty_panel");
+var DialogProjections = require("../projections/dialog_projections");
 
 var getState = () => {
   return {
     dialog: DialogStore.getDialog()
   };
+};
+
+var renderButtons = (buttons) => {
+  return buttons.map((item, index) => {
+    return (
+      <a key={index} className="btn btn-default">
+        {item.get("title")}
+      </a>
+    );
+  }).toJS();
 };
 
 var DialogPanel = React.createClass({
@@ -36,12 +47,20 @@ var DialogPanel = React.createClass({
       );
     }
 
+    var buttons = dialog.get("buttons");
+
     return (
       <CollapsiblePanel heading="Dialog">
         <div className="panel panel-default panel-message dialog-message">
           <div className="panel-body">
             <div>{dialog.get("title")}</div>
             <div>{dialog.get("message")}</div>
+          </div>
+
+          <div className="panel-footer" style={{background: "white"}}>
+            <div className="btn-group btn-group-justified">
+              {renderButtons(DialogProjections.orderedButtons(buttons))}
+            </div>
           </div>
         </div>
       </CollapsiblePanel>
