@@ -59,6 +59,11 @@ class DialogStore extends EventEmitter {
     this.emitChange(data.interaction);
   }
 
+  _clear() {
+    this.reset();
+    this.emitChange({title: "cancel"});
+  }
+
   _registerInterests() {
     AppDispatcher.register((action) => {
       switch(action.type) {
@@ -68,9 +73,13 @@ class DialogStore extends EventEmitter {
         case ActionTypes.DIALOG_INTERACTION:
           this._receiveDialogInteraction(action.payload);
         break;
+        case ActionTypes.CLEAR_DIALOG:
+          this._clear();
+        break;
       }
     });
   }
 }
 
 module.exports = new DialogStore();
+//this._triggerMessage("cancel");

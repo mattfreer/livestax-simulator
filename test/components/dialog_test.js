@@ -59,6 +59,15 @@ describe("DialogPanel", () => {
       expect(panelBody.getDOMNode().children[1].textContent).to.eql("a dialog message");
     });
 
+    describe("when the clear button is clicked", () => {
+      it("triggers a clear action", function() {
+        sinon.spy(DialogActions, "clearDialog");
+        var clearBtn = TestUtils.findRenderedDOMComponentWithClass(instance, "clear-flash");
+        TestUtils.Simulate.click(clearBtn.getDOMNode());
+        expect(DialogActions.clearDialog).to.have.been.called;
+      });
+    });
+
     describe("dialog buttons", () => {
       var buttons;
 

@@ -51,4 +51,20 @@ describe("DialogStore", () => {
       expect(DialogStore.getDialog()).to.eql(null);
     });
   });
+
+  describe("when a clear dialog action is received", () => {
+    it("resets the state.dialog property to null", () => {
+      DialogStore.setState(["dialog"], {title: "Confirmation"});
+      expect(DialogStore.getDialog()).to.not.eql(null);
+      DialogActions.clearDialog();
+      expect(DialogStore.getDialog()).to.eql(null);
+    });
+
+    it("triggers a change event with a cancel title", () => {
+      var callback = sinon.stub();
+      DialogStore.addChangeListener(callback);
+      DialogActions.clearDialog();
+      expect(callback).to.have.been.calledWith({title: "cancel"});
+    });
+  });
 });

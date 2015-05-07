@@ -12,6 +12,11 @@ var DialogActions = {
       }
     });
   },
+  clearDialog() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.CLEAR_DIALOG,
+    });
+  },
 };
 
 module.exports = DialogActions;
