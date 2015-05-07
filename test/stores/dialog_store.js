@@ -67,4 +67,13 @@ describe("DialogStore", () => {
       expect(callback).to.have.been.calledWith({title: "cancel"});
     });
   });
+
+  describe("when an app configuration action is received", () => {
+    it("resets the state.dialog property to null", () => {
+      DialogStore.setState(["dialog"], {title: "Confirmation"});
+      expect(DialogStore.getDialog()).to.not.eql(null);
+      AppActions.receiveAppConfiguration(Immutable.fromJS({}));
+      expect(DialogStore.getDialog()).to.eql(null);
+    });
+  });
 });

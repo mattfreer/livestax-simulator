@@ -76,6 +76,9 @@ class DialogStore extends EventEmitter {
         case ActionTypes.CLEAR_DIALOG:
           this._clear();
         break;
+        case ActionTypes.RECEIVE_APP_CONFIGURATION:
+          this._clear();
+        break;
       }
     });
   }
