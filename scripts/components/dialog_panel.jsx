@@ -42,7 +42,7 @@ var DialogPanel = React.createClass({
 
     if(dialog === null) {
       return (
-        <EmptyPanel header={this.props.heading}
+        <EmptyPanel header="Dialog"
           message="Dialog messages from the app will appear in this panel." />
       );
     }
