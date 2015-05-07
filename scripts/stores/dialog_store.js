@@ -54,11 +54,18 @@ class DialogStore extends EventEmitter {
     }
   }
 
+  _receiveDialogInteraction(data) {
+    this.emitChange(data.interaction);
+  }
+
   _registerInterests() {
     AppDispatcher.register((action) => {
       switch(action.type) {
         case ActionTypes.RECEIVE_POST_MESSAGE:
           this._receivePostMessage(action.payload);
+        break;
+        case ActionTypes.DIALOG_INTERACTION:
+          this._receiveDialogInteraction(action.payload);
         break;
       }
     });

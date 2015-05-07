@@ -5,6 +5,7 @@ var CollapsiblePanel = require("./lib/collapsible_panel");
 var DialogStore = require("../stores/dialog_store");
 var EmptyPanel = require("./empty_panel");
 var DialogProjections = require("../projections/dialog_projections");
+var DialogActions = require("../actions/dialog_actions");
 
 var getState = () => {
   return {
@@ -12,10 +13,15 @@ var getState = () => {
   };
 };
 
+var triggerAction = (title) => {
+  DialogActions.dialogInteraction({title: title});
+};
+
 var renderButtons = (buttons) => {
   return buttons.map((item, index) => {
     return (
-      <a key={index} className="btn btn-default">
+      <a key={index} className="btn btn-default"
+        onClick={triggerAction.bind(this, item.get("title"))}>
         {item.get("title")}
       </a>
     );

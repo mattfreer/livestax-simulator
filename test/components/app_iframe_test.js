@@ -9,6 +9,7 @@ var AppIframe = require("../../scripts/components/app_iframe");
 var MessageActions = require("../../scripts/actions/message_actions");
 var FlashActions = require("../../scripts/actions/flash_actions");
 var MenuActions = require("../../scripts/actions/menu_actions");
+var DialogActions = require("../../scripts/actions/dialog_actions");
 var Immutable = require("immutable");
 
 describe("AppIframe", () => {
@@ -126,6 +127,22 @@ describe("AppIframe", () => {
           type: "menu",
           payload: {
             type: "help"
+          }
+        });
+      });
+    });
+
+    describe("when a dialog message event is received", () => {
+      beforeEach(() => {
+        DialogActions.dialogInteraction({title: "no"});
+      });
+
+      it("sends a trigger postMessage", () => {
+        expect(contentWindow.postMessage).to.have.been.calledWith({
+          type: "dialog",
+          payload: {
+            type: "action",
+            data: "no"
           }
         });
       });

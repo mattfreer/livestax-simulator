@@ -6,6 +6,7 @@ var Immutable = require("immutable");
 var TestUtils = React.addons.TestUtils;
 var DialogStore = require("../../scripts/stores/dialog_store");
 var DialogPanel = require("../../scripts/components/dialog_panel");
+var DialogActions = require("../../scripts/actions/dialog_actions");
 
 describe("DialogPanel", () => {
   var instance;
@@ -71,6 +72,17 @@ describe("DialogPanel", () => {
           return item.getDOMNode().textContent;
         });
         expect(buttonText).to.eql(Immutable.List(["no", "yes"]));
+      });
+
+      describe("when clicked", () => {
+        it("trigger a dialog interaction action", () => {
+          sinon.spy(DialogActions, "dialogInteraction");
+          var cancelBtn = buttons[0].getDOMNode();
+          TestUtils.Simulate.click(cancelBtn);
+          expect(DialogActions.dialogInteraction).to.have.been.calledWith({
+            title: "no"
+          });
+        });
       });
     });
   });
