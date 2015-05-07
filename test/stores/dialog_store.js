@@ -43,5 +43,12 @@ describe("DialogStore", () => {
       DialogActions.dialogInteraction(interaction);
       expect(callback).to.have.been.calledWith({title: "yes"});
     });
+
+    it("resets the state.dialog property to null", () => {
+      DialogStore.setState(["dialog"], {title: "Confirmation"});
+      expect(DialogStore.getDialog()).to.not.eql(null);
+      DialogActions.dialogInteraction(interaction);
+      expect(DialogStore.getDialog()).to.eql(null);
+    });
   });
 });

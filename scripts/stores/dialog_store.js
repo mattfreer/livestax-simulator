@@ -55,6 +55,7 @@ class DialogStore extends EventEmitter {
   }
 
   _receiveDialogInteraction(data) {
+    this.reset();
     this.emitChange(data.interaction);
   }
 
