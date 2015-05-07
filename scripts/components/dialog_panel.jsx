@@ -6,6 +6,7 @@ var DialogStore = require("../stores/dialog_store");
 var EmptyPanel = require("./empty_panel");
 var DialogProjections = require("../projections/dialog_projections");
 var DialogActions = require("../actions/dialog_actions");
+var PanelToolbar = require("./lib/panel_toolbar");
 
 var getState = () => {
   return {
@@ -15,6 +16,10 @@ var getState = () => {
 
 var triggerAction = (title) => {
   DialogActions.dialogInteraction({title: title});
+};
+
+var clear = () => {
+  DialogActions.clearDialog();
 };
 
 var renderButtons = (buttons) => {
@@ -57,6 +62,14 @@ var DialogPanel = React.createClass({
 
     return (
       <CollapsiblePanel heading="Dialog">
+        <PanelToolbar>
+          <div className="panel-toolbar-actions">
+            <span className="label label-danger clear-flash pull-right" onClick={clear}>
+              Clear
+            </span>
+          </div>
+        </PanelToolbar>
+
         <div className="panel panel-default panel-message dialog-message">
           <div className="panel-body">
             <div>{dialog.get("title")}</div>

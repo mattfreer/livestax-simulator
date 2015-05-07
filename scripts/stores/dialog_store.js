@@ -55,7 +55,13 @@ class DialogStore extends EventEmitter {
   }
 
   _receiveDialogInteraction(data) {
+    this.reset();
     this.emitChange(data.interaction);
+  }
+
+  _clear() {
+    this.reset();
+    this.emitChange({title: "cancel"});
   }
 
   _registerInterests() {
@@ -67,9 +73,16 @@ class DialogStore extends EventEmitter {
         case ActionTypes.DIALOG_INTERACTION:
           this._receiveDialogInteraction(action.payload);
         break;
+        case ActionTypes.CLEAR_DIALOG:
+          this._clear();
+        break;
+        case ActionTypes.RECEIVE_APP_CONFIGURATION:
+          this._clear();
+        break;
       }
     });
   }
 }
 
 module.exports = new DialogStore();
+//this._triggerMessage("cancel");
