@@ -22,10 +22,22 @@ var clear = () => {
   DialogActions.clearDialog();
 };
 
+var buttonClass = {
+  "ok": "btn-primary",
+  "cancel": "btn-primary-inverse",
+  "info": "btn-info",
+  "danger": "btn-danger",
+  "default": "btn-default"
+};
+
+var buttonStyles = (type) => {
+  return `btn ${buttonClass[type]}`;
+};
+
 var renderButtons = (buttons) => {
   return buttons.map((item, index) => {
     return (
-      <a key={index} className="btn btn-default"
+      <a key={index} className={buttonStyles(item.get('type'))}
         onClick={triggerAction.bind(this, item.get("title"))}>
         {item.get("title")}
       </a>
@@ -72,7 +84,7 @@ var DialogPanel = React.createClass({
 
         <div className="panel panel-default panel-message dialog-message">
           <div className="panel-body">
-            <div>{dialog.get("title")}</div>
+            <h3><strong>{dialog.get("title")}</strong></h3>
             <div>{dialog.get("message")}</div>
           </div>
 
