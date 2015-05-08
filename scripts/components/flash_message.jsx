@@ -40,9 +40,9 @@ var FlashMessage = React.createClass({
     return ["ignore", "dismiss", "confirm"]
       .map((item, index) => {
         var disabled = callbacks.indexOf(item) === -1;
-        var btnClass = "btn btn-default";
+        var btnClass = "btn";
         if (disabled) {
-          btnClass += " disabled";
+          btnClass += " btn-default disabled";
         } else {
           btnClass += " btn-primary-inverse";
         }
