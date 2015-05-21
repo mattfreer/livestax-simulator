@@ -24,6 +24,10 @@ html, body, .main-container {
   .flex(3);
 }
 
+.panel-heading {
+  min-height: 38px;
+}
+
 .vertical-panels-container {
   .flex-display;
   .flex-direction(column);
@@ -80,7 +84,7 @@ html, body, .main-container {
   width: @app-width;
   border: 0;
   max-height: 100%;
-
+  border-top: 1px solid #ddd;
 }
 
 .signed-request-app {
@@ -91,6 +95,9 @@ html, body, .main-container {
 
 .app-panel-container {
   position: relative;
+  .panel-heading {
+    border: none;
+  }
 }
 
 .app-blocker {
