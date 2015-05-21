@@ -8,6 +8,7 @@
 @danger-color: #ec7b65;
 @info-color: #5699a9;
 @warning-color: #e7b739;
+@banner-color: #333333;
 
 html, body, .main-container {
   height: 100%;
@@ -17,6 +18,27 @@ html, body, .main-container {
   .flex-display;
   .flex-direction(column);
   background: @background-color;
+}
+
+.banner {
+  background-color: @banner-color;
+  color: #FFFFFF;
+  font-weight: 500;
+
+  height: 40px;
+  .app-title {
+    position: absolute;
+    left: 12px;
+    top: 7px;
+    font-size: 18px;
+  }
+
+  .logo {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 22px;
+  }
 }
 
 .panel-container {
@@ -39,6 +61,7 @@ html, body, .main-container {
     flex: initial;
     padding: @toolbar-padding;
     max-height: 28px;
+    min-height: 28px;
 
     .panel-toolbar {
       background-color: #fff;
