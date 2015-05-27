@@ -34,6 +34,10 @@ var App = React.createClass({
   render() {
     return (
       <div className="main-container">
+        <div className="banner">
+          <div className="app-title">App Simulator</div>
+          <div className="logo">LIVESTAX</div>
+        </div>
         <div className="panel-container">
           <VerticalPanelBlock>
             <AppConfigurator />
