@@ -9,8 +9,7 @@ within Livestax.
 
 The Simulator is typically used throughout the app building process,
 providing an easy way for developers to get feedback on how their app
-interfaces with the
-[Livestax JavaScript API].
+interfaces with the [Livestax JavaScript API].
 
 ## Install
 
@@ -55,7 +54,7 @@ Code released under the MIT license. Docs released under Creative
 Commons.
 
 [Livestax]: http://livestax.com
-[Livestax JavaScript API]: https://github.com/livestax/livestax-js-api
+[Livestax JavaScript API]: http://developers.livestax.com
 [Livestax Contribution Document]: https://github.com/livestax/app-github/blob/master/CONTRIBUTING.md
 [Fork]: http://help.github.com/fork-a-repo/
 [Open a Pull Request]: https://help.github.com/articles/using-pull-requests/
