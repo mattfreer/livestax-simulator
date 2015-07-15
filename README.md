@@ -55,7 +55,7 @@ Commons.
 
 [Livestax]: http://livestax.com
 [Livestax JavaScript API]: http://developers.livestax.com
-[Livestax Contribution Document]: https://github.com/livestax/app-github/blob/master/CONTRIBUTING.md
+[Livestax Contribution Document]: https://github.com/livestax/livestax-simulator/blob/master/CONTRIBUTING.md
 [Fork]: http://help.github.com/fork-a-repo/
 [Open a Pull Request]: https://help.github.com/articles/using-pull-requests/
 
