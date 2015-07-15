@@ -23,7 +23,8 @@ module.exports = {
     MENU_CHANGE: null,
     LOG_CHANGE: null,
     HISTORY_CHANGE: null,
-    KEYVAL_CHANGE: null
+    KEYVAL_CHANGE: null,
+    AUTHENTICATE_CHANGE: null
   }),
   History: {
     APPS: "apps",

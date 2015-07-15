@@ -14,6 +14,7 @@ var History = require("./history");
 var FlashMessage = require("./flash_message");
 var MenuPanel = require("./menu_panel");
 var DialogPanel = require("./dialog_panel");
+var AuthenticatePanel = require("./authenticate_panel");
 var Immutable = require("immutable");
 
 var cleanHistoryItem = (item) => {
@@ -43,6 +44,7 @@ var App = React.createClass({
             <AppConfigurator />
             <MessageGenerator />
             <MenuPanel />
+            <AuthenticatePanel/>
           </VerticalPanelBlock>
           <AppPanel />
           <VerticalPanelBlock>
