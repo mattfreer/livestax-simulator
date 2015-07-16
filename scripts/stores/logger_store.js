@@ -16,7 +16,8 @@ var whitelist = Immutable.fromJS({
   menu: ["set", "unset", "clear"],
   store: ["watch", "unwatch", "set", "unset", "get"],
   title: ["set"],
-  flash: ["primary", "success", "info", "danger", "warning"]
+  flash: ["primary", "success", "info", "danger", "warning"],
+  authenticate: ["*"]
 });
 
 class LoggerStore extends EventEmitter {
