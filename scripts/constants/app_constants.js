@@ -16,7 +16,8 @@ module.exports = {
     DELETE_HISTORY_ITEM: null,
     CLEAR_HISTORY: null,
     DIALOG_INTERACTION: null,
-    CLEAR_DIALOG: null
+    CLEAR_DIALOG: null,
+    OPEN_AUTHENTICATE_WINDOW: null
   }),
   ChangeTypes: keyMirror({
     APP_CHANGE: null,

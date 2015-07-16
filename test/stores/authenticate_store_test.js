@@ -3,7 +3,9 @@
 require("../test_helper");
 var Immutable = require("immutable");
 var AuthenticateStore = require("../../scripts/stores/authenticate_store");
+var AuthenticateIncident = require("../../scripts/incidents/authenticate_incident");
 var AppActions = require("../../scripts/actions/app_actions");
+var AuthenticateActions = require("../../scripts/actions/authenticate_actions");
 
 describe("AuthenticateStore", () => {
   var postMessage = {
@@ -45,5 +47,20 @@ describe("AuthenticateStore", () => {
       AppActions.receiveAppConfiguration(Immutable.fromJS({}));
       expect(AuthenticateStore.getAuthRequest()).to.eql(null);
     });
+  });
+
+  describe("when an open authenticate window action is received", () => {
+    beforeEach(() => {
+      sinon.stub(AuthenticateIncident, "openWindow");
+    });
+
+    afterEach(() => {
+      AuthenticateIncident.openWindow.restore();
+    });
+
+     it("triggers an `openWindow` incident", () => {
+       AuthenticateActions.openWindow("http://www.example.com");
+       expect(AuthenticateIncident.openWindow).to.have.been.calledWith("http://www.example.com");
+     });
   });
 });

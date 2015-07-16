@@ -63,7 +63,7 @@
         e.preventDefault();
 
         Livestax.authenticate.start({
-          url: "http://www.example.com",
+          url: "/examples/auth.html",
           provider: "Dummy",
           callback: function(code) {
             document.getElementById("auth-output").innerHTML = "Authentication code: " + code;
