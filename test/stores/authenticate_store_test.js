@@ -34,6 +34,43 @@ describe("AuthenticateStore", () => {
         expect(callback).to.have.been.called;
       });
     });
+
+    describe("when an authenticate message of type `response` is received", () => {
+      var responsePostMessage;
+
+      beforeEach(() => {
+        AuthenticateStore.setState(["authRequest"], {
+          provider: "Third Party Service",
+          url: "http://www.example.com"
+        });
+
+        responsePostMessage = {
+          type: "authenticate",
+          payload: {
+            type: "response",
+          }
+        };
+      });
+
+      it("resets the authRequest property to null", () => {
+        expect(AuthenticateStore.getAuthRequest()).to.not.eql(null);
+        AppActions.receivePostMessage(responsePostMessage);
+        expect(AuthenticateStore.getAuthRequest()).to.eql(null);
+      });
+
+      it("triggers a change event", () => {
+        var callback = sinon.stub();
+        AuthenticateStore.addChangeListener(callback);
+        AppActions.receivePostMessage(responsePostMessage);
+        expect(callback).to.have.been.called;
+      });
+
+      it("triggers AuthenticateIncident.responded", () => {
+        sinon.spy(AuthenticateIncident, "responded");
+        AppActions.receivePostMessage(responsePostMessage);
+        expect(AuthenticateIncident.responded).to.have.been.called;
+      });
+    });
   });
 
   describe("when an app configuration action is received", () => {

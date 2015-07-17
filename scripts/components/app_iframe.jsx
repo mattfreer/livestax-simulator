@@ -7,6 +7,7 @@ var KeyValueStore = require("../stores/key_value_store");
 var FlashMessageStore = require("../stores/flash_message_store");
 var MenuStore = require("../stores/menu_store");
 var DialogStore = require("../stores/dialog_store");
+var AuthenticateStore = require("../stores/authenticate_store");
 var Projections = require("../projections/app_projections");
 var Immutable = require("immutable");
 
@@ -23,6 +24,7 @@ var AppIframe = React.createClass({
     FlashMessageStore.addChangeListener(this._onFlashMessageChange);
     MenuStore.addChangeListener(this._onMenuChange);
     DialogStore.addChangeListener(this._onDialogChange);
+    AuthenticateStore.addChangeListener(this._onAuthenticateChange);
   },
 
   componentWillUnmount() {
@@ -31,6 +33,7 @@ var AppIframe = React.createClass({
     FlashMessageStore.removeChangeListener(this._onFlashMessageChange);
     MenuStore.removeChangeListener(this._onMenuChange);
     DialogStore.removeChangeListener(this._onDialogChange);
+    AuthenticateStore.removeChangeListener(this._onAuthenticateChange);
   },
 
   componentWillUpdate() {
@@ -113,6 +116,19 @@ var AppIframe = React.createClass({
       }
     });
     this._postMessage(payload);
+  },
+
+  _onAuthenticateChange(e) {
+    if(e && e.type === "response") {
+      var payload = Immutable.Map({
+        type: "authenticate",
+        payload: {
+          type: "respond",
+          data: e.data
+        }
+      });
+      this._postMessage(payload);
+      }
   },
 
   render() {

@@ -51,7 +51,14 @@ class AuthenticateStore extends EventEmitter {
 
   _receivePostMessage(data) {
     if(data.type === "authenticate") {
-      this.setState(["authRequest"], Immutable.fromJS(data.payload.data));
+      if(data.payload.type === "response") {
+        AuthenticateIncident.responded();
+        this.reset();
+        this.emitChange(data.payload);
+
+      } else {
+        this.setState(["authRequest"], Immutable.fromJS(data.payload.data));
+      }
     }
   }
 

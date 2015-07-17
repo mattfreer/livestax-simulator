@@ -10,6 +10,7 @@ var MessageActions = require("../../scripts/actions/message_actions");
 var FlashActions = require("../../scripts/actions/flash_actions");
 var MenuActions = require("../../scripts/actions/menu_actions");
 var DialogActions = require("../../scripts/actions/dialog_actions");
+var AppActions = require("../../scripts/actions/app_actions");
 var Immutable = require("immutable");
 
 describe("AppIframe", () => {
@@ -137,12 +138,34 @@ describe("AppIframe", () => {
         DialogActions.dialogInteraction({title: "no"});
       });
 
-      it("sends a trigger postMessage", () => {
+      it("sends a dialog postMessage", () => {
         expect(contentWindow.postMessage).to.have.been.calledWith({
           type: "dialog",
           payload: {
             type: "action",
             data: "no"
+          }
+        });
+      });
+    });
+
+    describe("when an authenticate response, post message is received", () => {
+      beforeEach(() => {
+        AppActions.receivePostMessage({
+          type: "authenticate",
+          payload: {
+            type: "response",
+            data: "dummy code"
+          }
+        })
+      });
+
+      it("sends an authenticate postMessage", () => {
+        expect(contentWindow.postMessage).to.have.been.calledWith({
+          type: "authenticate",
+          payload: {
+            type: "respond",
+            data: "dummy code"
           }
         });
       });
