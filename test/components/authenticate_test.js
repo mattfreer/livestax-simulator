@@ -6,6 +6,7 @@ var Immutable = require("immutable");
 var TestUtils = React.addons.TestUtils;
 var AuthenticateStore = require("../../scripts/stores/authenticate_store");
 var AuthenticatePanel = require("../../scripts/components/authenticate_panel");
+var AuthenticateActions = require("../../scripts/actions/authenticate_actions");
 
 describe("AuthenticatePanel", () => {
   var instance;
@@ -28,6 +29,8 @@ describe("AuthenticatePanel", () => {
   });
 
   describe("when an authenticate message is received", () => {
+    var authMessage;
+
     beforeEach(() => {
       AuthenticateStore.replaceState(Immutable.fromJS({
         authRequest: {
@@ -35,12 +38,34 @@ describe("AuthenticatePanel", () => {
           url: "http://www.example.com"
         }
       }));
+
+      authMessage = TestUtils.findRenderedDOMComponentWithClass(instance, "dialog-message");
     });
 
     it("renders the auth provider", () => {
-      var authMessage = TestUtils.findRenderedDOMComponentWithClass(instance, "dialog-message");
       var panelBody = TestUtils.findRenderedDOMComponentWithClass(authMessage, "panel-body");
       expect(panelBody.getDOMNode().children[0].textContent).to.eql("Login with Third party service");
+    });
+
+    describe("Authenticate button", () => {
+      var authButton;
+
+      beforeEach(() => {
+        var panelFooter = TestUtils.findRenderedDOMComponentWithClass(authMessage, "panel-footer");
+        authButton = TestUtils.findRenderedDOMComponentWithClass(panelFooter, "btn");
+      });
+
+      it("renders an 'Authenticate' button", () => {
+        expect(authButton.getDOMNode().textContent).to.eql("Authenticate");
+      });
+
+      describe("when the 'Authenticate` button is clicked", () => {
+        it("triggers an `openWindow` action", () => {
+          sinon.spy(AuthenticateActions, "openWindow");
+          TestUtils.Simulate.click(authButton.getDOMNode());
+          expect(AuthenticateActions.openWindow).to.have.been.calledWith("http://www.example.com");
+        });
+      });
     });
   });
 });

@@ -6,6 +6,7 @@ var Constants = require("../constants/app_constants");
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = Constants.ChangeTypes.AUTHENTICATE_CHANGE;
 var Immutable = require("immutable");
+var AuthenticateIncident = require("../incidents/authenticate_incident");
 
 class AuthenticateStore extends EventEmitter {
   constructor() {
@@ -50,7 +51,14 @@ class AuthenticateStore extends EventEmitter {
 
   _receivePostMessage(data) {
     if(data.type === "authenticate") {
-      this.setState(["authRequest"], Immutable.fromJS(data.payload.data));
+      if(data.payload.type === "response") {
+        AuthenticateIncident.responded();
+        this.reset();
+        this.emitChange(data.payload);
+
+      } else {
+        this.setState(["authRequest"], Immutable.fromJS(data.payload.data));
+      }
     }
   }
 
@@ -62,6 +70,9 @@ class AuthenticateStore extends EventEmitter {
         break;
         case ActionTypes.RECEIVE_APP_CONFIGURATION:
           this.reset();
+        break;
+        case ActionTypes.OPEN_AUTHENTICATE_WINDOW:
+          AuthenticateIncident.openWindow(action.payload.url)
         break;
       }
     });
