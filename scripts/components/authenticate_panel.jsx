@@ -62,7 +62,11 @@ const AuthenticatePanel = React.createClass({
 
           <div className="panel-footer" style={{background: "white"}}>
             <div className="btn-group btn-group-justified">
-              <a className="btn btn-primary"
+              <a className="btn btn-primary-inverse cancel-btn"
+                onClick={this.clear}>
+                Cancel
+              </a>
+              <a className="btn btn-primary auth-btn"
                 onClick={openAuthPage.bind(this, authRequest.get("url"))}>
                 Authenticate
               </a>

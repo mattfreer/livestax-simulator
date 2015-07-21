@@ -71,12 +71,36 @@ describe("AuthenticatePanel", () => {
       });
     });
 
+    describe("when the cancel button is clicked", () => {
+      var cancel;
+
+      beforeEach(() => {
+        cancel = TestUtils.findRenderedDOMComponentWithClass(instance, "cancel-btn");
+      });
+
+      it("clears the auth request", function() {
+        expect(AuthenticateStore.getAuthRequest()).to.not.eql(null);
+        TestUtils.Simulate.click(cancel.getDOMNode());
+        expect(AuthenticateStore.getAuthRequest()).to.eql(null);
+      });
+
+      it("renders a help message ", () => {
+        var help = TestUtils.scryRenderedDOMComponentsWithClass(instance, "help-message");
+        expect(help.length).to.eql(0);
+
+        TestUtils.Simulate.click(cancel.getDOMNode());
+
+        help = TestUtils.scryRenderedDOMComponentsWithClass(instance, "help-message");
+        expect(help.length).to.eql(1);
+      });
+    });
+
     describe("Authenticate button", () => {
       var authButton;
 
       beforeEach(() => {
         var panelFooter = TestUtils.findRenderedDOMComponentWithClass(authMessage, "panel-footer");
-        authButton = TestUtils.findRenderedDOMComponentWithClass(panelFooter, "btn");
+        authButton = TestUtils.findRenderedDOMComponentWithClass(panelFooter, "auth-btn");
       });
 
       it("renders an 'Authenticate' button", () => {
