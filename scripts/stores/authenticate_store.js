@@ -72,7 +72,10 @@ class AuthenticateStore extends EventEmitter {
           this.reset();
         break;
         case ActionTypes.OPEN_AUTHENTICATE_WINDOW:
-          AuthenticateIncident.openWindow(action.payload.url)
+          AuthenticateIncident.openWindow(action.payload.url);
+        break;
+        case ActionTypes.CLEAR_AUTH_REQUEST:
+          this.reset();
         break;
       }
     });

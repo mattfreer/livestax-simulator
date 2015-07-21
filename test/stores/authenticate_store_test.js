@@ -100,4 +100,17 @@ describe("AuthenticateStore", () => {
        expect(AuthenticateIncident.openWindow).to.have.been.calledWith("http://www.example.com");
      });
   });
+
+  describe("when a clear auth request action is received", () => {
+    it("resets the authRequest property to null", () => {
+      AuthenticateStore.setState(["authRequest"], {
+        provider: "Third Party Service",
+        url: "http://www.example.com"
+      });
+
+      expect(AuthenticateStore.getAuthRequest()).to.not.eql(null);
+      AuthenticateActions.clearRequest();
+      expect(AuthenticateStore.getAuthRequest()).to.eql(null);
+    });
+  });
 });
