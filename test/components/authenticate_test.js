@@ -47,6 +47,30 @@ describe("AuthenticatePanel", () => {
       expect(panelBody.getDOMNode().children[0].textContent).to.eql("Login with Third party service");
     });
 
+    describe("when the clear button is clicked", () => {
+      var clear;
+
+      beforeEach(() => {
+        clear = TestUtils.findRenderedDOMComponentWithClass(instance, "clear-auth");
+      });
+
+      it("clears the auth request", function() {
+        expect(AuthenticateStore.getAuthRequest()).to.not.eql(null);
+        TestUtils.Simulate.click(clear.getDOMNode());
+        expect(AuthenticateStore.getAuthRequest()).to.eql(null);
+      });
+
+      it("renders a help message ", () => {
+        var help = TestUtils.scryRenderedDOMComponentsWithClass(instance, "help-message");
+        expect(help.length).to.eql(0);
+
+        TestUtils.Simulate.click(clear.getDOMNode());
+
+        help = TestUtils.scryRenderedDOMComponentsWithClass(instance, "help-message");
+        expect(help.length).to.eql(1);
+      });
+    });
+
     describe("Authenticate button", () => {
       var authButton;
 

@@ -5,6 +5,7 @@ var CollapsiblePanel = require("./lib/collapsible_panel");
 var AuthenticateStore = require("../stores/authenticate_store");
 var AuthenticateActions = require("../actions/authenticate_actions");
 var EmptyPanel = require("./empty_panel");
+var PanelToolbar = require("./lib/panel_toolbar");
 
 var getState = () => {
   return {
@@ -31,6 +32,10 @@ const AuthenticatePanel = React.createClass({
     this.replaceState(getState());
   },
 
+  clear() {
+    AuthenticateActions.clearRequest();
+  },
+
   render() {
     var authRequest = this.state.authRequest;
 
@@ -43,6 +48,13 @@ const AuthenticatePanel = React.createClass({
 
     return (
       <CollapsiblePanel heading="Authentication">
+        <PanelToolbar>
+          <div className="panel-toolbar-actions">
+            <span className="label label-danger clear-auth pull-right" onClick={this.clear}>
+              Clear
+            </span>
+          </div>
+        </PanelToolbar>
         <div className="panel panel-default panel-message dialog-message">
           <div className="panel-body">
             <h3><strong>Login with {authRequest.get("provider")}</strong></h3>

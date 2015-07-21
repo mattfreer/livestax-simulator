@@ -11,6 +11,12 @@ var AuthenticateActions = {
         url: data
       }
     });
+  },
+
+  clearRequest() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.CLEAR_AUTH_REQUEST
+    });
   }
 };
 
