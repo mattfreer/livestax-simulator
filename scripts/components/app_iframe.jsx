@@ -13,6 +13,7 @@ var Immutable = require("immutable");
 
 var AppIframe = React.createClass({
   propTypes:{
+    status: React.PropTypes.string.isRequired,
     src: React.PropTypes.string.isRequired,
     usePost: React.PropTypes.bool.isRequired,
     postData: React.PropTypes.object
@@ -36,8 +37,10 @@ var AppIframe = React.createClass({
     AuthenticateStore.removeChangeListener(this._onAuthenticateChange);
   },
 
-  componentWillUpdate() {
-    if (!this.getDOMNode()) {
+  componentWillUpdate(nextProps) {
+    var shouldReloadIframe = this.props.status === "loading" && nextProps.status === "ready";
+    this.props.status = nextProps.status;
+    if (!this.getDOMNode() || shouldReloadIframe) {
       return;
     }
     var iframe = this.getDOMNode().querySelector("iframe");
@@ -49,7 +52,7 @@ var AppIframe = React.createClass({
   },
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.status !== "ready";
+    return nextProps.status !== this.props.status;
   },
 
   _postMessage(payload) {
@@ -132,6 +135,8 @@ var AppIframe = React.createClass({
   },
 
   render() {
+    var containerClass = this.props.status === "ready" ? "app-container" : "app-container hidden";
+
     if (this.props.status === "timeout") {
       return null;
     }
@@ -141,7 +146,7 @@ var AppIframe = React.createClass({
       );
     } else {
       return (
-        <div className="app-container">
+        <div className={containerClass}>
           <iframe className="app-iframe" src={this.props.src}></iframe>
         </div>
       );
