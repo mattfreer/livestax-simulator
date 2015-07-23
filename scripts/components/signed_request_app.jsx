@@ -11,7 +11,9 @@ var SignedRequestApp = React.createClass({
     this.submitForm();
   },
   submitForm() {
-    this.getDOMNode().querySelector("form").submit();
+    if (this.props.status === "loading") {
+      this.getDOMNode().querySelector("form").submit();
+    }
   },
   generateSignedRequest(postData) {
     var payload = postData.get("payload");
@@ -21,14 +23,18 @@ var SignedRequestApp = React.createClass({
     payload = payload.update("timestamp", (timestamp) => parseInt(timestamp, 10));
     return jwt.encode(payload.toJS(), postData.get("secret_key"));
   },
+  shouldComponentUpdate(nextProps) {
+    return nextProps.status !== this.props.status;
+  },
 
   render() {
     var src = this.props.src;
     var signedRequest = this.generateSignedRequest(this.props.postData);
+    var containerClass = this.props.status === "ready" ? "signed-request-app app-container" : "signed-request-app app-container hidden";
 
     var frameId = "frame-for-submit";
     return (
-      <div className="signed-request-app app-container">
+      <div className={containerClass}>
         <iframe name={frameId} className="app-iframe"></iframe>
         <form target={frameId} action={src} method="post">
           <input name="signed_request" value={signedRequest} type="hidden" />
