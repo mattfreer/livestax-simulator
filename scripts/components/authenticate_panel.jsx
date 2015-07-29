@@ -17,7 +17,7 @@ var openAuthPage = (url) => {
   AuthenticateActions.openWindow(url);
 };
 
-const AuthenticatePanel = React.createClass({
+var AuthenticatePanel = React.createClass({
   getInitialState: getState,
 
   componentDidMount() {
