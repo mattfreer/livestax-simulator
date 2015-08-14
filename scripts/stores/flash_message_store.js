@@ -50,6 +50,14 @@ class FlashMessageStore extends EventEmitter {
 
   _receivePostMessage(data) {
     if(data.type === "flash") {
+      this._receiveFlashPostMessage(data);
+    }
+  }
+
+  _receiveFlashPostMessage(data) {
+    if(data.payload.type === "clear") {
+      this.reset();
+    } else {
       this.setState(["flash"], Immutable.fromJS(data.payload));
     }
   }

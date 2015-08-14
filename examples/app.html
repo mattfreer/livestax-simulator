@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <script src="//assets.livestax.com/livestax-0.3.0.min.js"></script>
+    <script src="//assets.livestax.com/livestax-0.4.0.min.js"></script>
     <script>
       Livestax.on("another-app.heading", function(val) {
         document.getElementById("heading").innerText = val;
@@ -33,6 +33,7 @@
         <li><button class="btn btn-primary btn-block" id="show-flash-primary">Show primary flash</button></li>
         <li><button class="btn btn-success btn-block" id="show-flash-success">Show success flash</button></li>
         <li><button class="btn btn-danger btn-block" id="show-flash-danger">Show danger flash</button></li>
+        <li><button class="btn btn-default btn-block" id="clear-flash">Clear flash</button></li>
       </ul>
       <div class="well" id="output">No dialog buttons clicked</div>
 
@@ -124,6 +125,11 @@
             document.getElementById("output").innerHTML = "Ignored";
           },
         });
+      });
+
+      document.getElementById("clear-flash").addEventListener("click", function(e) {
+        e.preventDefault();
+        Livestax.flash.clear({ignore: true});
       });
 
       document.getElementById("show-flash-success").addEventListener("click", function(e) {

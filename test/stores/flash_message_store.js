@@ -39,6 +39,21 @@ describe("FlashMessageStore", () => {
         });
       });
 
+      describe("when a flash message of type `clear` is received", () => {
+        beforeEach(() => {
+          AppActions.receivePostMessage({
+            type: "flash",
+            payload: {
+              type: "clear"
+            }
+          });
+        });
+
+        it("resets the state.flash property to null", () => {
+          expect(FlashMessageStore.getFlash()).to.eql(null);
+        });
+      });
+
       describe("when a clear flash action is received", () => {
         beforeEach(() => {
           FlashActions.clearFlash();
